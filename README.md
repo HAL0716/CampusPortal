@@ -420,3 +420,51 @@ docker compose exec app php artisan db:seed
 - コメント機能
 - お知らせ掲示板
 - 出席管理
+
+---
+
+## 13. 備考
+
+### コードフォーマット
+
+#### フロントエンド（ESLint / Prettier）
+
+コードの静的チェック（エラー検出）
+
+```bash
+docker compose exec node npm run lint
+```
+
+ESLintによる自動修正
+
+```bash
+docker compose exec node npm run lint:fix
+```
+
+Prettierによるコード整形（自動修正）
+
+```bash
+docker compose exec node npm run format
+```
+
+Prettierの整形状態チェック（エラー検出）
+
+```bash
+docker compose exec node npm run format:check
+```
+
+Lintチェック + フォーマットチェックをまとめて実行
+
+```bash
+docker compose exec node npm run check
+```
+
+---
+
+#### バックエンド（Laravel）
+
+Laravel PintによるPHPコードフォーマット（PSR準拠）
+
+```bash
+docker compose exec app composer pint
+```
