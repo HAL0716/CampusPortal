@@ -589,3 +589,78 @@ seed:
 ```bash
 docker compose exec app php artisan db:seed
 ```
+
+## 12. 開発ルール
+
+---
+
+## ■ コーディング規約
+
+### Backend（Laravel）
+
+- PSR-12準拠
+- フォーマットツール：Laravel Pint
+
+### Frontend（React）
+
+- Airbnb JavaScript Style Guide準拠
+- ESLint + Prettier使用
+
+---
+
+## ■ コミットルール
+
+以下のプレフィックスを使用する：
+
+- feat: 新機能追加
+- fix: バグ修正
+- docs: ドキュメント変更
+- refactor: リファクタリング
+- test: テスト追加・修正
+- chore: その他雑務
+
+---
+
+## ■ Backend（Laravel）
+
+### コードフォーマット（Pint）
+
+```bash
+docker compose exec app composer pint
+```
+
+---
+
+## ■ Frontend（React）
+
+### コード品質チェック（ESLint）
+
+```bash
+docker compose exec node npm run lint
+```
+
+### 自動修正（ESLint）
+
+```bash
+docker compose exec node npm run lint:fix
+```
+
+### フォーマット（Prettier）
+
+```bash
+docker compose exec node npm run format
+```
+
+### フォーマットチェック
+
+```bash
+docker compose exec node npm run format:check
+```
+
+### Lint + Format 一括チェック
+
+```bash
+docker compose exec node npm run check
+```
+
+---
