@@ -114,4 +114,18 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Login Rate Limiting
+    |--------------------------------------------------------------------------
+    | Here you may configure the rate limiting settings for login attempts.
+    | You can specify the maximum number of attempts and the decay time in seconds.
+    | These settings help to prevent brute-force attacks on the login endpoint.
+    |
+    */
+
+    'login' => [
+        'max_attempts' => env('AUTH_LOGIN_MAX_ATTEMPTS', 5),
+        'decay_seconds' => env('AUTH_LOGIN_DECAY_SECONDS', 60),
+    ],
 ];
