@@ -19,6 +19,7 @@ class AdminUserSeeder extends Seeder
                 'name' => config('admin.name'),
                 'password' => config('admin.password'),
                 'role' => UserRole::ADMIN,
+                'department_id' => null,
             ]
         );
     }
