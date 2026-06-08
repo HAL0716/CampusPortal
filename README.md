@@ -62,6 +62,7 @@ users {
     string email
     string password
     enum role
+    enum grade
     datetime created_at
     datetime updated_at
 }
