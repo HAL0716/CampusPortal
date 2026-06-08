@@ -1,5 +1,5 @@
 type Props = {
-  message?: string;
+  message?: React.ReactNode;
   variant?: 'success' | 'error' | 'warning' | 'info';
 };
 

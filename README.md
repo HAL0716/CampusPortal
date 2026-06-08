@@ -222,9 +222,8 @@ end
 
 | Method | URI                 | Controller             | 説明 |
 | ------ | ------------------- | ---------------------- | ---- |
-| GET    | /admin/users        | UserController@index   | 一覧 |
-| POST   | /admin/users        | UserController@store   | 作成 |
-| PUT    | /admin/users/{user} | UserController@update  | 更新 |
+| GET    | /admin/users        | UserController@index   | DB更新用フォーム |
+| POST   | /admin/users        | UserController@store   | DB更新 |
 | DELETE | /admin/users/{user} | UserController@destroy | 削除 |
 
 | Method | URI                       | Controller                | 説明 |
