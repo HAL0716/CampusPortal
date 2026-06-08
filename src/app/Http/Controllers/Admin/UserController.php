@@ -110,14 +110,14 @@ class UserController extends Controller
                 $role->label()
             ),
             'download_url' => URL::temporarySignedRoute(
-                'admin.users.download',
+                'admin.users.export',
                 now()->addMinutes(30),
                 ['file' => $filename]
             ),
         ]);
     }
 
-    public function download(string $file)
+    public function export(string $file)
     {
         $file = basename($file);
 
