@@ -8,7 +8,7 @@ Route::get('/', function () {
     return redirect()->route(Auth::check() ? 'home' : 'login');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
 

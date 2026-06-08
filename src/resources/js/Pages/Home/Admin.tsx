@@ -13,6 +13,11 @@ export default function Admin() {
       description: '教員アカウントの作成を行います。',
       href: 'admin/users?role=teacher',
     },
+    {
+      title: 'アカウント削除',
+      description: '卒業や退職したユーザーのアカウントを削除します。',
+      href: 'admin/users/delete',
+    },
   ];
 
   return (

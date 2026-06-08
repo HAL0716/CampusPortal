@@ -6,6 +6,7 @@ use App\Actions\Admin\GenerateStudentPasswordCsv;
 use App\Enums\UserGrade;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UserDeleteRequest;
 use App\Http\Requests\Admin\UserStoreRequest;
 use App\Models\Department;
 use App\Models\User;
@@ -117,11 +118,47 @@ class UserController extends Controller
         ]);
     }
 
+    public function deleteIndex(): Response
+    {
+        return Inertia::render('Admin/Users/Delete');
+    }
+
+    public function destroy(UserDeleteRequest $request)
+    {
+        $notFound = [];
+
+        DB::transaction(function () use ($request, &$notFound) {
+
+            foreach ($request->csvRows() as $row) {
+
+                $user = User::where('email', $row['email'])->first();
+
+                if (! $user) {
+                    $notFound[] = $row['email'];
+
+                    continue;
+                }
+
+                $user->delete();
+            }
+        });
+
+        if ($notFound !== []) {
+            return back()->with([
+                'error' => '存在しないユーザー: '.implode(', ', $notFound),
+            ]);
+        }
+
+        return back()->with([
+            'success' => 'アカウントを削除しました。',
+        ]);
+    }
+
     public function export(string $file)
     {
         $file = basename($file);
 
-        $path = self::DOWNLOAD_DIRECTORY . '/' . $file;
+        $path = self::DOWNLOAD_DIRECTORY.'/'.$file;
 
         abort_unless(
             Cache::pull("download:$file"),

@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
@@ -35,7 +37,17 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'))) {
+        $user = User::withTrashed()
+            ->where('email', $this->email)
+            ->first();
+
+        if ($user && $user->trashed()) {
+            throw ValidationException::withMessages([
+                'status' => 'このアカウントは利用できません。',
+            ]);
+        }
+
+        if (! $user || ! Hash::check($this->password, $user->password)) {
             RateLimiter::hit(
                 $this->throttleKey(),
                 config('auth.login.decay_seconds')
@@ -45,6 +57,8 @@ class LoginRequest extends FormRequest
                 'status' => 'メールアドレスまたはパスワードが正しくありません。',
             ]);
         }
+
+        Auth::login($user);
 
         RateLimiter::clear($this->throttleKey());
     }
@@ -61,7 +75,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => "{$seconds}秒後に再試行してください。",
+            'status' => "{$seconds}秒後に再試行してください。",
         ]);
     }
 

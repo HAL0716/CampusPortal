@@ -26,7 +26,9 @@ export default function Login() {
     >
       <PageTitle title="ログイン" />
 
-      <Alert message={data.status} variant="error" />
+      {errors.status && (
+        <Alert message={errors.status} variant="error" />
+      )}
 
       <InputField
         id="email"
