@@ -28,4 +28,14 @@ enum UserGrade: int
             self::D3 => 'D3',
         };
     }
+
+    public static function options(): array
+    {
+        return collect(self::cases())
+            ->map(fn (self $grade) => [
+                'value' => $grade->value,
+                'label' => $grade->label(),
+            ])
+            ->all();
+    }
 }

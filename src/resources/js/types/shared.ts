@@ -9,4 +9,8 @@ export interface SharedProps extends PageProps {
     role: string;
     role_label: string;
   } | null;
+  flash: {
+    success?: string;
+    error?: string;
+  };
 }

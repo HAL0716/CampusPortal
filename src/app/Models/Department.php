@@ -13,4 +13,17 @@ class Department extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public static function options(): array
+    {
+        return self::query()
+            ->orderBy('code')
+            ->get()
+            ->map(fn (self $department) => [
+                'value' => $department->id,
+                'label' => $department->name,
+            ])
+            ->values()
+            ->all();
+    }
 }
