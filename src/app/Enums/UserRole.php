@@ -12,4 +12,13 @@ enum UserRole: string
     {
         return array_map(fn (self $case) => $case->value, self::cases());
     }
+
+    public function HomeRoute(): string
+    {
+        return match ($this) {
+            self::ADMIN => 'Home/Admin',
+            self::TEACHER => 'Home/Teacher',
+            self::STUDENT => 'Home/Student',
+        };
+    }
 }

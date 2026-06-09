@@ -1,8 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Test');
+    return Auth::check() ? redirect()->route('home') : redirect()->route('login');
 });
+
+require __DIR__.'/auth.php';
+
+require __DIR__.'/app.php';
