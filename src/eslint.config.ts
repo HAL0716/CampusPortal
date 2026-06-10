@@ -4,6 +4,7 @@ import tseslint from 'typescript-eslint';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default tseslint.config(
   // 🚫 ignore
@@ -31,6 +32,7 @@ export default tseslint.config(
     plugins: {
       react,
       'react-hooks': reactHooks,
+      'simple-import-sort': simpleImportSort,
     },
 
     settings: {
@@ -43,6 +45,9 @@ export default tseslint.config(
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
+
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
     },
   },
 
