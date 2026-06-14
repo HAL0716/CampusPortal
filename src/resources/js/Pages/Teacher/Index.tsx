@@ -1,4 +1,4 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
 
 import Table from '@/Components/Table/Table';
@@ -15,6 +15,7 @@ type Teacher = {
   name: string;
   email: string;
   department: string;
+  is_active: boolean;
 };
 
 type Props = {
@@ -82,6 +83,26 @@ export default function Index({ teachers, generated_password }: Props) {
           { id: 'name', key: 'name', label: '氏名' },
           { id: 'email', key: 'email', label: 'メールアドレス' },
           { id: 'department', key: 'department', label: '所属' },
+          {
+            id: 'actions',
+            key: 'id',
+            label: '操作',
+            render: (teacher) =>
+              teacher.is_active ? (
+                <Button
+                  onClick={() => {
+                    if (!confirm('この教員を退任させますか？')) return;
+
+                    router.patch(`/teachers/${teacher.id}/resign`);
+                  }}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  退任
+                </Button>
+              ) : (
+                <span className="text-gray-500">退任済み</span>
+              ),
+          },
         ]}
         emptyMessage="教員が見つかりませんでした。"
       />

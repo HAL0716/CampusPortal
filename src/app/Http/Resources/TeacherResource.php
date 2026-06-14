@@ -20,6 +20,7 @@ class TeacherResource extends JsonResource
             'name' => $this->user->name,
             'email' => $this->user->email,
             'department' => $this->department->name,
+            'is_active' => $this->status->isActive(),
         ];
     }
 }

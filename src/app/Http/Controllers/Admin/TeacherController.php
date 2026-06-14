@@ -56,4 +56,13 @@ class TeacherController extends Controller
             ->with('success', '教員を着任させました。')
             ->with('generated_password', $password);
     }
+
+    public function resign(Teacher $teacher): RedirectResponse
+    {
+        $teacher->resign();
+
+        return redirect()
+            ->route('teachers.index')
+            ->with('success', '教員を退任させました');
+    }
 }
