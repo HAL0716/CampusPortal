@@ -32,4 +32,13 @@ class User extends Authenticatable
             'role' => UserRole::class,
         ];
     }
+
+    public function hasRole(UserRole|string $role): bool
+    {
+        if (is_string($role)) {
+            $role = UserRole::from($role);
+        }
+
+        return $this->role === $role;
+    }
 }
