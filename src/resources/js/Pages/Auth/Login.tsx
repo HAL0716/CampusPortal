@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { route } from 'ziggy-js';
 
 import InputField from '@/Components/Form/InputField';
 import PageTitle from '@/Components/Typography/PageTitle';
@@ -17,7 +18,7 @@ export default function Login() {
 
   const submit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    post('/login');
+    post(route('login'));
   };
 
   return (

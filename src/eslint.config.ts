@@ -9,7 +9,15 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort';
 export default tseslint.config(
   // 🚫 ignore
   {
-    ignores: ['node_modules', 'vendor', 'public/build', 'storage', 'bootstrap/cache'],
+    ignores: [
+      'node_modules',
+      'vendor',
+      'public/build',
+      'storage',
+      'bootstrap/cache',
+      'resources/js/ziggy.js',
+      'resources/js/ziggy.d.ts',
+    ],
   },
 
   // JS基本ルール

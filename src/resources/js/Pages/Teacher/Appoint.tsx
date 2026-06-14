@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { route } from 'ziggy-js';
 
 import InputField from '@/Components/Form/InputField';
 import RadioField from '@/Components/Form/RadioField';
@@ -38,7 +39,7 @@ export default function Appoint({ departments }: Props) {
       return;
     }
 
-    post('/teachers/appoint');
+    post(route('teachers.appoint'));
   };
 
   return (

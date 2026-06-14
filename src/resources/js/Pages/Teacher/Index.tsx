@@ -1,5 +1,6 @@
 import { Link, router, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
+import { route } from 'ziggy-js';
 
 import Table from '@/Components/Table/Table';
 import PageTitle from '@/Components/Typography/PageTitle';
@@ -46,7 +47,7 @@ export default function Index({ teachers, generated_password }: Props) {
 
       <div className="flex flex-wrap gap-3">
         <Link
-          href="/teachers/appoint"
+          href={route('teachers.appoint')}
           className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
         >
           教員着任

@@ -1464,6 +1464,12 @@ seed:
 docker compose exec app php artisan db:seed
 ```
 
+Ziggyの型生成:
+
+```bash
+docker compose exec app composer ziggy
+```
+
 ## 12. 開発ルール
 
 ---
