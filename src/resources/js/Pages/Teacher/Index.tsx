@@ -1,8 +1,13 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
 
 import Table from '@/Components/Table/Table';
 import PageTitle from '@/Components/Typography/PageTitle';
 import SectionTitle from '@/Components/Typography/SectionTitle';
+import Button from '@/Components/UI/Button';
+import useToast from '@/Hooks/useToast';
+import { SharedProps } from '@/Types/SharedProps';
+import { copyToClipboard } from '@/Utils/clipboard';
 
 type Teacher = {
   id: number;
@@ -18,20 +23,52 @@ type Props = {
 };
 
 export default function Index({ teachers, generated_password }: Props) {
+  const toast = useToast();
+
+  const { flash } = usePage<SharedProps>().props;
+
+  useEffect(() => {
+    if (flash?.success) {
+      toast.success(flash.success);
+    }
+
+    if (flash?.error) {
+      toast.error(flash.error);
+    }
+  }, [flash, toast]);
+
   return (
     <div className="space-y-6">
       <PageTitle title="教員管理" />
 
       <SectionTitle title="教員追加" />
 
-      <div className="flex items-center justify-between">
-        <Link href="/teachers/appoint" className="rounded-lg bg-blue-600 px-4 py-2 text-white">
+      <div className="flex flex-wrap gap-3">
+        <Link
+          href="/teachers/appoint"
+          className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
+        >
           教員着任
         </Link>
 
         {generated_password && (
-          <div className="rounded bg-green-100 p-2 text-green-800">
-            生成されたパスワード: {generated_password}
+          <div className="rounded-lg border border-green-200 bg-green-50 p-4">
+            <p className="text-sm text-slate-600">発行された初期パスワード</p>
+
+            <div className="mt-2 flex items-center gap-4">
+              <code className="font-mono text-lg">{generated_password}</code>
+
+              <Button
+                onClick={() =>
+                  copyToClipboard(generated_password, {
+                    onSuccess: () => toast.success('コピーに成功'),
+                    onError: () => toast.error('コピーに失敗'),
+                  })
+                }
+              >
+                コピー
+              </Button>
+            </div>
           </div>
         )}
       </div>
