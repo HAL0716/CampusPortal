@@ -8,6 +8,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    command: sh -c "php artisan ziggy:generate --types && php-fpm"
     restart: unless-stopped
 
   nginx:
