@@ -10,7 +10,15 @@ import unusedImports from 'eslint-plugin-unused-imports';
 
 export default defineConfig(
   {
-    ignores: ['node_modules', 'vendor', 'public/build', 'storage', 'bootstrap/cache'],
+    ignores: [
+      'node_modules',
+      'vendor',
+      'public/build',
+      'storage',
+      'bootstrap/cache',
+      'resources/js/ziggy.js',
+      'resources/js/ziggy.d.ts',
+    ],
   },
 
   js.configs.recommended,
