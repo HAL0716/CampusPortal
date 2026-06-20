@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable(['name'])]
 class Department extends Model
 {
+    public function studentProfiles(): HasMany
+    {
+        return $this->hasMany(StudentProfile::class);
+    }
+
     public function teacherProfiles(): HasMany
     {
         return $this->hasMany(TeacherProfile::class);
