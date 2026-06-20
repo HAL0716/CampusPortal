@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -12,33 +13,43 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
     protected static ?string $password;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
-        $email = fake()->unique()->safeEmail();
-
         return [
-            'login_id' => Str::before($email, '@'),
             'name' => fake()->name(),
-            'email' => $email,
+            'login_id' => null,
+            'email' => null,
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => static::$password ??= Hash::make(config('user.password')),
             'remember_token' => Str::random(10),
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
+    public function configure(): static
+    {
+        return $this->afterMaking(function (User $user) {
+            if (! $user->login_id) {
+                $user->login_id =
+                    $user->email
+                        ? Str::before($user->email, '@')
+                        : fake()->unique()->userName();
+            }
+
+            if (! $user->email) {
+                $user->email = $user->login_id.'@'.config('user.domain');
+            }
+        });
+    }
+
+    public function admin(): static
+    {
+        return $this->state([
+            'role' => UserRole::ADMIN,
+        ]);
+    }
+
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [
