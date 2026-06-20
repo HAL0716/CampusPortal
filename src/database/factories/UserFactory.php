@@ -50,6 +50,13 @@ class UserFactory extends Factory
         ]);
     }
 
+    public function teacher(): static
+    {
+        return $this->state([
+            'role' => UserRole::TEACHER,
+        ]);
+    }
+
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [
