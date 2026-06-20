@@ -8,6 +8,7 @@ use App\Enums\Term;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['department_id', 'name', 'description', 'credits', 'term', 'default_teacher_id', 'default_day_of_week', 'default_period'])]
 class Course extends Model
@@ -29,5 +30,10 @@ class Course extends Model
     public function defaultTeacher(): BelongsTo
     {
         return $this->belongsTo(TeacherProfile::class, 'default_teacher_id');
+    }
+
+    public function courseTargets(): HasMany
+    {
+        return $this->hasMany(CourseTarget::class);
     }
 }

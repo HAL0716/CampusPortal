@@ -26,4 +26,9 @@ class Curriculum extends Model
     {
         return $this->hasMany(StudentProfile::class);
     }
+
+    public function courseTargets(): HasMany
+    {
+        return $this->hasMany(CourseTarget::class);
+    }
 }
