@@ -24,4 +24,9 @@ class TeacherProfile extends Model
     {
         return $this->hasMany(Course::class, 'default_teacher_id');
     }
+
+    public function courseOfferings(): HasMany
+    {
+        return $this->hasMany(CourseOffering::class);
+    }
 }
