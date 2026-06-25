@@ -46,6 +46,11 @@ class CourseOffering extends Model
         return $this->hasMany(LectureMaterial::class);
     }
 
+    public function assignments(): HasMany
+    {
+        return $this->hasMany(Assignment::class);
+    }
+
     public function scopeCurrentTerm(Builder $query): Builder
     {
         $term = AcademicTerm::current();

@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             AcademicTermSeeder::class,
             CourseOfferingSeeder::class,
             LectureMaterialSeeder::class,
+            AssignmentSeeder::class,
             EnrollmentSeeder::class,
             FinalGradeSeeder::class,
         ]);
