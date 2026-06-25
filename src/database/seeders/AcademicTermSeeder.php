@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\Term;
 use App\Models\AcademicTerm;
+use App\Support\SystemClock;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
@@ -11,7 +12,7 @@ class AcademicTermSeeder extends Seeder
 {
     public function run(): void
     {
-        $year = now()->year;
+        $year = SystemClock::now()->year;
 
         foreach (Term::cases() as $term) {
             $dates = match ($term) {

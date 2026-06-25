@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\UserRole;
 use App\Models\User;
+use App\Support\SystemClock;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -21,7 +22,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'login_id' => null,
             'email' => null,
-            'email_verified_at' => now(),
+            'email_verified_at' => SystemClock::now(),
             'password' => static::$password ??= Hash::make(config('user.password')),
             'remember_token' => Str::random(10),
         ];

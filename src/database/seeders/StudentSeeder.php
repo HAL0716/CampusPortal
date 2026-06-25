@@ -6,6 +6,7 @@ use App\Enums\Degree;
 use App\Models\Curriculum;
 use App\Models\Department;
 use App\Models\User;
+use App\Support\SystemClock;
 use Illuminate\Database\Seeder;
 
 class StudentSeeder extends Seeder
@@ -57,7 +58,7 @@ class StudentSeeder extends Seeder
         int $departmentId,
         int $index
     ): string {
-        $year = (int) substr(now()->year, -2);
+        $year = (int) substr(SystemClock::now()->year, -2);
 
         $yearIndex = match ($curriculum->degree) {
             Degree::BACHELOR => 0 + $curriculum->year,
