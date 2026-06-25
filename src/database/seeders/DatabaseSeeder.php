@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             LectureMaterialSeeder::class,
             AssignmentSeeder::class,
             EnrollmentSeeder::class,
+            AssignmentSubmissionSeeder::class,
             FinalGradeSeeder::class,
         ]);
     }
