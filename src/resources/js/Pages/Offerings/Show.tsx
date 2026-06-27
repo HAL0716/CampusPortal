@@ -1,6 +1,14 @@
 import { Head, Link } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
+import Table from '@/Components/Table';
+
+type Student = {
+  id: number;
+  name: string;
+  grade: string | null;
+};
+
 type Props = {
   offering: {
     id: number;
@@ -17,9 +25,22 @@ type Props = {
       title: string;
     }[];
   };
+  students?: Student[];
 };
 
-export default function Show({ offering }: Props) {
+export default function Show({ offering, students }: Props) {
+  const columns = [
+    {
+      label: '名前',
+      key: 'name',
+    },
+    {
+      label: '成績',
+      key: 'grade',
+      render: (row: Student) => row.grade ?? '未評価',
+    },
+  ];
+
   return (
     <>
       <Head title={offering.course.name} />
@@ -71,6 +92,14 @@ export default function Show({ offering }: Props) {
           ))}
         </ul>
       </section>
+
+      {students && (
+        <section className="mt-6">
+          <h2 className="mb-2 font-bold">履修学生</h2>
+
+          <Table data={students} columns={columns} />
+        </section>
+      )}
     </>
   );
 }

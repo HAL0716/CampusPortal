@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\DayOfWeek;
 use App\Enums\Period;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +20,15 @@ class CourseOffering extends Model
             'day_of_week' => DayOfWeek::class,
             'period' => Period::class,
         ];
+    }
+
+    public function canAccessAsTeacher(User $user): bool
+    {
+        if ($user->hasRole(UserRole::ADMIN)) {
+            return true;
+        }
+
+        return $user->teacherProfile && $this->teacher_id === $user->teacherProfile->id;
     }
 
     public function course(): BelongsTo

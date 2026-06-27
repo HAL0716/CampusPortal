@@ -34,6 +34,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function hasRole(UserRole $role): bool
+    {
+        return $this->role === $role;
+    }
+
     public function studentProfile(): HasOne
     {
         return $this->hasOne(StudentProfile::class);
