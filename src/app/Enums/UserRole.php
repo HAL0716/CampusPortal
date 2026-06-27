@@ -17,6 +17,7 @@ enum UserRole: string
     {
         return match ($this) {
             self::ADMIN => 'Home/Admin',
+            self::STUDENT => 'Home/Student',
             default => 'Home/Index',
         };
     }
