@@ -7,6 +7,10 @@ import { MenuItem } from '@/Types/MenuItem';
 export default function Student() {
   const menuItems: MenuItem[] = [
     {
+      label: '履修一覧',
+      href: route('enrollments.index'),
+    },
+    {
       label: '科目一覧',
       href: route('courses.index'),
     },

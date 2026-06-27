@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\EnrollmentStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -16,6 +17,16 @@ class Enrollment extends Model
         return [
             'status' => EnrollmentStatus::class,
         ];
+    }
+
+    public function scopeForStudent(Builder $query, StudentProfile $student): Builder
+    {
+        return $query->where('student_profile_id', $student->id);
+    }
+
+    public function scopeCurrentTerm(Builder $query): Builder
+    {
+        return $query->whereHas('courseOffering', fn (Builder $query) => $query->currentTerm());
     }
 
     public function studentProfile(): BelongsTo

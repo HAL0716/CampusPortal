@@ -12,4 +12,13 @@ enum EnrollmentStatus: string
     {
         return array_map(fn (self $degree) => $degree->value, self::cases());
     }
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::REGISTERED => '履修',
+            self::DROPPED => '取消',
+            self::COMPLETED => '完了',
+        };
+    }
 }
