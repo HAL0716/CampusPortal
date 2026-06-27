@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcademicTermController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
@@ -9,4 +10,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/students', [StudentController::class, 'index'])->name('students.index');
     Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers.index');
     Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
+    Route::get('/academic-terms', [AcademicTermController::class, 'index'])->name('academic-terms.index');
 });

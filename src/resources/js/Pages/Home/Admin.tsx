@@ -19,6 +19,10 @@ export default function Admin() {
       href: route('courses.index'),
     },
     {
+      label: '学期一覧',
+      href: route('academic-terms.index'),
+    },
+    {
       label: 'ログアウト',
       href: route('logout'),
       method: 'post',
