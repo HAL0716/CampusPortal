@@ -4,8 +4,12 @@ import { route } from 'ziggy-js';
 import Menu from '@/Components/Menu';
 import { MenuItem } from '@/Types/MenuItem';
 
-export default function Index() {
+export default function Admin() {
   const menuItems: MenuItem[] = [
+    {
+      label: '学生一覧',
+      href: route('students.index'),
+    },
     {
       label: 'ログアウト',
       href: route('logout'),
@@ -13,11 +17,12 @@ export default function Index() {
       className: 'text-red-500 underline hover:text-red-700',
     },
   ];
+
   return (
     <>
-      <Head title="ゲスト用ホームページ" />
+      <Head title="管理者ページ" />
 
-      <h1 className="mb-4 text-xl font-bold">ゲスト用ホームページ</h1>
+      <h1 className="mb-4 text-xl font-bold">管理者ページ</h1>
 
       <Menu items={menuItems} />
     </>
