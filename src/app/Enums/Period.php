@@ -16,4 +16,17 @@ enum Period: string
     {
         return array_map(fn (self $period) => $period->value, self::cases());
     }
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::FIRST => '1限',
+            self::SECOND => '2限',
+            self::THIRD => '3限',
+            self::FOURTH => '4限',
+            self::FIFTH => '5限',
+            self::SIXTH => '6限',
+            self::INTENSIVE => '集中',
+        };
+    }
 }

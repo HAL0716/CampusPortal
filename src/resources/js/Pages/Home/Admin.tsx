@@ -23,6 +23,10 @@ export default function Admin() {
       href: route('academic-terms.index'),
     },
     {
+      label: '開講一覧',
+      href: route('offerings.index'),
+    },
+    {
       label: 'ログアウト',
       href: route('logout'),
       method: 'post',

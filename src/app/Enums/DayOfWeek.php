@@ -15,4 +15,16 @@ enum DayOfWeek: string
     {
         return array_map(fn (self $dayOfWeek) => $dayOfWeek->value, self::cases());
     }
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::MONDAY => '月',
+            self::TUESDAY => '火',
+            self::WEDNESDAY => '水',
+            self::THURSDAY => '木',
+            self::FRIDAY => '金',
+            self::INTENSIVE => '集中',
+        };
+    }
 }
