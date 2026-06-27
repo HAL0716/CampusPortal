@@ -11,6 +11,10 @@ export default function Admin() {
       href: route('students.index'),
     },
     {
+      label: '教員一覧',
+      href: route('teachers.index'),
+    },
+    {
       label: 'ログアウト',
       href: route('logout'),
       method: 'post',
