@@ -19,6 +19,10 @@ export default function Student() {
       href: route('offerings.index'),
     },
     {
+      label: '成績一覧',
+      href: route('grades.index'),
+    },
+    {
       label: 'ログアウト',
       href: route('logout'),
       method: 'post',

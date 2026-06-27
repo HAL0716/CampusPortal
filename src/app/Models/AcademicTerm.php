@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Term;
 use App\Support\SystemClock;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -29,6 +30,11 @@ class AcademicTerm extends Model
         return self::whereDate('lecture_start', '<=', $now)
             ->whereDate('lecture_end', '>=', $now)
             ->first();
+    }
+
+    public function scopeFinished(Builder $query): Builder
+    {
+        return $query->whereDate('lecture_end', '<', SystemClock::now());
     }
 
     public function courseOfferings(): HasMany

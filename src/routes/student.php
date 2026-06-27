@@ -3,6 +3,7 @@
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OfferingController;
 use Illuminate\Support\Facades\Route;
@@ -14,4 +15,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/offerings/{offering}', [OfferingController::class, 'show'])->name('offerings.show');
     Route::get('/offerings/{offering}/materials/{material}', [MaterialController::class, 'show'])->name('offerings.materials.show');
     Route::get('/offerings/{offering}/assignments/{assignment}', [AssignmentController::class, 'show'])->name('offerings.assignments.show');
+    Route::get('/grades', [GradeController::class, 'index'])->name('grades.index');
 });
