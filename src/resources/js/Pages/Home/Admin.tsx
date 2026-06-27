@@ -15,6 +15,10 @@ export default function Admin() {
       href: route('teachers.index'),
     },
     {
+      label: '科目一覧',
+      href: route('courses.index'),
+    },
+    {
       label: 'ログアウト',
       href: route('logout'),
       method: 'post',
