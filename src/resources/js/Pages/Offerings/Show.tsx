@@ -1,4 +1,5 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
+import { route } from 'ziggy-js';
 
 type Props = {
   offering: {
@@ -36,7 +37,17 @@ export default function Show({ offering }: Props) {
 
         <ul>
           {offering.materials.map((material) => (
-            <li key={material.id}>{material.title}</li>
+            <li key={material.id}>
+              <Link
+                href={route('offerings.materials.show', {
+                  offering: offering.id,
+                  material: material.id,
+                })}
+                className="text-blue-500 underline hover:text-blue-700"
+              >
+                {material.title}
+              </Link>
+            </li>
           ))}
         </ul>
       </section>
