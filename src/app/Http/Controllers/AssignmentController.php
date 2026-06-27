@@ -23,6 +23,17 @@ class AssignmentController extends Controller
             404
         );
 
+        $user = request()->user();
+
+        if ($user->studentProfile) {
+            $assignment->load([
+                'assignmentSubmissions' => fn ($query) => $query->where(
+                    'student_profile_id',
+                    $user->studentProfile->id
+                ),
+            ]);
+        }
+
         return Inertia::render('Assignments/Show', [
             'assignment' => (new AssignmentResource($assignment))
                 ->resolve(),

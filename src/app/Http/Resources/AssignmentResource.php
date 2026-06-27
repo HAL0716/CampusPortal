@@ -15,6 +15,15 @@ class AssignmentResource extends JsonResource
             'description' => $this->description,
             'file_path' => $this->file_path,
             'due_date' => $this->due_date,
+            'submission' => $this->whenLoaded(
+                'assignmentSubmissions',
+                fn () => $this->assignmentSubmissions->first()?->only([
+                    'id',
+                    'file_path',
+                    'submitted_at',
+                    'score',
+                ])
+            ),
         ];
     }
 }
