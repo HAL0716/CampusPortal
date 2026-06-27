@@ -1,3 +1,7 @@
 import { createInertiaApp } from '@inertiajs/react';
 
-createInertiaApp();
+import Layout from '@/Pages/Layouts/Layout';
+
+createInertiaApp({
+  layout: () => Layout,
+});
