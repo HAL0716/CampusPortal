@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Http\Resources\AssignmentResource;
 use App\Models\Assignment;
 use App\Models\CourseOffering;
@@ -23,16 +24,25 @@ class AssignmentController extends Controller
             404
         );
 
+        $assignment->load([
+            'courseOffering',
+        ]);
+
         $user = request()->user();
 
-        if ($user->studentProfile) {
-            $assignment->load([
-                'assignmentSubmissions' => fn ($query) => $query->where(
-                    'student_profile_id',
-                    $user->studentProfile->id
-                ),
-            ]);
+        $submissions = collect();
+
+        if ($user->hasRole(UserRole::STUDENT)) {
+            $submissions = $assignment->assignmentSubmissions()
+                ->where('student_profile_id', $user->studentProfile->id)
+                ->get();
+        } elseif ($user->hasRole(UserRole::TEACHER) && $offering->canAccessAsTeacher($user)) {
+            $submissions = $assignment->assignmentSubmissions()
+                ->with('studentProfile.user')
+                ->get();
         }
+
+        $assignment->setRelation('assignmentSubmissions', $submissions);
 
         return Inertia::render('Assignments/Show', [
             'assignment' => (new AssignmentResource($assignment))

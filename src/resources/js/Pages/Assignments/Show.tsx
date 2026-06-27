@@ -1,6 +1,14 @@
 import { Head } from '@inertiajs/react';
 
+import Table from '@/Components/Table';
 import { formatDate } from '@/Utils/date';
+
+type Submission = {
+  id: number;
+  file_path: string;
+  submitted_at: string;
+  score: number | null;
+};
 
 type Assignment = {
   id: number;
@@ -8,12 +16,7 @@ type Assignment = {
   description: string;
   file_path: string;
   due_date: string;
-  submission?: {
-    id: number;
-    file_path: string;
-    submitted_at: string;
-    score: number | null;
-  };
+  submissions: Submission[];
 };
 
 type Props = {
@@ -21,6 +24,24 @@ type Props = {
 };
 
 export default function Show({ assignment }: Props) {
+  const columns = [
+    {
+      label: 'ファイル',
+      key: 'file_path',
+    },
+    {
+      label: '提出日時',
+      key: 'submitted_at',
+      render: (submission: Submission) => formatDate(submission.submitted_at),
+    },
+    {
+      label: '点数',
+      key: 'score',
+      render: (submission: Submission) =>
+        submission.score !== null ? `${submission.score}点` : '未採点',
+    },
+  ];
+
   return (
     <>
       <Head title={assignment.title} />
@@ -48,16 +69,8 @@ export default function Show({ assignment }: Props) {
       <section className="mb-6">
         <h2 className="font-bold">提出状況</h2>
 
-        {assignment.submission ? (
-          <>
-            <p>
-              {assignment.submission.file_path} ({formatDate(assignment.submission.submitted_at)})
-            </p>
-
-            {assignment.submission.score !== null && (
-              <p>採点済み: {assignment.submission.score}点</p>
-            )}
-          </>
+        {assignment.submissions.length > 0 ? (
+          <Table data={assignment.submissions} columns={columns} />
         ) : (
           <p>未提出</p>
         )}
