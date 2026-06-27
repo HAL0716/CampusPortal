@@ -1,6 +1,7 @@
 import { Head } from '@inertiajs/react';
 
 import Table from '@/Components/Table';
+import { formatDate } from '@/Utils/date';
 
 type AcademicTerm = {
   id: number;
@@ -17,8 +18,6 @@ type Props = {
 };
 
 export default function Index({ academicTerms }: Props) {
-  const format = (date: string) => new Date(date).toLocaleDateString('ja-JP');
-
   const columns = [
     {
       label: '年度',
@@ -32,12 +31,13 @@ export default function Index({ academicTerms }: Props) {
       label: '履修登録期間',
       key: 'registration',
       render: (row: AcademicTerm) =>
-        `${format(row.registration_start)} 〜 ${format(row.registration_end)}`,
+        `${formatDate(row.registration_start)} 〜 ${formatDate(row.registration_end)}`,
     },
     {
       label: '講義期間',
       key: 'lecture',
-      render: (row: AcademicTerm) => `${format(row.lecture_start)} 〜 ${format(row.lecture_end)}`,
+      render: (row: AcademicTerm) =>
+        `${formatDate(row.lecture_start)} 〜 ${formatDate(row.lecture_end)}`,
     },
   ];
 
