@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\MaterialController;
@@ -12,4 +13,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/offerings', [OfferingController::class, 'index'])->name('offerings.index');
     Route::get('/offerings/{offering}', [OfferingController::class, 'show'])->name('offerings.show');
     Route::get('/offerings/{offering}/materials/{material}', [MaterialController::class, 'show'])->name('offerings.materials.show');
+    Route::get('/offerings/{offering}/assignments/{assignment}', [AssignmentController::class, 'show'])->name('offerings.assignments.show');
 });

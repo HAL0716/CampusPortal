@@ -57,7 +57,17 @@ export default function Show({ offering }: Props) {
 
         <ul>
           {offering.assignments.map((assignment) => (
-            <li key={assignment.id}>{assignment.title}</li>
+            <li key={assignment.id}>
+              <Link
+                href={route('offerings.assignments.show', {
+                  offering: offering.id,
+                  assignment: assignment.id,
+                })}
+                className="text-blue-500 underline hover:text-blue-700"
+              >
+                {assignment.title}
+              </Link>
+            </li>
           ))}
         </ul>
       </section>
