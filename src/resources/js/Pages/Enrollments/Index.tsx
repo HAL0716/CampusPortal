@@ -1,10 +1,12 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
+import { route } from 'ziggy-js';
 
 import Table from '@/Components/Table';
 
 type Enrollment = {
   id: number;
   course: string;
+  offering_id: number;
   teacher: string;
   day_of_week: string;
   period: string;
@@ -36,6 +38,18 @@ export default function Index({ enrollments }: Props) {
     {
       label: '状態',
       key: 'status',
+    },
+    {
+      label: '詳細',
+      key: 'details',
+      render: (enrollment: Enrollment) => (
+        <Link
+          href={route('offerings.show', enrollment.offering_id)}
+          className="text-blue-500 underline hover:text-blue-700"
+        >
+          詳細
+        </Link>
+      ),
     },
   ];
 

@@ -12,6 +12,7 @@ class EnrollmentResource extends JsonResource
         return [
             'id' => $this->id,
             'course' => $this->courseOffering?->course?->name,
+            'offering_id' => $this->courseOffering?->id,
             'teacher' => $this->courseOffering?->teacher?->user?->name ?? '未設定',
             'day_of_week' => $this->courseOffering?->day_of_week?->label(),
             'period' => $this->courseOffering?->period?->label(),

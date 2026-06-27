@@ -1,4 +1,5 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
+import { route } from 'ziggy-js';
 
 import Table from '@/Components/Table';
 
@@ -31,6 +32,18 @@ export default function Index({ offerings }: Props) {
     {
       label: '時限',
       key: 'period',
+    },
+    {
+      label: '詳細',
+      key: 'detail',
+      render: (offering: Offering) => (
+        <Link
+          href={route('offerings.show', offering.id)}
+          className="text-blue-500 underline hover:text-blue-700"
+        >
+          詳細
+        </Link>
+      ),
     },
   ];
 
