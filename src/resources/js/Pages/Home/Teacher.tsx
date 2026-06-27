@@ -11,7 +11,7 @@ export default function Teacher() {
       href: route('courses.index'),
     },
     {
-      label: '開講一覧',
+      label: '担当一覧',
       href: route('offerings.index'),
     },
     {
