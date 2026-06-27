@@ -28,8 +28,8 @@ class OfferingController extends Controller
     {
         $offering->load([
             'course',
-            'lectureMaterials',
-            'assignments',
+            'lectureMaterials' => fn ($query) => $query->published(),
+            'assignments' => fn ($query) => $query->published(),
         ]);
 
         return Inertia::render('Offerings/Show', [

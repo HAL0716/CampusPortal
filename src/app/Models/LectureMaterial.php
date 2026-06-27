@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Support\SystemClock;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -14,6 +16,11 @@ class LectureMaterial extends Model
         return [
             'published_at' => 'datetime',
         ];
+    }
+
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->where('published_at', '<=', SystemClock::now());
     }
 
     public function courseOffering(): BelongsTo
