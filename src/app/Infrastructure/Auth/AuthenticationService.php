@@ -15,4 +15,9 @@ final class AuthenticationService implements AuthenticationServiceInterface
             throw new AuthenticationFailedException;
         }
     }
+
+    public function logout(): void
+    {
+        Auth::logout();
+    }
 }
