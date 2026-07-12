@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Application\Auth\LoginUseCase;
+use App\Domain\User\Exceptions\AuthenticationFailedException;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,15 +20,19 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request, LoginUseCase $useCase): RedirectResponse
     {
-        if (! $useCase->execute($request->toCommand())) {
+        try {
+            $useCase->execute($request->toCommand());
+
+            $request->session()->regenerate();
+
+            return redirect()->route('dashboard');
+
+        } catch (AuthenticationFailedException) {
+
             return back()->withErrors([
                 'email' => 'メールアドレスまたはパスワードが違います。',
             ])->onlyInput('email');
         }
-
-        $request->session()->regenerate();
-
-        return redirect()->route('dashboard');
     }
 
     public function logout(Request $request): RedirectResponse
