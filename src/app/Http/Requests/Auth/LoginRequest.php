@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Application\Auth\LoginCommand;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -52,5 +53,15 @@ class LoginRequest extends FormRequest
             'required' => ':attribute は必須です。',
             'email' => ':attribute が不正な形式です。',
         ];
+    }
+
+    public function toCommand(): LoginCommand
+    {
+        $data = $this->validated();
+
+        return new LoginCommand(
+            email: $data['email'],
+            password: $data['password'],
+        );
     }
 }

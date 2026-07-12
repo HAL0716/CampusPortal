@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Application\Auth\LoginUseCase;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,9 +17,9 @@ class AuthController extends Controller
         return Inertia::render('Auth/Login');
     }
 
-    public function login(LoginRequest $request): RedirectResponse
+    public function login(LoginRequest $request, LoginUseCase $useCase): RedirectResponse
     {
-        if (! Auth::attempt($request->validated())) {
+        if (! $useCase->execute($request->toCommand())) {
             return back()->withErrors([
                 'email' => 'メールアドレスまたはパスワードが違います。',
             ])->onlyInput('email');
