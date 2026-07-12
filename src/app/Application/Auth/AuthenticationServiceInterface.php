@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Application\Auth;
+
+use App\Domain\User\User;
+
+interface AuthenticationServiceInterface
+{
+    public function login(User $user): void;
+}

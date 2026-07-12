@@ -4,12 +4,12 @@ namespace App\Application\Auth;
 
 use App\Domain\User\Exceptions\AuthenticationFailedException;
 use App\Domain\User\UserRepositoryInterface;
-use Illuminate\Support\Facades\Auth;
 
 final class LoginUseCase
 {
     public function __construct(
-        private readonly UserRepositoryInterface $users
+        private readonly UserRepositoryInterface $users,
+        private readonly AuthenticationServiceInterface $auth
     ) {}
 
     public function execute(LoginCommand $command): void
@@ -20,6 +20,6 @@ final class LoginUseCase
             throw new AuthenticationFailedException;
         }
 
-        Auth::loginUsingId($user->id()->value());
+        $this->auth->login($user);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Domain\User;
 
+use App\Domain\User\Exceptions\UserIdNotAssignedException;
+
 final class User
 {
     private function __construct(
@@ -23,6 +25,15 @@ final class User
 
     public function id(): ?UserId
     {
+        return $this->id;
+    }
+
+    public function requireId(): UserId
+    {
+        if ($this->id === null) {
+            throw new UserIdNotAssignedException;
+        }
+
         return $this->id;
     }
 
