@@ -6,5 +6,5 @@ interface UserRepositoryInterface
 {
     public function save(User $user): User;
 
-    public function findByEmail(string $email): ?User;
+    public function findByEmail(UserEmail $email): ?User;
 }

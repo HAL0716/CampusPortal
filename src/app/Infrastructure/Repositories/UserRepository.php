@@ -6,6 +6,7 @@ use App\Application\User\UserDuplicateDetectorInterface;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use App\Domain\User\Exceptions\UserNotFoundException;
 use App\Domain\User\User;
+use App\Domain\User\UserEmail;
 use App\Domain\User\UserId;
 use App\Domain\User\UserRepositoryInterface;
 use App\Models\User as UserModel;
@@ -29,7 +30,7 @@ final class UserRepository implements UserRepositoryInterface
             }
         }
 
-        $model->email = $user->email();
+        $model->email = $user->email()->value();
         $model->password = $user->password();
         $model->name = $user->name();
 
@@ -52,9 +53,9 @@ final class UserRepository implements UserRepositoryInterface
         return $user;
     }
 
-    public function findByEmail(string $email): ?User
+    public function findByEmail(UserEmail $email): ?User
     {
-        $model = UserModel::where('email', $email)->first();
+        $model = UserModel::where('email', $email->value())->first();
 
         return $model ? $this->toEntity($model) : null;
     }
@@ -63,7 +64,7 @@ final class UserRepository implements UserRepositoryInterface
     {
         return User::reconstruct(
             new UserId((int) $model->id),
-            $model->email,
+            new UserEmail($model->email),
             $model->password,
             $model->name
         );

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use App\Application\Auth\LoginCommand;
+use App\Rules\User\UserEmailRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,7 +25,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email'],
+            'email' => ['required', new UserEmailRule],
             'password' => ['required'],
         ];
     }
@@ -51,7 +52,6 @@ class LoginRequest extends FormRequest
     {
         return [
             'required' => ':attribute は必須です。',
-            'email' => ':attribute が不正な形式です。',
         ];
     }
 

@@ -3,6 +3,7 @@
 namespace App\Application\Auth;
 
 use App\Domain\User\Exceptions\AuthenticationFailedException;
+use App\Domain\User\UserEmail;
 use App\Domain\User\UserRepositoryInterface;
 
 final class LoginUseCase
@@ -14,7 +15,7 @@ final class LoginUseCase
 
     public function execute(LoginCommand $command): void
     {
-        $user = $this->users->findByEmail($command->email);
+        $user = $this->users->findByEmail(new UserEmail($command->email));
 
         if (! $user || ! $user->verifyPassword($command->password)) {
             throw new AuthenticationFailedException;
