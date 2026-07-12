@@ -2,6 +2,7 @@
 
 namespace App\Domain\User;
 
+use App\Domain\User\Exceptions\UserIdAlreadyAssignedException;
 use App\Domain\User\Exceptions\UserIdNotAssignedException;
 
 final class User
@@ -35,6 +36,15 @@ final class User
         }
 
         return $this->id;
+    }
+
+    public function assignId(UserId $id): void
+    {
+        if ($this->id !== null) {
+            throw new UserIdAlreadyAssignedException;
+        }
+
+        $this->id = $id;
     }
 
     public function email(): string

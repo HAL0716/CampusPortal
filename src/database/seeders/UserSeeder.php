@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Application\User\UserCreateCommand;
+use App\Application\User\UserCreateUseCase;
+use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -29,15 +30,19 @@ class UserSeeder extends Seeder
             return;
         }
 
-        User::updateOrCreate(
-            [
-                'email' => $user['email'],
-            ],
-            [
-                'name' => $user['name'] ?? 'Test User',
-                'password' => Hash::make($user['password']),
-            ]
-        );
+        $useCase = app(UserCreateUseCase::class);
+
+        try {
+            $useCase->execute(
+                new UserCreateCommand(
+                    email: $user['email'],
+                    password: $user['password'],
+                    name: $user['name'] ?? 'Test User',
+                )
+            );
+        } catch (UserAlreadyExistsException) {
+            $this->warn('UserSeeder skipped. User with the specified email already exists.');
+        }
     }
 
     private function isAllowedEnvironment(): bool
