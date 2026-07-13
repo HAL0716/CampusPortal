@@ -52,6 +52,13 @@ final class UserRepository implements UserRepositoryInterface
         return $this->toEntity($model);
     }
 
+    public function findById(UserId $id): ?User
+    {
+        $model = UserModel::find($id->value());
+
+        return $model ? $this->toEntity($model) : null;
+    }
+
     public function findByEmail(UserEmail $email): ?User
     {
         $model = UserModel::where('email', $email->value())->first();

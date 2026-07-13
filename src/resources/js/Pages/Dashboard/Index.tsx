@@ -1,10 +1,16 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
+import { SharedProps } from '@/Types/SharedProps';
+
 export default function Index() {
+  const { auth } = usePage<SharedProps>().props;
+
   return (
     <>
       <h1 className="mb-4 text-xl font-bold">ダッシュボード</h1>
+
+      {auth.user && <p className="mb-4">ようこそ、{auth.user.name}さん！</p>}
 
       <Link
         href={route('logout')}

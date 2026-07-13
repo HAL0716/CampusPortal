@@ -9,4 +9,6 @@ interface AuthenticationServiceInterface
     public function login(User $user): void;
 
     public function logout(): void;
+
+    public function user(): ?User;
 }

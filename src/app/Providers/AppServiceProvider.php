@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
             fn () => new MysqlUserDuplicateDetector(config('user.constraints'))
         );
 
-        $this->app->bind(AuthenticationServiceInterface::class, AuthenticationService::class);
+        $this->app->scoped(AuthenticationServiceInterface::class, AuthenticationService::class);
 
         $this->app->bind(PasswordHasherInterface::class, PasswordHasher::class);
     }
