@@ -2,12 +2,14 @@
 
 namespace App\Infrastructure\Repositories;
 
+use App\Application\Security\PasswordHasherInterface;
 use App\Application\User\UserDuplicateDetectorInterface;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use App\Domain\User\Exceptions\UserNotFoundException;
 use App\Domain\User\User;
 use App\Domain\User\UserEmail;
 use App\Domain\User\UserId;
+use App\Domain\User\UserPassword;
 use App\Domain\User\UserRepositoryInterface;
 use App\Models\User as UserModel;
 use Illuminate\Database\QueryException;
@@ -15,6 +17,7 @@ use Illuminate\Database\QueryException;
 final class UserRepository implements UserRepositoryInterface
 {
     public function __construct(
+        private readonly PasswordHasherInterface $hasher,
         private readonly UserDuplicateDetectorInterface $duplicateDetector
     ) {}
 
@@ -31,7 +34,9 @@ final class UserRepository implements UserRepositoryInterface
         }
 
         $model->email = $user->email()->value();
-        $model->password = $user->password();
+        $model->password = $user->password()->isHashed()
+            ? $user->password()->value()
+            : $this->hasher->hash($user->password()->value());
         $model->name = $user->name();
 
         try {
@@ -44,13 +49,7 @@ final class UserRepository implements UserRepositoryInterface
             throw $e;
         }
 
-        if ($user->id() === null) {
-            $user->assignId(
-                new UserId((int) $model->id)
-            );
-        }
-
-        return $user;
+        return $this->toEntity($model);
     }
 
     public function findByEmail(UserEmail $email): ?User
@@ -65,7 +64,7 @@ final class UserRepository implements UserRepositoryInterface
         return User::reconstruct(
             new UserId((int) $model->id),
             new UserEmail($model->email),
-            $model->password,
+            UserPassword::fromHash($model->password),
             $model->name
         );
     }

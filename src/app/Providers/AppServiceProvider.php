@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Application\Auth\AuthenticationServiceInterface;
+use App\Application\Security\PasswordHasherInterface;
 use App\Application\User\UserDuplicateDetectorInterface;
 use App\Domain\User\UserRepositoryInterface;
 use App\Infrastructure\Auth\AuthenticationService;
 use App\Infrastructure\Database\MysqlUserDuplicateDetector;
 use App\Infrastructure\Repositories\UserRepository;
+use App\Infrastructure\Security\PasswordHasher;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(AuthenticationServiceInterface::class, AuthenticationService::class);
+
+        $this->app->bind(PasswordHasherInterface::class, PasswordHasher::class);
     }
 
     /**

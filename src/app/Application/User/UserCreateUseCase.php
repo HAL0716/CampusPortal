@@ -4,6 +4,7 @@ namespace App\Application\User;
 
 use App\Domain\User\User;
 use App\Domain\User\UserEmail;
+use App\Domain\User\UserPassword;
 use App\Domain\User\UserRepositoryInterface;
 
 class UserCreateUseCase
@@ -17,7 +18,7 @@ class UserCreateUseCase
         return $this->users->save(
             User::create(
                 new UserEmail($command->email),
-                $command->password,
+                UserPassword::create($command->password),
                 $command->name
             )
         );
