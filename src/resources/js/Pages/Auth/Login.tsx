@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { SyntheticEvent } from 'react';
 import { route } from 'ziggy-js';
 
 export default function Login() {
@@ -7,7 +8,7 @@ export default function Login() {
     password: '',
   });
 
-  const submit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+  const submit = (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     post(route('login.store'), {
