@@ -25,8 +25,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', new UserEmailRule],
-            'password' => ['required'],
+            'email' => ['required', 'string', new UserEmailRule],
+            'password' => ['required', 'string'],
         ];
     }
 
@@ -52,6 +52,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'required' => ':attribute は必須です。',
+            'string' => ':attribute が不正な形式です。',
         ];
     }
 
