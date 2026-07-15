@@ -2,6 +2,15 @@
 
 namespace App\Providers;
 
+use App\Application\Auth\AuthenticationServiceInterface;
+use App\Application\Security\PasswordHasherInterface;
+use App\Application\User\UserDuplicateDetectorInterface;
+use App\Domain\User\UserRepositoryInterface;
+use App\Infrastructure\Auth\AuthenticationService;
+use App\Infrastructure\Database\MysqlUserDuplicateDetector;
+use App\Infrastructure\Database\SqliteUserDuplicateDetector;
+use App\Infrastructure\Repositories\UserRepository;
+use App\Infrastructure\Security\PasswordHasher;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +20,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+
+        $this->app->bind(
+            UserDuplicateDetectorInterface::class,
+            function () {
+                return match (config('database.default')) {
+                    'sqlite' => new SqliteUserDuplicateDetector(config('user.unique_columns')),
+                    default => new MysqlUserDuplicateDetector(config('user.constraints')),
+                };
+            }
+        );
+
+        $this->app->scoped(AuthenticationServiceInterface::class, AuthenticationService::class);
+
+        $this->app->bind(PasswordHasherInterface::class, PasswordHasher::class);
     }
 
     /**
