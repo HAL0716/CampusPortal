@@ -4,6 +4,7 @@ namespace App\Infrastructure\Repositories;
 
 use App\Application\Security\PasswordHasherInterface;
 use App\Application\User\UserDuplicateDetectorInterface;
+use App\Application\User\UserDuplicateTarget;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use App\Domain\User\Exceptions\UserNotFoundException;
 use App\Domain\User\User;
@@ -42,7 +43,7 @@ final class UserRepository implements UserRepositoryInterface
         try {
             $model->save();
         } catch (QueryException $e) {
-            if ($this->duplicateDetector->isDuplicate($e)) {
+            if ($this->duplicateDetector->isDuplicate($e, UserDuplicateTarget::EMAIL)) {
                 throw new UserAlreadyExistsException;
             }
 

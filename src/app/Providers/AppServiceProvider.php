@@ -7,8 +7,8 @@ use App\Application\Security\PasswordHasherInterface;
 use App\Application\User\UserDuplicateDetectorInterface;
 use App\Domain\User\UserRepositoryInterface;
 use App\Infrastructure\Auth\AuthenticationService;
-use App\Infrastructure\Database\MysqlUserDuplicateDetector;
-use App\Infrastructure\Database\SqliteUserDuplicateDetector;
+use App\Infrastructure\Database\Mysql\MysqlUserDuplicateDetector;
+use App\Infrastructure\Database\Sqlite\SqliteUserDuplicateDetector;
 use App\Infrastructure\Repositories\UserRepository;
 use App\Infrastructure\Security\PasswordHasher;
 use Illuminate\Support\ServiceProvider;
@@ -24,11 +24,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(
             UserDuplicateDetectorInterface::class,
-            function () {
-                return match (config('database.default')) {
-                    'sqlite' => new SqliteUserDuplicateDetector(config('user.unique_columns')),
-                    default => new MysqlUserDuplicateDetector(config('user.constraints')),
-                };
+            fn ($app) => match (config('database.default')) {
+                'sqlite' => $app->make(SqliteUserDuplicateDetector::class),
+                default => $app->make(MysqlUserDuplicateDetector::class),
             }
         );
 

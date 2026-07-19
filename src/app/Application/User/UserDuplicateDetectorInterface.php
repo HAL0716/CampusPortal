@@ -2,9 +2,6 @@
 
 namespace App\Application\User;
 
-use Illuminate\Database\QueryException;
+use App\Application\Database\DuplicateDetectorInterface;
 
-interface UserDuplicateDetectorInterface
-{
-    public function isDuplicate(QueryException $e): bool;
-}
+interface UserDuplicateDetectorInterface extends DuplicateDetectorInterface {}
