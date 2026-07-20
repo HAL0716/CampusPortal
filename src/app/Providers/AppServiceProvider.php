@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->scoped(AuthenticationServiceInterface::class, AuthenticationService::class);
 
-        $this->app->bind(PermissionServiceInterface::class, PermissionService::class);
+        $this->app->scoped(PermissionServiceInterface::class, PermissionService::class);
 
         $this->app->bind(PasswordHasherInterface::class, PasswordHasher::class);
     }

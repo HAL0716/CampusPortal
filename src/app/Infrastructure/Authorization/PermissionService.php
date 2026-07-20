@@ -8,6 +8,8 @@ use App\Domain\User\User;
 
 final class PermissionService implements PermissionServiceInterface
 {
+    private array $cachedPermissions = [];
+
     public function __construct(
         private PermissionRepositoryInterface $permissions,
     ) {}
@@ -17,10 +19,20 @@ final class PermissionService implements PermissionServiceInterface
      */
     public function permissions(User $user): array
     {
-        return collect($this->permissions->findByUser($user))
+        $userId = $user->requireId()->value();
+
+        if (isset($this->cachedPermissions[$userId])) {
+            return $this->cachedPermissions[$userId];
+        }
+
+        $permissions = collect($this->permissions->findByUser($user))
             ->map(fn ($permission) => $permission->name()->value)
             ->unique()
             ->values()
             ->all();
+
+        $this->cachedPermissions[$userId] = $permissions;
+
+        return $permissions;
     }
 }
