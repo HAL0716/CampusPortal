@@ -30,6 +30,11 @@ final class DashboardControllerTest extends TestCase
             ->assertInertia(fn ($page) => $page
                 ->component('Dashboard/Index')
                 ->where('auth.user.name', $user->name)
+                ->has('auth.user.permissions', 1)
+                ->where(
+                    'auth.user.permissions.0',
+                    PermissionType::DashboardView->value
+                )
             );
     }
 
