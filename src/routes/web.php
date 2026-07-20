@@ -3,6 +3,7 @@
 use App\Domain\Permission\PermissionType;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EnrollmentController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
@@ -22,4 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard')
         ->can(PermissionType::DashboardView->value);
+
+    Route::post('/course-offerings/{courseOffering}/enroll', [EnrollmentController::class, 'store'])
+        ->name('enrollments.store');
 });
