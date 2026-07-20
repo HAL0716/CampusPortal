@@ -6,12 +6,14 @@ use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Application\Authorization\PermissionServiceInterface;
 use App\Application\Security\PasswordHasherInterface;
 use App\Application\User\UserDuplicateDetectorInterface;
+use App\Domain\CourseOffering\CourseOfferingRepositoryInterface;
 use App\Domain\Permission\PermissionRepositoryInterface;
 use App\Domain\User\UserRepositoryInterface;
 use App\Infrastructure\Authentication\AuthenticationService;
 use App\Infrastructure\Authorization\PermissionService;
 use App\Infrastructure\Database\Mysql\MysqlUserDuplicateDetector;
 use App\Infrastructure\Database\Sqlite\SqliteUserDuplicateDetector;
+use App\Infrastructure\Repositories\CourseOfferingRepository;
 use App\Infrastructure\Repositories\PermissionRepository;
 use App\Infrastructure\Repositories\UserRepository;
 use App\Infrastructure\Security\PasswordHasher;
@@ -27,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
 
         $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
+
+        $this->app->bind(CourseOfferingRepositoryInterface::class, CourseOfferingRepository::class);
 
         $this->app->bind(
             UserDuplicateDetectorInterface::class,
