@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Unit\Application\Auth;
+namespace Tests\Unit\Application\Authentication;
 
-use App\Application\Auth\AuthenticationServiceInterface;
-use App\Application\Auth\LoginCommand;
-use App\Application\Auth\LoginUseCase;
+use App\Application\Authentication\AuthenticationServiceInterface;
+use App\Application\Authentication\LoginCommand;
+use App\Application\Authentication\LoginUseCase;
 use App\Application\Security\PasswordHasherInterface;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
 use App\Domain\User\User;

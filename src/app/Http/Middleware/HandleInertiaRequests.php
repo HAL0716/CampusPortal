@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Application\Auth\AuthenticationServiceInterface;
+use App\Application\Authentication\AuthenticationServiceInterface;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 

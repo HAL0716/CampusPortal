@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\Infrastructure\Auth;
+namespace Tests\Feature\Infrastructure\Authentication;
 
-use App\Application\Auth\AuthenticationServiceInterface;
+use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Domain\User\UserId;
 use App\Domain\User\UserRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Auth;
+namespace App\Infrastructure\Authentication;
 
-use App\Application\Auth\AuthenticationServiceInterface;
+use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
 use App\Domain\User\User;
 use App\Domain\User\UserId;
