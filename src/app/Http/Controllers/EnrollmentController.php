@@ -2,25 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Application\Enrollment\CreateEnrollmentCommand;
 use App\Application\Enrollment\CreateEnrollmentUseCase;
 use App\Domain\Enrollment\Exceptions\EnrollmentAlreadyExistsException;
 use App\Domain\Student\Exceptions\StudentNotFoundException;
 use App\Domain\User\Exceptions\UserNotFoundException;
-use Illuminate\Http\Request;
+use App\Http\Requests\Enrollment\CreateRequest;
 
 class EnrollmentController extends Controller
 {
-    public function store(Request $request, CreateEnrollmentUseCase $useCase)
+    public function store(CreateRequest $request, CreateEnrollmentUseCase $useCase)
     {
         try {
-            $courseOfferingId = (int) $request->route('courseOffering');
-
-            $command = new CreateEnrollmentCommand(
-                courseOfferingId: $courseOfferingId,
-            );
-
-            $useCase->execute($command);
+            $useCase->execute($request->toCommand());
 
             return back()->with('success', '履修登録しました');
         } catch (UserNotFoundException) {
