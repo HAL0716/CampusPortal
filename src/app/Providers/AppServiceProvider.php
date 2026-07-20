@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Application\Authentication\AuthenticationServiceInterface;
+use App\Application\Authorization\PermissionServiceInterface;
 use App\Application\Security\PasswordHasherInterface;
 use App\Application\User\UserDuplicateDetectorInterface;
 use App\Domain\Permission\PermissionRepositoryInterface;
 use App\Domain\User\UserRepositoryInterface;
 use App\Infrastructure\Authentication\AuthenticationService;
+use App\Infrastructure\Authorization\PermissionService;
 use App\Infrastructure\Database\Mysql\MysqlUserDuplicateDetector;
 use App\Infrastructure\Database\Sqlite\SqliteUserDuplicateDetector;
 use App\Infrastructure\Repositories\PermissionRepository;
@@ -35,6 +37,8 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->scoped(AuthenticationServiceInterface::class, AuthenticationService::class);
+
+        $this->app->bind(PermissionServiceInterface::class, PermissionService::class);
 
         $this->app->bind(PasswordHasherInterface::class, PasswordHasher::class);
     }
