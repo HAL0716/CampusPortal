@@ -1,5 +1,6 @@
 <?php
 
+use App\Domain\Permission\PermissionType;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
@@ -19,5 +20,6 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');
+        ->name('dashboard')
+        ->can(PermissionType::DashboardView->value);
 });

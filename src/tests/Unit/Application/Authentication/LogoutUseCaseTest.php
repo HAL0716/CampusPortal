@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Application\Auth;
+namespace Tests\Unit\Application\Authentication;
 
-use App\Application\Auth\AuthenticationServiceInterface;
-use App\Application\Auth\LogoutUseCase;
+use App\Application\Authentication\AuthenticationServiceInterface;
+use App\Application\Authentication\LogoutUseCase;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;

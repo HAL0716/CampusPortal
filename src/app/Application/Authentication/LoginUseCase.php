@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Auth;
+namespace App\Application\Authentication;
 
 use App\Application\Security\PasswordHasherInterface;
 use App\Domain\User\Exceptions\AuthenticationFailedException;

@@ -2,7 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Application\Auth\AuthenticationServiceInterface;
+use App\Application\Authentication\AuthenticationServiceInterface;
+use App\Application\Authorization\PermissionServiceInterface;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -18,7 +19,8 @@ class HandleInertiaRequests extends Middleware
     protected $rootView = 'app';
 
     public function __construct(
-        private readonly AuthenticationServiceInterface $auth
+        private readonly AuthenticationServiceInterface $auth,
+        private readonly PermissionServiceInterface $permission,
     ) {}
 
     /**
@@ -48,6 +50,7 @@ class HandleInertiaRequests extends Middleware
 
                     return $user ? [
                         'name' => $user->name(),
+                        'permissions' => $this->permission->permissions($user),
                     ] : null;
                 },
             ],
