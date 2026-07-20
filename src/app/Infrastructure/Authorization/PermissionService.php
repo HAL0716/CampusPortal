@@ -4,6 +4,7 @@ namespace App\Infrastructure\Authorization;
 
 use App\Application\Authorization\PermissionServiceInterface;
 use App\Domain\Permission\PermissionRepositoryInterface;
+use App\Domain\Permission\PermissionType;
 use App\Domain\User\User;
 
 final class PermissionService implements PermissionServiceInterface
@@ -34,5 +35,12 @@ final class PermissionService implements PermissionServiceInterface
         $this->cachedPermissions[$userId] = $permissions;
 
         return $permissions;
+    }
+
+    public function can(
+        User $user,
+        PermissionType $permission
+    ): bool {
+        return in_array($permission->value, $this->permissions($user), true);
     }
 }

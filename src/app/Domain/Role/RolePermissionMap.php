@@ -11,12 +11,15 @@ final class RolePermissionMap
         return match ($role) {
 
             RoleType::STUDENT => [
+                PermissionType::DashboardView,
             ],
 
             RoleType::TEACHER => [
+                PermissionType::DashboardView,
             ],
 
             RoleType::ADMIN => [
+                PermissionType::DashboardView,
                 PermissionType::UserView,
             ],
 
