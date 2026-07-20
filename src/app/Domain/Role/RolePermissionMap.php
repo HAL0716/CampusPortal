@@ -23,6 +23,7 @@ final class RolePermissionMap
                 PermissionType::UserView,
             ],
 
+            default => [],
         };
     }
 }
