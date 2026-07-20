@@ -4,11 +4,13 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Domain\Permission\PermissionType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Support\Permission\CreatesModelPermission;
 use Tests\Support\User\CreatesModelUser;
 use Tests\TestCase;
 
 final class DashboardControllerTest extends TestCase
 {
+    use CreatesModelPermission;
     use CreatesModelUser;
     use RefreshDatabase;
 
@@ -16,16 +18,23 @@ final class DashboardControllerTest extends TestCase
     {
         $user = $this->createUser();
 
-        $this->actingAsWithPermission(
+        $this->createPermission(
             $user,
             PermissionType::DashboardView
         );
+
+        $this->actingAs($user);
 
         $this->get(route('dashboard'))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Dashboard/Index')
                 ->where('auth.user.name', $user->name)
+                ->has('auth.user.permissions', 1)
+                ->where(
+                    'auth.user.permissions.0',
+                    PermissionType::DashboardView->value
+                )
             );
     }
 
