@@ -5,6 +5,8 @@ import { route } from 'ziggy-js';
 import { CourseOffering } from '@/Types/courseOffering';
 import { SharedProps } from '@/Types/SharedProps';
 
+import CourseOfferingAction from './Action';
+
 interface Props {
   courseOfferings: CourseOffering[];
 }
@@ -30,6 +32,14 @@ export default function List({ courseOfferings }: Props) {
     );
   };
 
+  const cancel = (courseOfferingId: number) => {
+    router.delete(
+      route('enrollments.drop', {
+        courseOffering: courseOfferingId,
+      }),
+    );
+  };
+
   return (
     <div>
       <h2 className="mb-2 text-lg font-bold">開講中の講義</h2>
@@ -48,13 +58,11 @@ export default function List({ courseOfferings }: Props) {
               <td className="border px-4 py-2">{courseOffering.name}</td>
 
               <td className="border px-4 py-2 text-center">
-                <button
-                  type="button"
-                  className="bg-black px-3 py-1 text-white"
-                  onClick={() => enroll(courseOffering.id)}
-                >
-                  履修登録
-                </button>
+                <CourseOfferingAction
+                  courseOffering={courseOffering}
+                  onEnroll={enroll}
+                  onCancel={cancel}
+                />
               </td>
             </tr>
           ))}
