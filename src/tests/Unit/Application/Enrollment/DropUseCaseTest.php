@@ -1,0 +1,152 @@
+<?php
+
+namespace Tests\Unit\Application\Enrollment;
+
+use App\Application\Enrollment\DropCommand;
+use App\Application\Enrollment\DropUseCase;
+use App\Domain\CourseOffering\CourseOfferingId;
+use App\Domain\Enrollment\Enrollment;
+use App\Domain\Enrollment\EnrollmentId;
+use App\Domain\Enrollment\EnrollmentRepositoryInterface;
+use App\Domain\Enrollment\EnrollmentStatus;
+use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
+use App\Domain\Student\Exceptions\StudentNotFoundException;
+use App\Domain\Student\Student;
+use App\Domain\Student\StudentId;
+use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\User\UserId;
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery\Matcher\Closure;
+use Mockery\MockInterface;
+use Tests\TestCase;
+
+class DropUseCaseTest extends TestCase
+{
+    use MockeryPHPUnitIntegration;
+
+    private const USER_ID = 10;
+
+    private const STUDENT_ID = 1;
+
+    private const COURSE_OFFERING_ID = 100;
+
+    private StudentRepositoryInterface&MockInterface $students;
+
+    private EnrollmentRepositoryInterface&MockInterface $enrollments;
+
+    private DropUseCase $useCase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->students = Mockery::mock(StudentRepositoryInterface::class);
+        $this->enrollments = Mockery::mock(EnrollmentRepositoryInterface::class);
+
+        $this->useCase = new DropUseCase($this->students, $this->enrollments);
+    }
+
+    public function test_can_drop_enrollment(): void
+    {
+        $student = Student::reconstruct(
+            id: new StudentId(self::STUDENT_ID),
+            userId: new UserId(self::USER_ID),
+        );
+
+        $enrollment = Enrollment::reconstruct(
+            id: new EnrollmentId(1),
+            studentId: new StudentId(self::STUDENT_ID),
+            courseOfferingId: new CourseOfferingId(self::COURSE_OFFERING_ID),
+            status: EnrollmentStatus::ENROLLED,
+        );
+
+        $this->students
+            ->shouldReceive('findByUserId')
+            ->once()
+            ->with($this->userId(self::USER_ID))
+            ->andReturn($student);
+
+        $this->enrollments
+            ->shouldReceive('find')
+            ->once()
+            ->with(
+                $this->studentId(self::STUDENT_ID),
+                $this->courseOfferingId(self::COURSE_OFFERING_ID),
+            )
+            ->andReturn($enrollment);
+
+        $this->enrollments
+            ->shouldReceive('save')
+            ->once()
+            ->with(Mockery::type(Enrollment::class))
+            ->andReturnUsing(fn (Enrollment $enrollment) => $enrollment);
+
+        $result = $this->useCase->execute($this->command());
+
+        $this->assertSame(EnrollmentStatus::DROPPED, $result->status());
+    }
+
+    public function test_can_not_drop_when_student_does_not_exist(): void
+    {
+        $this->students
+            ->shouldReceive('findByUserId')
+            ->once()
+            ->with($this->userId(999))
+            ->andReturn(null);
+
+        $this->expectException(StudentNotFoundException::class);
+
+        $this->useCase->execute($this->command(userId: 999));
+    }
+
+    public function test_can_not_drop_when_enrollment_does_not_exist(): void
+    {
+        $student = Student::reconstruct(
+            id: new StudentId(self::STUDENT_ID),
+            userId: new UserId(self::USER_ID),
+        );
+
+        $this->students
+            ->shouldReceive('findByUserId')
+            ->once()
+            ->with($this->userId(self::USER_ID))
+            ->andReturn($student);
+
+        $this->enrollments
+            ->shouldReceive('find')
+            ->once()
+            ->with(
+                $this->studentId(self::STUDENT_ID),
+                $this->courseOfferingId(self::COURSE_OFFERING_ID),
+            )
+            ->andReturn(null);
+
+        $this->expectException(EnrollmentNotFoundException::class);
+
+        $this->useCase->execute($this->command());
+    }
+
+    private function command(int $userId = self::USER_ID): DropCommand
+    {
+        return new DropCommand(
+            userId: new UserId($userId),
+            courseOfferingId: new CourseOfferingId(self::COURSE_OFFERING_ID),
+        );
+    }
+
+    private function userId(int $value): Closure
+    {
+        return Mockery::on(fn (UserId $id) => $id->value() === $value);
+    }
+
+    private function studentId(int $value): Closure
+    {
+        return Mockery::on(fn (StudentId $id) => $id->value() === $value);
+    }
+
+    private function courseOfferingId(int $value): Closure
+    {
+        return Mockery::on(fn (CourseOfferingId $id) => $id->value() === $value);
+    }
+}
