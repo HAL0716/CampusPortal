@@ -3,19 +3,33 @@ import { route } from 'ziggy-js';
 
 import { SharedProps } from '@/Types/SharedProps';
 
-type CourseOffering = {
+import CourseOfferingSection from './Components/CourseOfferingSection';
+
+type Offering = {
   id: number;
   name: string;
 };
 
 type Props = {
-  offerings: CourseOffering[];
+  offerings: Offering[];
 };
 
-export default function Index() {
-  const { auth, offerings } = usePage<SharedProps & Props>().props;
+type FlashMessageProps = {
+  type: 'success' | 'error';
+  children: React.ReactNode;
+};
 
-  console.log(offerings);
+function FlashMessage({ type, children }: FlashMessageProps) {
+  const styles = {
+    success: 'bg-green-100 text-green-800',
+    error: 'bg-red-100 text-red-800',
+  };
+
+  return <div className={`mb-4 rounded p-4 ${styles[type]}`}>{children}</div>;
+}
+
+export default function Index() {
+  const { auth, flash, offerings } = usePage<SharedProps & Props>().props;
 
   return (
     <>
@@ -23,11 +37,17 @@ export default function Index() {
 
       {auth.user && <p className="mb-4">ようこそ、{auth.user.name}さん！</p>}
 
+      {flash.success && <FlashMessage type="success">{flash.success}</FlashMessage>}
+
+      {flash.error && <FlashMessage type="error">{flash.error}</FlashMessage>}
+
+      <CourseOfferingSection offerings={offerings} />
+
       <Link
         href={route('logout')}
         method="post"
-        className="bg-black px-4 py-2 text-white"
         as="button"
+        className="bg-black px-4 py-2 text-white"
       >
         ログアウト
       </Link>
