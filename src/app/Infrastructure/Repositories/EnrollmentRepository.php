@@ -49,6 +49,18 @@ final class EnrollmentRepository implements EnrollmentRepositoryInterface
         return $this->toEntity($model);
     }
 
+    public function find(
+        StudentId $studentId,
+        CourseOfferingId $courseOfferingId,
+    ): ?Enrollment {
+        $model = EnrollmentModel::query()
+            ->where('student_id', $studentId->value())
+            ->where('course_offering_id', $courseOfferingId->value())
+            ->first();
+
+        return $model ? $this->toEntity($model) : null;
+    }
+
     private function toEntity(EnrollmentModel $model): Enrollment
     {
         return Enrollment::reconstruct(

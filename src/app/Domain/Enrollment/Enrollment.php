@@ -32,6 +32,11 @@ final class Enrollment
         return new self($id, $studentId, $courseOfferingId, $status);
     }
 
+    public function drop(): self
+    {
+        return new self($this->id, $this->studentId, $this->courseOfferingId, EnrollmentStatus::DROPPED);
+    }
+
     public function id(): ?EnrollmentId
     {
         return $this->id;
