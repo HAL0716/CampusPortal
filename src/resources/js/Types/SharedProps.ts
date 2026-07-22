@@ -8,7 +8,13 @@ export interface SharedProps extends PageProps {
     } | null;
   };
   flash: {
-    success?: string;
-    error?: string;
+    success?: {
+      id: string;
+      message: string;
+    };
+    error?: {
+      id: string;
+      message: string;
+    };
   };
 }

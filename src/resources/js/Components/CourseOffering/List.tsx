@@ -14,15 +14,18 @@ interface Props {
 export default function List({ courseOfferings }: Props) {
   const { flash } = usePage<SharedProps>().props;
 
+  const success = flash.success;
+  const error = flash.error;
+
   useEffect(() => {
-    if (flash.success) {
-      alert(flash.success);
+    if (success) {
+      alert(success.message);
     }
 
-    if (flash.error) {
-      alert(flash.error);
+    if (error) {
+      alert(error.message);
     }
-  }, [flash]);
+  }, [success, error]);
 
   const enroll = (courseOfferingId: number) => {
     router.post(

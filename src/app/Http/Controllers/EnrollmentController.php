@@ -8,23 +8,26 @@ use App\Domain\Enrollment\Exceptions\EnrollmentAlreadyExistsException;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
 use App\Domain\Student\Exceptions\StudentNotFoundException;
 use App\Domain\User\Exceptions\UserNotFoundException;
+use App\Http\Controllers\Share\UseFlashMessage;
 use App\Http\Requests\Enrollment\CreateRequest;
 use App\Http\Requests\Enrollment\DropRequest;
 
 class EnrollmentController extends Controller
 {
+    use UseFlashMessage;
+
     public function store(CreateRequest $request, CreateEnrollmentUseCase $useCase)
     {
         try {
             $useCase->execute($request->toCommand());
 
-            return back()->with('success', '履修登録しました');
+            return $this->backWithSuccess('履修登録しました');
         } catch (UserNotFoundException) {
-            return back()->with('error', 'ログインしてください。');
+            return $this->backWithError('ログインしてください。');
         } catch (StudentNotFoundException) {
-            return back()->with('error', '学生情報が見つかりません。');
+            return $this->backWithError('学生情報が見つかりません。');
         } catch (EnrollmentAlreadyExistsException) {
-            return back()->with('error', 'すでに履修登録されています。');
+            return $this->backWithError('すでに履修登録されています。');
         }
     }
 
@@ -33,13 +36,13 @@ class EnrollmentController extends Controller
         try {
             $useCase->execute($request->toCommand());
 
-            return back()->with('success', '履修登録を取り消しました');
+            return $this->backWithSuccess('履修登録を取り消しました');
         } catch (UserNotFoundException) {
-            return back()->with('error', 'ログインしてください。');
+            return $this->backWithError('ログインしてください。');
         } catch (StudentNotFoundException) {
-            return back()->with('error', '学生情報が見つかりません。');
+            return $this->backWithError('学生情報が見つかりません。');
         } catch (EnrollmentNotFoundException) {
-            return back()->with('error', '履修登録が見つかりません。');
+            return $this->backWithError('履修登録が見つかりません。');
         }
     }
 }
