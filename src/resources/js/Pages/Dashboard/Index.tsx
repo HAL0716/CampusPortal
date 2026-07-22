@@ -3,8 +3,19 @@ import { route } from 'ziggy-js';
 
 import { SharedProps } from '@/Types/SharedProps';
 
+type CourseOffering = {
+  id: number;
+  name: string;
+};
+
+type Props = {
+  offerings: CourseOffering[];
+};
+
 export default function Index() {
-  const { auth } = usePage<SharedProps>().props;
+  const { auth, offerings } = usePage<SharedProps & Props>().props;
+
+  console.log(offerings);
 
   return (
     <>

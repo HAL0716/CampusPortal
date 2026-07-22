@@ -6,5 +6,5 @@ use App\Domain\Academic\Term;
 
 interface SemesterRepositoryInterface
 {
-    public function find(int $academicYear, Term $term): Semester;
+    public function find(int $academicYear, Term $term): ?Semester;
 }

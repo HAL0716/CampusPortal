@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Domain\Academic\Term;
 use App\Domain\Permission\PermissionType;
+use App\Models\Semester;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Support\Permission\CreatesModelPermission;
 use Tests\Support\User\CreatesModelUser;
@@ -23,6 +25,13 @@ final class DashboardControllerTest extends TestCase
             PermissionType::DashboardView
         );
 
+        Semester::create([
+            'academic_year' => '2025',
+            'term' => Term::FIRST,
+            'start_date' => '2025-04-01',
+            'end_date' => '2025-07-31',
+        ]);
+
         $this->actingAs($user);
 
         $this->get(route('dashboard'))
@@ -35,6 +44,7 @@ final class DashboardControllerTest extends TestCase
                     'auth.user.permissions.0',
                     PermissionType::DashboardView->value
                 )
+                ->has('offerings')
             );
     }
 

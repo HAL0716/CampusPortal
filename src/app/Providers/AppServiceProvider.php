@@ -4,16 +4,20 @@ namespace App\Providers;
 
 use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Application\Authorization\PermissionServiceInterface;
+use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Application\Security\PasswordHasherInterface;
 use App\Application\User\UserDuplicateDetectorInterface;
 use App\Domain\Permission\PermissionRepositoryInterface;
+use App\Domain\Semester\SemesterRepositoryInterface;
 use App\Domain\Student\StudentRepositoryInterface;
 use App\Domain\User\UserRepositoryInterface;
 use App\Infrastructure\Authentication\AuthenticationService;
 use App\Infrastructure\Authorization\PermissionService;
 use App\Infrastructure\Database\Mysql\MysqlUserDuplicateDetector;
 use App\Infrastructure\Database\Sqlite\SqliteUserDuplicateDetector;
+use App\Infrastructure\QueryServices\CourseOfferingQueryService;
 use App\Infrastructure\Repositories\PermissionRepository;
+use App\Infrastructure\Repositories\SemesterRepository;
 use App\Infrastructure\Repositories\StudentRepository;
 use App\Infrastructure\Repositories\UserRepository;
 use App\Infrastructure\Security\PasswordHasher;
@@ -32,6 +36,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(StudentRepositoryInterface::class, StudentRepository::class);
 
+        $this->app->bind(SemesterRepositoryInterface::class, SemesterRepository::class);
+
         $this->app->bind(
             UserDuplicateDetectorInterface::class,
             fn ($app) => match (config('database.default')) {
@@ -39,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
                 default => $app->make(MysqlUserDuplicateDetector::class),
             }
         );
+
+        $this->app->bind(CourseOfferingQueryServiceInterface::class, CourseOfferingQueryService::class);
 
         $this->app->scoped(AuthenticationServiceInterface::class, AuthenticationService::class);
 
