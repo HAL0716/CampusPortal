@@ -3,12 +3,24 @@
 namespace App\Domain\Student;
 
 use App\Domain\Student\Exceptions\StudentIdNotAssignedException;
+use App\Domain\User\UserId;
 
 final readonly class Student
 {
     public function __construct(
         private ?StudentId $id,
+        private UserId $userId
     ) {}
+
+    public static function create(UserId $userId): self
+    {
+        return new self(null, $userId);
+    }
+
+    public static function reconstruct(StudentId $id, UserId $userId): self
+    {
+        return new self($id, $userId);
+    }
 
     public function id(): ?StudentId
     {
@@ -22,5 +34,10 @@ final readonly class Student
         }
 
         return $this->id;
+    }
+
+    public function userId(): UserId
+    {
+        return $this->userId;
     }
 }
