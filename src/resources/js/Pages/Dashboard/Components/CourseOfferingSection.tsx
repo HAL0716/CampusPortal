@@ -1,13 +1,9 @@
-import { Link } from '@inertiajs/react';
-import { route } from 'ziggy-js';
+import { CourseOffering } from '@/Types/CourseOffering';
 
-type Offering = {
-  id: number;
-  name: string;
-};
+import CourseOfferingAction from './CourseOfferingAction';
 
 type Props = {
-  offerings: Offering[];
+  offerings: CourseOffering[];
 };
 
 export default function CourseOfferingSection({ offerings }: Props) {
@@ -27,18 +23,8 @@ export default function CourseOfferingSection({ offerings }: Props) {
           {offerings.map((offering) => (
             <tr key={offering.id}>
               <td className="border px-4 py-2">{offering.name}</td>
-
               <td className="border px-4 py-2 text-center">
-                <Link
-                  href={route('course-offerings.enroll', {
-                    courseOffering: offering.id,
-                  })}
-                  method="post"
-                  as="button"
-                  className="bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-                >
-                  履修登録
-                </Link>
+                <CourseOfferingAction offering={offering} />
               </td>
             </tr>
           ))}

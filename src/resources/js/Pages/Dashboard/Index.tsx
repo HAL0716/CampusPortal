@@ -1,17 +1,13 @@
 import { Link, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
+import { CourseOffering } from '@/Types/CourseOffering';
 import { SharedProps } from '@/Types/SharedProps';
 
 import CourseOfferingSection from './Components/CourseOfferingSection';
 
-type Offering = {
-  id: number;
-  name: string;
-};
-
 type Props = {
-  offerings: Offering[];
+  offerings: CourseOffering[];
 };
 
 type FlashMessageProps = {

@@ -26,4 +26,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/course-offerings/{courseOffering}/enroll', [EnrollmentController::class, 'enroll'])
         ->name('course-offerings.enroll');
+    Route::post('/course-offerings/{courseOffering}/drop', [EnrollmentController::class, 'drop'])
+        ->name('course-offerings.drop');
 });
