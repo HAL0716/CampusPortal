@@ -3,6 +3,7 @@
 namespace Tests\Feature\Infrastructure\Authentication;
 
 use App\Application\Authentication\AuthenticationServiceInterface;
+use App\Domain\User\Exceptions\AuthenticationFailedException;
 use App\Domain\User\UserId;
 use App\Domain\User\UserRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -60,5 +61,49 @@ final class AuthenticationServiceTest extends TestCase
         $this->assertSame($model->id, $user->id()->value());
         $this->assertSame($model->email, $user->email()->value());
         $this->assertSame($model->name, $user->name());
+    }
+
+    public function test_require_user_returns_authenticated_user(): void
+    {
+        $model = $this->createUser();
+
+        $this->actingAs($model);
+
+        $user = $this->auth->requireUser();
+
+        $this->assertSame($model->id, $user->id()->value());
+        $this->assertSame($model->email, $user->email()->value());
+        $this->assertSame($model->name, $user->name());
+    }
+
+    public function test_require_user_throws_when_guest(): void
+    {
+        $this->expectException(AuthenticationFailedException::class);
+
+        $this->auth->requireUser();
+    }
+
+    public function test_returns_null_and_logs_out_when_authenticated_user_no_longer_exists(): void
+    {
+        $model = $this->createUser();
+
+        $this->actingAs($model);
+
+        $model->delete();
+
+        $this->assertNull($this->auth->user());
+        $this->assertGuest();
+    }
+
+    public function test_user_returns_same_instance(): void
+    {
+        $model = $this->createUser();
+
+        $this->actingAs($model);
+
+        $first = $this->auth->user();
+        $second = $this->auth->user();
+
+        $this->assertSame($first, $second);
     }
 }

@@ -16,7 +16,7 @@ final class AuthenticationService implements AuthenticationServiceInterface
     private bool $userResolved = false;
 
     public function __construct(
-        private UserRepositoryInterface $users
+        private UserRepositoryInterface $users,
     ) {}
 
     public function login(User $user): void
@@ -37,12 +37,19 @@ final class AuthenticationService implements AuthenticationServiceInterface
 
     public function user(): ?User
     {
-        if (! $this->userResolved) {
-            $this->cachedUser = $this->resolveUser();
-            $this->userResolved = true;
+        if ($this->userResolved) {
+            return $this->cachedUser;
         }
 
+        $this->cachedUser = $this->resolveUser();
+        $this->userResolved = true;
+
         return $this->cachedUser;
+    }
+
+    public function requireUser(): User
+    {
+        return $this->user() ?? throw new AuthenticationFailedException;
     }
 
     private function resolveUser(): ?User
@@ -53,7 +60,15 @@ final class AuthenticationService implements AuthenticationServiceInterface
             return null;
         }
 
-        return $this->users->findById(new UserId((int) $id));
+        $user = $this->users->findById(new UserId((int) $id));
+
+        if ($user !== null) {
+            return $user;
+        }
+
+        Auth::logout();
+
+        return null;
     }
 
     private function cacheUser(User $user): void
