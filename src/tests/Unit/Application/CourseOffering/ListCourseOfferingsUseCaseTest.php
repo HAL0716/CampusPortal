@@ -11,6 +11,10 @@ use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\Semester;
 use App\Domain\Semester\SemesterId;
 use App\Domain\Semester\SemesterRepositoryInterface;
+use App\Domain\Student\Student;
+use App\Domain\Student\StudentId;
+use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\User\UserId;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\Matcher\Closure;
@@ -21,7 +25,13 @@ class ListCourseOfferingsUseCaseTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
+    private const USER_ID = 100;
+
+    private const STUDENT_ID = 10;
+
     private const SEMESTER_ID = 1;
+
+    private StudentRepositoryInterface&MockInterface $students;
 
     private SemesterRepositoryInterface&MockInterface $semesters;
 
@@ -33,16 +43,66 @@ class ListCourseOfferingsUseCaseTest extends TestCase
     {
         parent::setUp();
 
+        $this->students = Mockery::mock(StudentRepositoryInterface::class);
         $this->semesters = Mockery::mock(SemesterRepositoryInterface::class);
         $this->queryService = Mockery::mock(CourseOfferingQueryServiceInterface::class);
 
         $this->useCase = new ListCourseOfferingsUseCase(
+            $this->students,
             $this->semesters,
             $this->queryService,
         );
     }
 
-    public function test_can_get_course_offerings(): void
+    public function test_can_get_course_offerings_for_student(): void
+    {
+        $semester = Semester::reconstruct(
+            id: new SemesterId(self::SEMESTER_ID),
+            academicYear: '2025',
+            term: Term::FIRST,
+        );
+
+        $student = Student::reconstruct(
+            id: new StudentId(self::STUDENT_ID),
+            userId: new UserId(self::USER_ID),
+        );
+
+        $offerings = [
+            new CourseOfferingListDTO(
+                id: 1,
+                name: 'Webプログラミング',
+                status: null,
+            ),
+        ];
+
+        $this->semesters
+            ->shouldReceive('find')
+            ->once()
+            ->with('2025', Term::FIRST)
+            ->andReturn($semester);
+
+        $this->students
+            ->shouldReceive('findByUserId')
+            ->once()
+            ->with($this->userId(self::USER_ID))
+            ->andReturn($student);
+
+        $this->queryService
+            ->shouldReceive('findBySemesterForStudent')
+            ->once()
+            ->with(
+                $this->semesterId(self::SEMESTER_ID),
+                $this->studentId(self::STUDENT_ID),
+            )
+            ->andReturn($offerings);
+
+        $this->assertSame(
+            $offerings,
+            $this->useCase->execute($this->query()),
+        );
+    }
+
+    public function test_can_get_course_offerings_when_user_is_not_student(): void
     {
         $semester = Semester::reconstruct(
             id: new SemesterId(self::SEMESTER_ID),
@@ -54,6 +114,7 @@ class ListCourseOfferingsUseCaseTest extends TestCase
             new CourseOfferingListDTO(
                 id: 1,
                 name: 'Webプログラミング',
+                status: null,
             ),
         ];
 
@@ -63,8 +124,14 @@ class ListCourseOfferingsUseCaseTest extends TestCase
             ->with('2025', Term::FIRST)
             ->andReturn($semester);
 
+        $this->students
+            ->shouldReceive('findByUserId')
+            ->once()
+            ->with($this->userId(self::USER_ID))
+            ->andReturn(null);
+
         $this->queryService
-            ->shouldReceive('findBySemesterId')
+            ->shouldReceive('findBySemester')
             ->once()
             ->with($this->semesterId(self::SEMESTER_ID))
             ->andReturn($offerings);
@@ -80,8 +147,14 @@ class ListCourseOfferingsUseCaseTest extends TestCase
             ->with('2025', Term::FIRST)
             ->andReturn(null);
 
+        $this->students
+            ->shouldNotReceive('findByUserId');
+
         $this->queryService
-            ->shouldNotReceive('findBySemesterId');
+            ->shouldNotReceive('findBySemester');
+
+        $this->queryService
+            ->shouldNotReceive('findBySemesterForStudent');
 
         $this->expectException(SemesterNotFoundException::class);
 
@@ -93,7 +166,18 @@ class ListCourseOfferingsUseCaseTest extends TestCase
         return new ListCourseOfferingsQuery(
             academicYear: '2025',
             term: Term::FIRST,
+            userId: new UserId(self::USER_ID),
         );
+    }
+
+    private function userId(int $value): Closure
+    {
+        return Mockery::on(fn (UserId $id) => $id->value() === $value);
+    }
+
+    private function studentId(int $value): Closure
+    {
+        return Mockery::on(fn (StudentId $id) => $id->value() === $value);
     }
 
     private function semesterId(int $value): Closure

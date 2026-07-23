@@ -4,6 +4,7 @@ namespace App\Http\Requests\Dashboard;
 
 use App\Application\CourseOffering\ListCourseOfferingsQuery;
 use App\Domain\Academic\Term;
+use App\Domain\User\UserId;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -29,11 +30,12 @@ class DashboardRequest extends FormRequest
         ];
     }
 
-    public function toQuery(): ListCourseOfferingsQuery
+    public function toQuery(UserId $userId): ListCourseOfferingsQuery
     {
         return new ListCourseOfferingsQuery(
             academicYear: '2025', // TODO: 動的取得
             term: Term::FIRST,    // TODO: 動的取得
+            userId: $userId,
         );
     }
 }
