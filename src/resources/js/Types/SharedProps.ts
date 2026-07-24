@@ -7,6 +7,9 @@ export interface SharedProps extends PageProps {
       permissions: string[];
     } | null;
   };
+  clock: {
+    now: string;
+  };
   flash: {
     success?: string;
     error?: string;
