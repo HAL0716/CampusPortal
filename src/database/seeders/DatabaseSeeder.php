@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             DepartmentSeeder::class,
             StudentSeeder::class,
+            PositionSeeder::class,
+            TeacherSeeder::class,
             SemesterSeeder::class,
             CourseSeeder::class,
             CourseOfferingSeeder::class,
