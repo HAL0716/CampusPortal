@@ -5,10 +5,12 @@ namespace Database\Seeders;
 use App\Domain\Position\PositionType;
 use App\Domain\Role\RoleType;
 use App\Domain\Teacher\TeacherStatus;
+use App\Models\Department;
 use App\Models\Position;
 use App\Models\Role;
 use App\Models\Teacher;
 use App\Models\User;
+use Database\Seeders\Data\DepartmentData;
 use Database\Seeders\Data\TeacherData;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +27,9 @@ class TeacherSeeder extends Seeder
         $positions = Position::whereIn('name', PositionType::values())
             ->pluck('id', 'name');
 
+        $departments = Department::whereIn('name', DepartmentData::all())
+            ->pluck('id', 'name');
+
         foreach (TeacherData::all() as $teacher) {
             $user = User::firstOrCreate(
                 [
@@ -38,7 +43,7 @@ class TeacherSeeder extends Seeder
 
             $user->roles()->syncWithoutDetaching([$role->id]);
 
-            Teacher::firstOrCreate(
+            $teacherModel = Teacher::firstOrCreate(
                 [
                     'user_id' => $user->id,
                 ],
@@ -46,6 +51,12 @@ class TeacherSeeder extends Seeder
                     'position_id' => $positions[$teacher['position']->value],
                     'status' => TeacherStatus::ACTIVE,
                 ]
+            );
+
+            $teacherModel->departments()->syncWithoutDetaching(
+                collect($teacher['department'])
+                    ->map(fn (string $name) => $departments[$name])
+                    ->all()
             );
         }
     }
