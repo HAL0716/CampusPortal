@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Course;
+use App\Models\Department;
 use Database\Seeders\Data\CourseData;
+use Database\Seeders\Data\DepartmentData;
 use Illuminate\Database\Seeder;
 
 class CourseSeeder extends Seeder
@@ -13,13 +15,22 @@ class CourseSeeder extends Seeder
      */
     public function run(): void
     {
+        $departments = Department::whereIn('name', DepartmentData::all())
+            ->pluck('id', 'name');
+
         foreach (CourseData::all() as $course) {
-            Course::firstOrCreate(
+            $courseModel = Course::firstOrCreate(
                 [
                     'name' => $course['name'],
                 ],
-                $course
+                collect($course)->except('departments')->toArray()
             );
+
+            $departmentIds = collect($course['departments'])
+                ->map(fn (string $name) => $departments[$name])
+                ->all();
+
+            $courseModel->departments()->syncWithoutDetaching($departmentIds);
         }
     }
 }
