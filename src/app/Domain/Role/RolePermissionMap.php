@@ -12,15 +12,17 @@ final class RolePermissionMap
 
             RoleType::STUDENT => [
                 PermissionType::DashboardView,
+                PermissionType::CourseOfferingEnrollment,
             ],
 
             RoleType::TEACHER => [
                 PermissionType::DashboardView,
+                PermissionType::CourseOfferingManagement,
             ],
 
             RoleType::ADMIN => [
                 PermissionType::DashboardView,
-                PermissionType::UserView,
+                PermissionType::CourseOfferingAdministration,
             ],
 
             default => [],

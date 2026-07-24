@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Dashboard;
 
-use App\Application\CourseOffering\ListCourseOfferingsQuery;
+use App\Application\CourseOffering\Administration\ListCourseOfferingsQuery as ListAdministrationCourseOfferingsQuery;
+use App\Application\CourseOffering\Enrollment\ListCourseOfferingsQuery as ListEnrollmentCourseOfferingsQuery;
+use App\Application\CourseOffering\Management\ListCourseOfferingsQuery as ListManagementCourseOfferingsQuery;
 use App\Domain\User\UserId;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -30,11 +32,26 @@ class DashboardRequest extends FormRequest
         ];
     }
 
-    public function toQuery(CarbonImmutable $date, UserId $userId): ListCourseOfferingsQuery
+    public function toEnrollmentQuery(CarbonImmutable $date, UserId $userId): ListEnrollmentCourseOfferingsQuery
     {
-        return new ListCourseOfferingsQuery(
+        return new ListEnrollmentCourseOfferingsQuery(
             date: $date,
             userId: $userId,
+        );
+    }
+
+    public function toManagementQuery(CarbonImmutable $date, UserId $userId): ListManagementCourseOfferingsQuery
+    {
+        return new ListManagementCourseOfferingsQuery(
+            date: $date,
+            userId: $userId,
+        );
+    }
+
+    public function toAdministrationQuery(CarbonImmutable $date): ListAdministrationCourseOfferingsQuery
+    {
+        return new ListAdministrationCourseOfferingsQuery(
+            date: $date,
         );
     }
 }

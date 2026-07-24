@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\CourseOffering;
+namespace App\Application\CourseOffering\Enrollment;
 
 use App\Domain\Enrollment\EnrollmentStatus;
 
-final readonly class CourseOfferingListDTO
+final readonly class CourseOfferingDTO
 {
     public function __construct(
         public int $id,

@@ -2,6 +2,9 @@
 
 namespace App\Application\CourseOffering;
 
+use App\Application\CourseOffering\Administration\CourseOfferingDTO as AdministrationDTO;
+use App\Application\CourseOffering\Enrollment\CourseOfferingDTO as EnrollmentDTO;
+use App\Application\CourseOffering\Management\CourseOfferingDTO as ManagementDTO;
 use App\Domain\Semester\SemesterId;
 use App\Domain\Student\StudentId;
 use App\Domain\Teacher\TeacherId;
@@ -9,17 +12,25 @@ use App\Domain\Teacher\TeacherId;
 interface CourseOfferingQueryServiceInterface
 {
     /**
-     * @return array<CourseOfferingListDTO>
+     * @return array<AdministrationDTO>
      */
-    public function findBySemester(SemesterId $semesterId): array;
+    public function findForAdministration(
+        SemesterId $semesterId
+    ): array;
 
     /**
-     * @return array<CourseOfferingListDTO>
+     * @return array<EnrollmentDTO>
      */
-    public function findBySemesterForStudent(SemesterId $semesterId, StudentId $studentId): array;
+    public function findForEnrollment(
+        SemesterId $semesterId,
+        StudentId $studentId
+    ): array;
 
     /**
-     * @return array<CourseOfferingListDTO>
+     * @return array<ManagementDTO>
      */
-    public function findBySemesterForTeacher(SemesterId $semesterId, TeacherId $teacherId): array;
+    public function findForManagement(
+        SemesterId $semesterId,
+        TeacherId $teacherId
+    ): array;
 }

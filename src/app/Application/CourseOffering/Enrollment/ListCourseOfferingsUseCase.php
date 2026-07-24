@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Application\CourseOffering;
+namespace App\Application\CourseOffering\Enrollment;
 
+use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\SemesterRepositoryInterface;
+use App\Domain\Student\Exceptions\StudentNotFoundException;
 use App\Domain\Student\StudentRepositoryInterface;
-use App\Domain\Teacher\TeacherRepositoryInterface;
 
 final class ListCourseOfferingsUseCase
 {
     public function __construct(
-        private StudentRepositoryInterface $students,
-        private TeacherRepositoryInterface $teachers,
         private SemesterRepositoryInterface $semesters,
+        private StudentRepositoryInterface $students,
         private CourseOfferingQueryServiceInterface $queryService,
     ) {}
 
     /**
-     * @return CourseOfferingListDTO[]
+     * @return CourseOfferingDTO[]
      */
     public function execute(ListCourseOfferingsQuery $query): array
     {
@@ -27,25 +27,13 @@ final class ListCourseOfferingsUseCase
         }
 
         $student = $this->students->findByUserId($query->userId);
-
-        if ($student !== null) {
-            return $this->queryService->findBySemesterForStudent(
-                $semester->requireId(),
-                $student->requireId(),
-            );
+        if ($student === null) {
+            throw new StudentNotFoundException;
         }
 
-        $teacher = $this->teachers->findByUserId($query->userId);
-
-        if ($teacher !== null) {
-            return $this->queryService->findBySemesterForTeacher(
-                $semester->requireId(),
-                $teacher->requireId(),
-            );
-        }
-
-        return $this->queryService->findBySemester(
+        return $this->queryService->findForEnrollment(
             $semester->requireId(),
+            $student->requireId(),
         );
     }
 }
