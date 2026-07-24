@@ -12,6 +12,7 @@ use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Permission\PermissionRepositoryInterface;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Teacher\TeacherRepositoryInterface;
 use App\Domain\User\UserRepositoryInterface;
 use App\Infrastructure\Authentication\AuthenticationService;
 use App\Infrastructure\Authorization\PermissionService;
@@ -24,6 +25,7 @@ use App\Infrastructure\Repositories\EnrollmentRepository;
 use App\Infrastructure\Repositories\PermissionRepository;
 use App\Infrastructure\Repositories\SemesterRepository;
 use App\Infrastructure\Repositories\StudentRepository;
+use App\Infrastructure\Repositories\TeacherRepository;
 use App\Infrastructure\Repositories\UserRepository;
 use App\Infrastructure\Security\PasswordHasher;
 use Illuminate\Support\ServiceProvider;
@@ -40,6 +42,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
 
         $this->app->bind(StudentRepositoryInterface::class, StudentRepository::class);
+
+        $this->app->bind(TeacherRepositoryInterface::class, TeacherRepository::class);
 
         $this->app->bind(SemesterRepositoryInterface::class, SemesterRepository::class);
 

@@ -7,6 +7,7 @@ use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Semester\SemesterId;
 use App\Domain\Student\StudentId;
+use App\Domain\Teacher\TeacherId;
 use App\Models\CourseOffering;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,17 @@ final class CourseOfferingQueryService implements CourseOfferingQueryServiceInte
         SemesterId $semesterId,
         StudentId $studentId,
     ): array {
-        return $this->query($semesterId, $studentId)
+        return $this->query($semesterId, studentId: $studentId)
+            ->get()
+            ->map(fn ($offering) => $this->toDto($offering))
+            ->all();
+    }
+
+    public function findBySemesterForTeacher(
+        SemesterId $semesterId,
+        TeacherId $teacherId,
+    ): array {
+        return $this->query($semesterId, teacherId: $teacherId)
             ->get()
             ->map(fn ($offering) => $this->toDto($offering))
             ->all();
@@ -35,14 +46,26 @@ final class CourseOfferingQueryService implements CourseOfferingQueryServiceInte
     private function query(
         SemesterId $semesterId,
         ?StudentId $studentId = null,
+        ?TeacherId $teacherId = null,
     ): Builder {
         $query = CourseOffering::query()
             ->where('course_offerings.semester_id', $semesterId->value())
             ->join('courses', 'courses.id', '=', 'course_offerings.course_id')
-            ->select(
-                'course_offerings.id',
-                'courses.name',
-            );
+            ->select('course_offerings.id', 'courses.name');
+
+        if ($teacherId !== null) {
+            $query
+                ->join(
+                    'course_teacher',
+                    'course_teacher.course_id',
+                    '=',
+                    'courses.id'
+                )
+                ->where(
+                    'course_teacher.teacher_id',
+                    $teacherId->value()
+                );
+        }
 
         if ($studentId === null) {
             return $query->addSelect(

@@ -5,11 +5,13 @@ namespace App\Application\CourseOffering;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Teacher\TeacherRepositoryInterface;
 
 final class ListCourseOfferingsUseCase
 {
     public function __construct(
         private StudentRepositoryInterface $students,
+        private TeacherRepositoryInterface $teachers,
         private SemesterRepositoryInterface $semesters,
         private CourseOfferingQueryServiceInterface $queryService,
     ) {}
@@ -30,6 +32,15 @@ final class ListCourseOfferingsUseCase
             return $this->queryService->findBySemesterForStudent(
                 $semester->requireId(),
                 $student->requireId(),
+            );
+        }
+
+        $teacher = $this->teachers->findByUserId($query->userId);
+
+        if ($teacher !== null) {
+            return $this->queryService->findBySemesterForTeacher(
+                $semester->requireId(),
+                $teacher->requireId(),
             );
         }
 
