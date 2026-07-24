@@ -31,6 +31,17 @@ class CourseSeeder extends Seeder
                 ->all();
 
             $courseModel->departments()->syncWithoutDetaching($departmentIds);
+
+            $teacherIds = Department::whereKey($departmentIds)
+                ->with('teachers:id')
+                ->get()
+                ->pluck('teachers')
+                ->flatten()
+                ->pluck('id')
+                ->unique()
+                ->all();
+
+            $courseModel->teachers()->syncWithoutDetaching($teacherIds);
         }
     }
 }
