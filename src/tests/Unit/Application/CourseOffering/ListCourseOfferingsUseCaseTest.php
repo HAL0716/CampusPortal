@@ -15,6 +15,7 @@ use App\Domain\Student\Student;
 use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
 use App\Domain\User\UserId;
+use Carbon\CarbonImmutable;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\Matcher\Closure;
@@ -30,6 +31,8 @@ class ListCourseOfferingsUseCaseTest extends TestCase
     private const STUDENT_ID = 10;
 
     private const SEMESTER_ID = 1;
+
+    private const DATE = '2025-04-01';
 
     private StudentRepositoryInterface&MockInterface $students;
 
@@ -56,6 +59,8 @@ class ListCourseOfferingsUseCaseTest extends TestCase
 
     public function test_can_get_course_offerings_for_student(): void
     {
+        $date = $this->date();
+
         $semester = Semester::reconstruct(
             id: new SemesterId(self::SEMESTER_ID),
             academicYear: '2025',
@@ -76,9 +81,9 @@ class ListCourseOfferingsUseCaseTest extends TestCase
         ];
 
         $this->semesters
-            ->shouldReceive('find')
+            ->shouldReceive('findByDate')
             ->once()
-            ->with('2025', Term::FIRST)
+            ->with($date)
             ->andReturn($semester);
 
         $this->students
@@ -98,12 +103,14 @@ class ListCourseOfferingsUseCaseTest extends TestCase
 
         $this->assertSame(
             $offerings,
-            $this->useCase->execute($this->query()),
+            $this->useCase->execute($this->query($date)),
         );
     }
 
     public function test_can_get_course_offerings_when_user_is_not_student(): void
     {
+        $date = $this->date();
+
         $semester = Semester::reconstruct(
             id: new SemesterId(self::SEMESTER_ID),
             academicYear: '2025',
@@ -119,9 +126,9 @@ class ListCourseOfferingsUseCaseTest extends TestCase
         ];
 
         $this->semesters
-            ->shouldReceive('find')
+            ->shouldReceive('findByDate')
             ->once()
-            ->with('2025', Term::FIRST)
+            ->with($date)
             ->andReturn($semester);
 
         $this->students
@@ -136,15 +143,20 @@ class ListCourseOfferingsUseCaseTest extends TestCase
             ->with($this->semesterId(self::SEMESTER_ID))
             ->andReturn($offerings);
 
-        $this->assertSame($offerings, $this->useCase->execute($this->query()));
+        $this->assertSame(
+            $offerings,
+            $this->useCase->execute($this->query($date)),
+        );
     }
 
     public function test_can_not_get_course_offerings_when_semester_does_not_exist(): void
     {
+        $date = $this->date();
+
         $this->semesters
-            ->shouldReceive('find')
+            ->shouldReceive('findByDate')
             ->once()
-            ->with('2025', Term::FIRST)
+            ->with($date)
             ->andReturn(null);
 
         $this->students
@@ -158,16 +170,20 @@ class ListCourseOfferingsUseCaseTest extends TestCase
 
         $this->expectException(SemesterNotFoundException::class);
 
-        $this->useCase->execute($this->query());
+        $this->useCase->execute($this->query($date));
     }
 
-    private function query(): ListCourseOfferingsQuery
+    private function query(CarbonImmutable $date): ListCourseOfferingsQuery
     {
         return new ListCourseOfferingsQuery(
-            academicYear: '2025',
-            term: Term::FIRST,
+            date: $date,
             userId: new UserId(self::USER_ID),
         );
+    }
+
+    private function date(): CarbonImmutable
+    {
+        return CarbonImmutable::parse(self::DATE);
     }
 
     private function userId(int $value): Closure

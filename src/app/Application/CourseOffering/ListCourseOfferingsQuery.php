@@ -2,14 +2,13 @@
 
 namespace App\Application\CourseOffering;
 
-use App\Domain\Academic\Term;
 use App\Domain\User\UserId;
+use Carbon\CarbonImmutable;
 
 final readonly class ListCourseOfferingsQuery
 {
     public function __construct(
-        public string $academicYear,
-        public Term $term,
+        public CarbonImmutable $date,
         public UserId $userId
     ) {}
 }

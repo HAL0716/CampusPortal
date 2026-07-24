@@ -2,19 +2,19 @@
 
 namespace App\Infrastructure\Repositories;
 
-use App\Domain\Academic\Term;
 use App\Domain\Semester\Semester;
 use App\Domain\Semester\SemesterId;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use App\Models\Semester as SemesterModel;
+use Carbon\CarbonImmutable;
 
 final class SemesterRepository implements SemesterRepositoryInterface
 {
-    public function find(int $academicYear, Term $term): ?Semester
+    public function findByDate(CarbonImmutable $date): ?Semester
     {
         $model = SemesterModel::query()
-            ->where('academic_year', $academicYear)
-            ->where('term', $term)
+            ->where('start_date', '<=', $date)
+            ->where('end_date', '>=', $date)
             ->first();
 
         return $model ? $this->toEntity($model) : null;

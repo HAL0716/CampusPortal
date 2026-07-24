@@ -19,10 +19,7 @@ final class ListCourseOfferingsUseCase
      */
     public function execute(ListCourseOfferingsQuery $query): array
     {
-        $semester = $this->semesters->find(
-            $query->academicYear,
-            $query->term,
-        );
+        $semester = $this->semesters->findByDate($query->date);
         if ($semester === null) {
             throw new SemesterNotFoundException;
         }

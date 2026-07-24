@@ -6,6 +6,7 @@ use App\Domain\Academic\Term;
 use App\Domain\Permission\PermissionType;
 use App\Models\Semester;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Support\Clock\UseClock;
 use Tests\Support\Permission\CreatesModelPermission;
 use Tests\Support\User\CreatesModelUser;
 use Tests\TestCase;
@@ -15,9 +16,14 @@ final class DashboardControllerTest extends TestCase
     use CreatesModelPermission;
     use CreatesModelUser;
     use RefreshDatabase;
+    use UseClock;
+
+    private const DATE = '2025-04-01';
 
     public function test_shows_dashboard_page(): void
     {
+        $this->useClock(self::DATE);
+
         $user = $this->createUser();
 
         $this->createPermission(
@@ -28,7 +34,7 @@ final class DashboardControllerTest extends TestCase
         Semester::create([
             'academic_year' => '2025',
             'term' => Term::FIRST,
-            'start_date' => '2025-04-01',
+            'start_date' => self::DATE,
             'end_date' => '2025-07-31',
         ]);
 

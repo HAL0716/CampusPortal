@@ -2,9 +2,9 @@
 
 namespace App\Domain\Semester;
 
-use App\Domain\Academic\Term;
+use Carbon\CarbonImmutable;
 
 interface SemesterRepositoryInterface
 {
-    public function find(int $academicYear, Term $term): ?Semester;
+    public function findByDate(CarbonImmutable $date): ?Semester;
 }
