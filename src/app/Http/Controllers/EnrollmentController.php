@@ -6,6 +6,7 @@ use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Application\Enrollment\CompleteUseCase;
 use App\Application\Enrollment\DropUseCase;
 use App\Application\Enrollment\EnrollUseCase;
+use App\Http\Controllers\Concerns\HasFlashMessages;
 use App\Http\Requests\Enrollment\CompleteRequest;
 use App\Http\Requests\Enrollment\DropRequest;
 use App\Http\Requests\Enrollment\EnrollRequest;
@@ -14,6 +15,8 @@ use Throwable;
 
 final class EnrollmentController extends Controller
 {
+    use HasFlashMessages;
+
     public function __construct(
         private readonly AuthenticationServiceInterface $auth,
     ) {}
@@ -27,9 +30,9 @@ final class EnrollmentController extends Controller
                 )
             );
 
-            return back()->with('success', '履修登録しました');
+            return back()->with($this->withSuccess('履修登録しました'));
         } catch (Throwable $e) {
-            return back()->with('error', $e->getMessage());
+            return back()->with($this->withError($e->getMessage()));
         }
     }
 
@@ -42,9 +45,9 @@ final class EnrollmentController extends Controller
                 )
             );
 
-            return back()->with('success', '履修取消しました');
+            return back()->with($this->withSuccess('履修取消しました'));
         } catch (Throwable $e) {
-            return back()->with('error', $e->getMessage());
+            return back()->with($this->withError($e->getMessage()));
         }
     }
 
@@ -57,9 +60,9 @@ final class EnrollmentController extends Controller
                 )
             );
 
-            return back()->with('success', '履修完了しました');
+            return back()->with($this->withSuccess('履修完了しました'));
         } catch (Throwable $e) {
-            return back()->with('error', $e->getMessage());
+            return back()->with($this->withError($e->getMessage()));
         }
     }
 }

@@ -1,5 +1,7 @@
 import { PageProps } from '@inertiajs/core';
 
+import { FlashProps } from './Flash';
+
 export interface SharedProps extends PageProps {
   auth: {
     user: {
@@ -10,8 +12,5 @@ export interface SharedProps extends PageProps {
   clock: {
     now: string;
   };
-  flash: {
-    success?: string;
-    error?: string;
-  };
+  flash: FlashProps;
 }

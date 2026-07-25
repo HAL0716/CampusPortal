@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 type FlashMessageProps = {
+  key: string;
   type: 'success' | 'error';
   children: React.ReactNode;
   duration?: number;
