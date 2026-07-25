@@ -34,6 +34,12 @@ final class CourseOfferingQueryService implements CourseOfferingQueryServiceInte
 
     public function findForEnrollment(SemesterId $semesterId, StudentId $studentId): array
     {
+        $completedCourseIds = CourseOffering::query()
+            ->join('enrollments', 'enrollments.course_offering_id', '=', 'course_offerings.id')
+            ->where('enrollments.student_id', $studentId->value())
+            ->where('enrollments.status', EnrollmentStatus::COMPLETED->value)
+            ->pluck('course_offerings.course_id');
+
         return $this->baseQuery($semesterId)
             ->join('courses', 'courses.id', '=', 'course_offerings.course_id')
             ->leftJoin('enrollments', function ($join) use ($studentId) {
@@ -42,15 +48,24 @@ final class CourseOfferingQueryService implements CourseOfferingQueryServiceInte
             })
             ->select(
                 'course_offerings.id',
+                'course_offerings.course_id',
                 'courses.name',
                 'enrollments.status',
             )
             ->get()
-            ->map(fn ($offering) => new EnrollmentDTO(
-                id: $offering->id,
-                name: $offering->name,
-                status: $offering->status ? EnrollmentStatus::from($offering->status) : null,
-            ))
+            ->map(function ($offering) use ($completedCourseIds) {
+                $status = $completedCourseIds->contains($offering->course_id)
+                    ? EnrollmentStatus::COMPLETED
+                    : ($offering->status
+                        ? EnrollmentStatus::from($offering->status)
+                        : null);
+
+                return new EnrollmentDTO(
+                    id: $offering->id,
+                    name: $offering->name,
+                    status: $status,
+                );
+            })
             ->all();
     }
 
