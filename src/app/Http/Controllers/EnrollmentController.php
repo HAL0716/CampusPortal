@@ -52,7 +52,9 @@ final class EnrollmentController extends Controller
     {
         try {
             $useCase->execute(
-                $request->toCommand()
+                $request->toCommand(
+                    $this->auth->requireUser()->requireId()
+                )
             );
 
             return back()->with('success', '履修完了しました');

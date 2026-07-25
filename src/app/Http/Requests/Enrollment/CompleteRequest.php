@@ -4,6 +4,7 @@ namespace App\Http\Requests\Enrollment;
 
 use App\Application\Enrollment\CompleteCommand;
 use App\Domain\Enrollment\EnrollmentId;
+use App\Domain\User\UserId;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -29,9 +30,10 @@ class CompleteRequest extends FormRequest
         ];
     }
 
-    public function toCommand(): CompleteCommand
+    public function toCommand(UserId $userId): CompleteCommand
     {
         return new CompleteCommand(
+            userId: $userId,
             enrollmentId: new EnrollmentId($this->route('enrollment')),
         );
     }
