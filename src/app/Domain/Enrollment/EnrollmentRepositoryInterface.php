@@ -9,5 +9,7 @@ interface EnrollmentRepositoryInterface
 {
     public function save(Enrollment $enrollment): Enrollment;
 
+    public function findById(EnrollmentId $enrollmentId): ?Enrollment;
+
     public function find(StudentId $studentId, CourseOfferingId $courseOfferingId): ?Enrollment;
 }

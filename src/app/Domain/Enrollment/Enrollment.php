@@ -4,6 +4,7 @@ namespace App\Domain\Enrollment;
 
 use App\Domain\CourseOffering\CourseOfferingId;
 use App\Domain\Enrollment\Exceptions\EnrollmentIdNotAssignedException;
+use App\Domain\Enrollment\Exceptions\InvalidEnrollmentStatusException;
 use App\Domain\Student\StudentId;
 
 final readonly class Enrollment
@@ -32,6 +33,15 @@ final readonly class Enrollment
     public function drop(): self
     {
         return new self($this->id, $this->studentId, $this->courseOfferingId, EnrollmentStatus::DROPPED);
+    }
+
+    public function complete(): self
+    {
+        if ($this->status !== EnrollmentStatus::ENROLLED) {
+            throw new InvalidEnrollmentStatusException;
+        }
+
+        return new self($this->id, $this->studentId, $this->courseOfferingId, EnrollmentStatus::COMPLETED);
     }
 
     public function id(): ?EnrollmentId
