@@ -1,6 +1,7 @@
 import { Link, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
+import FlashMessage from '@/Components/FlashMessage';
 import { EnrollmentCourseOffering } from '@/Types/CourseOffering';
 import { SharedProps } from '@/Types/SharedProps';
 
@@ -37,20 +38,6 @@ function Action({ offering }: ActionProps) {
       {label}
     </Link>
   );
-}
-
-type FlashMessageProps = {
-  type: 'success' | 'error';
-  children: React.ReactNode;
-};
-
-function FlashMessage({ type, children }: FlashMessageProps) {
-  const styles = {
-    success: 'bg-green-100 text-green-800',
-    error: 'bg-red-100 text-red-800',
-  };
-
-  return <div className={`mb-4 rounded p-4 ${styles[type]}`}>{children}</div>;
 }
 
 type pageProps = {
