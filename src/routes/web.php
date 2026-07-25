@@ -2,6 +2,7 @@
 
 use App\Domain\Permission\PermissionType;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CourseOfferingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard')
         ->can(PermissionType::DashboardView->value);
+
+    Route::get('/course-offerings/enrollment', [CourseOfferingController::class, 'enrollment'])
+        ->name('course-offerings.enrollment')
+        ->can(PermissionType::CourseOfferingEnrollment->value);
+    Route::get('/course-offerings/management', [CourseOfferingController::class, 'management'])
+        ->name('course-offerings.management')
+        ->can(PermissionType::CourseOfferingManagement->value);
+    Route::get('/course-offerings/administration', [CourseOfferingController::class, 'administration'])
+        ->name('course-offerings.administration')
+        ->can(PermissionType::CourseOfferingAdministration->value);
 
     Route::post('/course-offerings/{courseOffering}/enroll', [EnrollmentController::class, 'enroll'])
         ->name('course-offerings.enroll');

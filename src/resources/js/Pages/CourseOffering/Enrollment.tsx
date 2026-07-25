@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
 import { EnrollmentCourseOffering } from '@/Types/CourseOffering';
+import { SharedProps } from '@/Types/SharedProps';
 
 type ActionProps = {
   offering: EnrollmentCourseOffering;
@@ -38,16 +39,34 @@ function Action({ offering }: ActionProps) {
   );
 }
 
+type FlashMessageProps = {
+  type: 'success' | 'error';
+  children: React.ReactNode;
+};
+
+function FlashMessage({ type, children }: FlashMessageProps) {
+  const styles = {
+    success: 'bg-green-100 text-green-800',
+    error: 'bg-red-100 text-red-800',
+  };
+
+  return <div className={`mb-4 rounded p-4 ${styles[type]}`}>{children}</div>;
+}
+
 type pageProps = {
   offerings: EnrollmentCourseOffering[];
 };
 
-export default function EnrollmentSection() {
-  const { offerings } = usePage<pageProps>().props;
+export default function Enrollment() {
+  const { flash, offerings } = usePage<SharedProps & pageProps>().props;
 
   return (
-    <section>
-      <h2 className="mb-2 text-lg font-semibold">開講科目一覧</h2>
+    <>
+      <h1 className="mb-4 text-xl font-bold">開講講義一覧</h1>
+
+      {flash.success && <FlashMessage type="success">{flash.success}</FlashMessage>}
+
+      {flash.error && <FlashMessage type="error">{flash.error}</FlashMessage>}
 
       <table className="mb-6 w-full border-collapse border">
         <thead>
@@ -68,6 +87,6 @@ export default function EnrollmentSection() {
           ))}
         </tbody>
       </table>
-    </section>
+    </>
   );
 }

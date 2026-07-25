@@ -6,12 +6,12 @@ type Props = {
   offerings: AdministrationCourseOffering[];
 };
 
-export default function AdministrationSection() {
+export default function Administration() {
   const { offerings } = usePage<Props>().props;
 
   return (
-    <section>
-      <h2 className="mb-2 text-lg font-semibold">開講科目一覧</h2>
+    <>
+      <h1 className="mb-4 text-xl font-bold">開講講義一覧</h1>
 
       <table className="mb-6 w-full border-collapse border">
         <thead>
@@ -28,6 +28,6 @@ export default function AdministrationSection() {
           ))}
         </tbody>
       </table>
-    </section>
+    </>
   );
 }

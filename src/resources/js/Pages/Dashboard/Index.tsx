@@ -3,28 +3,15 @@ import { route } from 'ziggy-js';
 
 import { SharedProps } from '@/Types/SharedProps';
 
-import CourseOfferingSection from './Components/CourseOfferingSection/Index';
-
 type Props = {
-  courseOfferingMode: 'enrollment' | 'management' | 'administration' | null;
+  courseOffering: {
+    route: string;
+    label: string;
+  } | null;
 };
-
-type FlashMessageProps = {
-  type: 'success' | 'error';
-  children: React.ReactNode;
-};
-
-function FlashMessage({ type, children }: FlashMessageProps) {
-  const styles = {
-    success: 'bg-green-100 text-green-800',
-    error: 'bg-red-100 text-red-800',
-  };
-
-  return <div className={`mb-4 rounded p-4 ${styles[type]}`}>{children}</div>;
-}
 
 export default function Index() {
-  const { auth, flash, courseOfferingMode } = usePage<SharedProps & Props>().props;
+  const { auth, courseOffering } = usePage<SharedProps & Props>().props;
 
   return (
     <>
@@ -32,20 +19,25 @@ export default function Index() {
 
       {auth.user && <p className="mb-4">ようこそ、{auth.user.name}さん！</p>}
 
-      {flash.success && <FlashMessage type="success">{flash.success}</FlashMessage>}
+      <nav className="mb-6 flex flex-col gap-2">
+        {courseOffering && (
+          <Link
+            href={route(courseOffering.route)}
+            className="rounded-lg border border-gray-200 bg-white px-4 py-3 text-left transition hover:bg-gray-100"
+          >
+            {courseOffering.label}
+          </Link>
+        )}
 
-      {flash.error && <FlashMessage type="error">{flash.error}</FlashMessage>}
-
-      <CourseOfferingSection mode={courseOfferingMode} />
-
-      <Link
-        href={route('logout')}
-        method="post"
-        as="button"
-        className="bg-black px-4 py-2 text-white"
-      >
-        ログアウト
-      </Link>
+        <Link
+          href={route('logout')}
+          method="post"
+          as="button"
+          className="rounded-lg border border-red-200 bg-red-100 px-4 py-3 text-left transition hover:bg-red-200"
+        >
+          ログアウト
+        </Link>
+      </nav>
     </>
   );
 }

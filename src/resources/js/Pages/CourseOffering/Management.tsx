@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
 import { ManagementCourseOffering, Student } from '@/Types/CourseOffering';
+import { SharedProps } from '@/Types/SharedProps';
 
 type ActionProps = {
   student: Student;
@@ -28,20 +29,38 @@ function Action({ student }: ActionProps) {
   );
 }
 
+type FlashMessageProps = {
+  type: 'success' | 'error';
+  children: React.ReactNode;
+};
+
+function FlashMessage({ type, children }: FlashMessageProps) {
+  const styles = {
+    success: 'bg-green-100 text-green-800',
+    error: 'bg-red-100 text-red-800',
+  };
+
+  return <div className={`mb-4 rounded p-4 ${styles[type]}`}>{children}</div>;
+}
+
 type PageProps = {
   offerings: ManagementCourseOffering[];
 };
 
-export default function ManagementSection() {
-  const { offerings } = usePage<PageProps>().props;
+export default function Management() {
+  const { flash, offerings } = usePage<SharedProps & PageProps>().props;
 
   return (
-    <section>
-      <h2 className="mb-2 text-lg font-semibold">担当科目一覧</h2>
+    <>
+      <h1 className="mb-4 text-xl font-bold">担当講義一覧</h1>
+
+      {flash.success && <FlashMessage type="success">{flash.success}</FlashMessage>}
+
+      {flash.error && <FlashMessage type="error">{flash.error}</FlashMessage>}
 
       {offerings.map((offering) => (
-        <div key={offering.id} className="mb-6">
-          <h3 className="mb-2 font-medium">{offering.name}</h3>
+        <section key={offering.id} className="mb-6">
+          <h2 className="mb-2 text-lg font-semibold">{offering.name}</h2>
 
           <table className="w-full border-collapse border">
             <thead>
@@ -62,8 +81,8 @@ export default function ManagementSection() {
               ))}
             </tbody>
           </table>
-        </div>
+        </section>
       ))}
-    </section>
+    </>
   );
 }
