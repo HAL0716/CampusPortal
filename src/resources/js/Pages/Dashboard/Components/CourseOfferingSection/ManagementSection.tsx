@@ -1,14 +1,39 @@
 import { Link, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
-import { ManagementCourseOffering } from '@/Types/CourseOffering';
+import { ManagementCourseOffering, Student } from '@/Types/CourseOffering';
 
-type Props = {
+type ActionProps = {
+  student: Student;
+};
+
+function Action({ student }: ActionProps) {
+  switch (student.status) {
+    case 'dropped':
+      return <span>取消済</span>;
+
+    case 'completed':
+      return <span>修得済</span>;
+  }
+
+  return (
+    <Link
+      href={route('enrollments.complete', { enrollment: student.id })}
+      method="post"
+      as="button"
+      className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+    >
+      修得完了
+    </Link>
+  );
+}
+
+type PageProps = {
   offerings: ManagementCourseOffering[];
 };
 
 export default function ManagementSection() {
-  const { offerings } = usePage<Props>().props;
+  const { offerings } = usePage<PageProps>().props;
 
   return (
     <section>
@@ -28,17 +53,10 @@ export default function ManagementSection() {
 
             <tbody>
               {offering.students.map((student) => (
-                <tr key={student.studentId}>
+                <tr key={student.id}>
                   <td className="border px-4 py-2">{student.studentNumber}</td>
                   <td className="border px-4 py-2 text-center">
-                    <Link
-                      href={route('enrollments.complete', { enrollment: student.enrollmentId })}
-                      method="post"
-                      as="button"
-                      className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
-                    >
-                      修得完了
-                    </Link>
+                    <Action student={student} />
                   </td>
                 </tr>
               ))}

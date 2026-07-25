@@ -71,9 +71,9 @@ final class CourseOfferingQueryService implements CourseOfferingQueryServiceInte
                 students: $offering->enrollments
                     ->sortBy(fn ($enrollment) => $enrollment->student->student_number)
                     ->map(fn ($enrollment) => new StudentDTO(
-                        enrollmentId: $enrollment->id,
-                        studentId: $enrollment->student->id,
+                        id: $enrollment->id,
                         studentNumber: $enrollment->student->student_number,
+                        status: $enrollment->status,
                     ))
                     ->values()
                     ->all(),

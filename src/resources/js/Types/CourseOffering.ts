@@ -1,7 +1,7 @@
 export type Student = {
-  enrollmentId: number;
-  studentId: number;
+  id: number;
   studentNumber: string;
+  status: 'enrolled' | 'dropped' | 'completed';
 };
 
 type CourseOfferingBase = {
