@@ -1,5 +1,6 @@
 export type Student = {
-  id: number;
+  enrollmentId: number;
+  studentId: number;
   studentNumber: string;
 };
 

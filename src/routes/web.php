@@ -28,4 +28,6 @@ Route::middleware('auth')->group(function () {
         ->name('course-offerings.enroll');
     Route::post('/course-offerings/{courseOffering}/drop', [EnrollmentController::class, 'drop'])
         ->name('course-offerings.drop');
+    Route::post('/enrollments/{enrollment}/complete', [EnrollmentController::class, 'complete'])
+        ->name('enrollments.complete');
 });
