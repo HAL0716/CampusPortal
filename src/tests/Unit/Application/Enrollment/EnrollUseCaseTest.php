@@ -24,6 +24,8 @@ class EnrollUseCaseTest extends TestCase
 
     private const USER_ID = 10;
 
+    private const STUDENT_ID = 1;
+
     private StudentRepositoryInterface&MockInterface $students;
 
     private EnrollmentRepositoryInterface&MockInterface $enrollments;
@@ -43,7 +45,7 @@ class EnrollUseCaseTest extends TestCase
     public function test_can_enroll_when_student_exists(): void
     {
         $student = Student::reconstruct(
-            id: new StudentId(1),
+            id: new StudentId(self::STUDENT_ID),
             userId: new UserId(self::USER_ID)
         );
 
@@ -52,6 +54,15 @@ class EnrollUseCaseTest extends TestCase
             ->once()
             ->with($this->userId(self::USER_ID))
             ->andReturn($student);
+
+        $this->enrollments
+            ->shouldReceive('find')
+            ->once()
+            ->with(
+                $this->studentId(self::STUDENT_ID),
+                $this->courseOfferingId(100)
+            )
+            ->andReturn(null);
 
         $this->enrollments
             ->shouldReceive('save')
@@ -88,5 +99,15 @@ class EnrollUseCaseTest extends TestCase
     private function userId(int $value): Closure
     {
         return Mockery::on(fn (UserId $id) => $id->value() === $value);
+    }
+
+    private function studentId(int $value): Closure
+    {
+        return Mockery::on(fn (StudentId $id) => $id->value() === $value);
+    }
+
+    private function courseOfferingId(int $value): Closure
+    {
+        return Mockery::on(fn (CourseOfferingId $id) => $id->value() === $value);
     }
 }

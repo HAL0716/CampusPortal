@@ -30,6 +30,15 @@ final readonly class Enrollment
         return new self($id, $studentId, $courseOfferingId, $status);
     }
 
+    public function enroll(): self
+    {
+        return match ($this->status) {
+            EnrollmentStatus::ENROLLED => $this,
+            EnrollmentStatus::DROPPED => new self($this->id, $this->studentId, $this->courseOfferingId, EnrollmentStatus::ENROLLED),
+            default => throw new InvalidEnrollmentStatusException,
+        };
+    }
+
     public function drop(): self
     {
         return new self($this->id, $this->studentId, $this->courseOfferingId, EnrollmentStatus::DROPPED);

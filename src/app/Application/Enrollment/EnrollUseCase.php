@@ -21,11 +21,17 @@ final class EnrollUseCase
             throw new StudentNotFoundException;
         }
 
+        // 再履修 or 新規作成
+        $enrollment = $this->enrollments->find(
+            $student->requireId(),
+            $command->courseOfferingId,
+        ) ?? Enrollment::create(
+            $student->requireId(),
+            $command->courseOfferingId,
+        );
+
         return $this->enrollments->save(
-            Enrollment::create(
-                $student->requireId(),
-                $command->courseOfferingId
-            )
+            $enrollment->enroll()
         );
     }
 }
