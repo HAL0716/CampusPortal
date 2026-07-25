@@ -1,13 +1,12 @@
 import { Link, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
-import { CourseOffering } from '@/Types/CourseOffering';
 import { SharedProps } from '@/Types/SharedProps';
 
-import CourseOfferingSection from './Components/CourseOfferingSection';
+import CourseOfferingSection from './Components/CourseOfferingSection/Index';
 
 type Props = {
-  offerings: CourseOffering[];
+  courseOfferingMode: 'enrollment' | 'management' | 'administration' | null;
 };
 
 type FlashMessageProps = {
@@ -25,7 +24,7 @@ function FlashMessage({ type, children }: FlashMessageProps) {
 }
 
 export default function Index() {
-  const { auth, flash, offerings } = usePage<SharedProps & Props>().props;
+  const { auth, flash, courseOfferingMode } = usePage<SharedProps & Props>().props;
 
   return (
     <>
@@ -37,7 +36,7 @@ export default function Index() {
 
       {flash.error && <FlashMessage type="error">{flash.error}</FlashMessage>}
 
-      <CourseOfferingSection offerings={offerings} />
+      <CourseOfferingSection mode={courseOfferingMode} />
 
       <Link
         href={route('logout')}

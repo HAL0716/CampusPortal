@@ -43,8 +43,16 @@ class DashboardController extends Controller
             default => [],
         };
 
+        $mode = match (true) {
+            $this->permissions->can($user, PermissionType::CourseOfferingManagementAll) => 'administration',
+            $this->permissions->can($user, PermissionType::CourseOfferingManagement) => 'management',
+            $this->permissions->can($user, PermissionType::CourseOfferingEnrollment) => 'enrollment',
+            default => null,
+        };
+
         return Inertia::render('Dashboard/Index', [
             'offerings' => $offerings,
+            'courseOfferingMode' => $mode,
         ]);
     }
 }
