@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\Application\Authentication\AuthenticationServiceInterface;
-use App\Application\Authorization\PermissionServiceInterface;
 use App\Application\Clock\ClockInterface;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -21,8 +20,7 @@ class HandleInertiaRequests extends Middleware
 
     public function __construct(
         private readonly AuthenticationServiceInterface $auth,
-        private readonly PermissionServiceInterface $permission,
-        private readonly ClockInterface $clock
+        private readonly ClockInterface $clock,
     ) {}
 
     /**
@@ -52,7 +50,6 @@ class HandleInertiaRequests extends Middleware
 
                     return $user ? [
                         'name' => $user->name(),
-                        'permissions' => $this->permission->permissions($user),
                     ] : null;
                 },
             ],
