@@ -6,31 +6,22 @@ use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Application\CourseOffering\Enrollment\CourseOfferingDTO;
 use App\Application\CourseOffering\Enrollment\ListCourseOfferingsQuery;
 use App\Application\CourseOffering\Enrollment\ListCourseOfferingsUseCase;
-use App\Domain\Academic\Term;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
-use App\Domain\Semester\Semester;
-use App\Domain\Semester\SemesterId;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use App\Domain\Student\Exceptions\StudentNotFoundException;
-use App\Domain\Student\Student;
-use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
-use App\Domain\User\UserId;
-use Carbon\CarbonImmutable;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
+use Tests\Support\Semester\SemesterTestHelper;
+use Tests\Support\Student\StudentTestHelper;
 use Tests\TestCase;
 
 class ListCourseOfferingsUseCaseTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
-
-    private const USER_ID = 100;
-
-    private const STUDENT_ID = 10;
-
-    private const SEMESTER_ID = 1;
+    use SemesterTestHelper;
+    use StudentTestHelper;
 
     private SemesterRepositoryInterface&MockInterface $semesters;
 
@@ -57,6 +48,9 @@ class ListCourseOfferingsUseCaseTest extends TestCase
 
     public function test_returns_course_offerings_when_student_and_semester_exist(): void
     {
+        $semester = $this->semester();
+        $student = $this->student();
+
         $offerings = [
             new CourseOfferingDTO(
                 id: 1,
@@ -65,28 +59,16 @@ class ListCourseOfferingsUseCaseTest extends TestCase
             ),
         ];
 
-        $this->semesters
-            ->shouldReceive('findByDate')
-            ->once()
-            ->withArgs(
-                fn (CarbonImmutable $date) => $date->equalTo($this->date())
-            )
-            ->andReturn($this->semester());
+        $this->expectSemester($this->semesters, $semester);
 
-        $this->students
-            ->shouldReceive('findByUserId')
-            ->once()
-            ->withArgs(
-                fn (UserId $id) => $id->value() === self::USER_ID
-            )
-            ->andReturn($this->student());
+        $this->expectStudent($this->students, $student);
 
         $this->queryService
             ->shouldReceive('findForEnrollment')
             ->once()
             ->withArgs(
-                fn (SemesterId $semesterId, StudentId $studentId) => $semesterId->value() === self::SEMESTER_ID
-                    && $studentId->value() === self::STUDENT_ID
+                fn ($semesterId, $studentId) => $semesterId->value() === $semester->requireId()->value()
+                    && $studentId->value() === $student->requireId()->value()
             )
             ->andReturn($offerings);
 
@@ -98,21 +80,9 @@ class ListCourseOfferingsUseCaseTest extends TestCase
 
     public function test_throws_exception_when_student_does_not_exist(): void
     {
-        $this->semesters
-            ->shouldReceive('findByDate')
-            ->once()
-            ->withArgs(
-                fn (CarbonImmutable $date) => $date->equalTo($this->date())
-            )
-            ->andReturn($this->semester());
+        $this->expectSemester($this->semesters, $this->semester());
 
-        $this->students
-            ->shouldReceive('findByUserId')
-            ->once()
-            ->withArgs(
-                fn (UserId $id) => $id->value() === self::USER_ID
-            )
-            ->andReturnNull();
+        $this->expectStudent($this->students, null);
 
         $this->queryService
             ->shouldNotReceive('findForEnrollment');
@@ -124,13 +94,7 @@ class ListCourseOfferingsUseCaseTest extends TestCase
 
     public function test_throws_exception_when_semester_does_not_exist(): void
     {
-        $this->semesters
-            ->shouldReceive('findByDate')
-            ->once()
-            ->withArgs(
-                fn (CarbonImmutable $date) => $date->equalTo($this->date())
-            )
-            ->andReturnNull();
+        $this->expectSemester($this->semesters, null);
 
         $this->students
             ->shouldNotReceive('findByUserId');
@@ -147,29 +111,7 @@ class ListCourseOfferingsUseCaseTest extends TestCase
     {
         return new ListCourseOfferingsQuery(
             date: $this->date(),
-            userId: new UserId(self::USER_ID),
+            userId: $this->userId(),
         );
-    }
-
-    private function semester(): Semester
-    {
-        return Semester::reconstruct(
-            id: new SemesterId(self::SEMESTER_ID),
-            academicYear: '2025',
-            term: Term::FIRST,
-        );
-    }
-
-    private function student(): Student
-    {
-        return Student::reconstruct(
-            id: new StudentId(self::STUDENT_ID),
-            userId: new UserId(self::USER_ID),
-        );
-    }
-
-    private function date(): CarbonImmutable
-    {
-        return CarbonImmutable::parse('2025-04-01');
     }
 }
