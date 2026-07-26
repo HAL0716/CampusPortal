@@ -7,26 +7,28 @@ use App\Domain\Semester\Semester;
 use App\Domain\Semester\SemesterId;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use Carbon\CarbonImmutable;
-use Closure;
 use Mockery\MockInterface;
+use Tests\Support\Matchers\UseMatcher;
 
 trait SemesterTestHelper
 {
+    use UseMatcher;
+
     private function semester(
-        int $id = 1,
-        string $academicYear = '2025',
-        Term $term = Term::FIRST,
+        ?int $id = null,
+        ?string $academicYear = null,
+        ?Term $term = null,
     ): Semester {
         return Semester::reconstruct(
-            id: new SemesterId($id),
-            academicYear: $academicYear,
-            term: $term,
+            id: new SemesterId($id ?? 1),
+            academicYear: $academicYear ?? '2025',
+            term: $term ?? Term::FIRST,
         );
     }
 
-    private function date(string $date = '2025-04-01'): CarbonImmutable
+    private function date(?string $date = null): CarbonImmutable
     {
-        return CarbonImmutable::parse($date);
+        return CarbonImmutable::parse($date ?? '2025-04-01');
     }
 
     private function expectSemester(
@@ -39,15 +41,5 @@ trait SemesterTestHelper
             ->once()
             ->withArgs($this->dateMatcher($date ?? $this->date()))
             ->andReturn($semester);
-    }
-
-    private function semesterIdMatcher(SemesterId $expected): Closure
-    {
-        return fn (SemesterId $id) => $id->value() === $expected->value();
-    }
-
-    private function dateMatcher(CarbonImmutable $expected): Closure
-    {
-        return fn (CarbonImmutable $date) => $date->equalTo($expected);
     }
 }

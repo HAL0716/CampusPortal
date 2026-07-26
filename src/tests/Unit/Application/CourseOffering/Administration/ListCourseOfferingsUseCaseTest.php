@@ -11,6 +11,7 @@ use App\Domain\Semester\SemesterRepositoryInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
+use Tests\Support\Matchers\UseMatcher;
 use Tests\Support\Semester\SemesterTestHelper;
 use Tests\TestCase;
 
@@ -18,6 +19,7 @@ class ListCourseOfferingsUseCaseTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
     use SemesterTestHelper;
+    use UseMatcher;
 
     private SemesterRepositoryInterface&MockInterface $semesters;
 
@@ -54,7 +56,7 @@ class ListCourseOfferingsUseCaseTest extends TestCase
         $this->queryService
             ->shouldReceive('findForAdministration')
             ->once()
-            ->withArgs($this->semesterIdMatcher($semester->requireId()))
+            ->withArgs($this->idMatcher($semester->requireId()))
             ->andReturn($offerings);
 
         self::assertSame(

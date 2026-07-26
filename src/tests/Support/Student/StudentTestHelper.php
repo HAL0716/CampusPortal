@@ -6,11 +6,13 @@ use App\Domain\Student\Student;
 use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
 use App\Domain\User\UserId;
-use Closure;
 use Mockery\MockInterface;
+use Tests\Support\Matchers\UseMatcher;
 
 trait StudentTestHelper
 {
+    use UseMatcher;
+
     private function student(
         ?int $id = null,
         ?int $userId = null,
@@ -33,17 +35,7 @@ trait StudentTestHelper
         $students
             ->shouldReceive('findByUserId')
             ->once()
-            ->withArgs($this->userIdMatcher($student?->userId() ?? $this->userId()))
+            ->withArgs($this->idMatcher($student?->userId() ?? $this->userId()))
             ->andReturn($student);
-    }
-
-    private function userIdMatcher(UserId $expected): Closure
-    {
-        return fn (UserId $id) => $id->value() === $expected->value();
-    }
-
-    private function studentIdMatcher(StudentId $expected): Closure
-    {
-        return fn (StudentId $id) => $id->value() === $expected->value();
     }
 }

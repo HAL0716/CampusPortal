@@ -6,18 +6,20 @@ use App\Domain\Teacher\Teacher;
 use App\Domain\Teacher\TeacherId;
 use App\Domain\Teacher\TeacherRepositoryInterface;
 use App\Domain\User\UserId;
-use Closure;
 use Mockery\MockInterface;
+use Tests\Support\Matchers\UseMatcher;
 
 trait TeacherTestHelper
 {
+    use UseMatcher;
+
     private function teacher(
-        int $id = 20,
-        int $userId = 100,
+        ?int $id = null,
+        ?int $userId = null,
     ): Teacher {
         return Teacher::reconstruct(
-            id: new TeacherId($id),
-            userId: new UserId($userId),
+            id: new TeacherId($id ?? 20),
+            userId: new UserId($userId ?? 100),
         );
     }
 
@@ -33,17 +35,7 @@ trait TeacherTestHelper
         $teachers
             ->shouldReceive('findByUserId')
             ->once()
-            ->withArgs($this->userIdMatcher($teacher?->userId() ?? $this->userId()))
+            ->withArgs($this->idMatcher($teacher?->userId() ?? $this->userId()))
             ->andReturn($teacher);
-    }
-
-    private function userIdMatcher(UserId $expected): Closure
-    {
-        return fn (UserId $id) => $id->value() === $expected->value();
-    }
-
-    private function teacherIdMatcher(TeacherId $expected): Closure
-    {
-        return fn (TeacherId $id) => $id->value() === $expected->value();
     }
 }
