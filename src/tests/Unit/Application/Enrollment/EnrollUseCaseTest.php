@@ -4,27 +4,25 @@ namespace Tests\Unit\Application\Enrollment;
 
 use App\Application\Enrollment\EnrollCommand;
 use App\Application\Enrollment\EnrollUseCase;
-use App\Domain\CourseOffering\CourseOfferingId;
 use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
+use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Student\Exceptions\StudentNotFoundException;
-use App\Domain\Student\Student;
-use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
-use App\Domain\User\UserId;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery\Matcher\Closure;
 use Mockery\MockInterface;
+use Tests\Support\Enrollment\EnrollmentTestHelper;
+use Tests\Support\Matchers\UseMatcher;
+use Tests\Support\Student\StudentTestHelper;
 use Tests\TestCase;
 
 class EnrollUseCaseTest extends TestCase
 {
+    use EnrollmentTestHelper;
     use MockeryPHPUnitIntegration;
-
-    private const USER_ID = 10;
-
-    private const STUDENT_ID = 1;
+    use StudentTestHelper;
+    use UseMatcher;
 
     private StudentRepositoryInterface&MockInterface $students;
 
@@ -39,75 +37,74 @@ class EnrollUseCaseTest extends TestCase
         $this->students = Mockery::mock(StudentRepositoryInterface::class);
         $this->enrollments = Mockery::mock(EnrollmentRepositoryInterface::class);
 
-        $this->useCase = new EnrollUseCase($this->students, $this->enrollments);
+        $this->useCase = new EnrollUseCase(
+            $this->students,
+            $this->enrollments,
+        );
     }
 
-    public function test_can_enroll_when_student_exists(): void
+    public function test_creates_and_saves_enrollment_when_student_exists(): void
     {
-        $student = Student::reconstruct(
-            id: new StudentId(self::STUDENT_ID),
-            userId: new UserId(self::USER_ID)
-        );
+        $student = $this->student();
+        $command = $this->command();
 
-        $this->students
-            ->shouldReceive('findByUserId')
-            ->once()
-            ->with($this->userId(self::USER_ID))
-            ->andReturn($student);
+        $this->expectStudent($this->students, $student);
+        $this->expectEnrollment($this->enrollments, null, $student->requireId(), $command->courseOfferingId);
 
-        $this->enrollments
-            ->shouldReceive('find')
+        $this->enrollments->shouldReceive('save')
             ->once()
-            ->with(
-                $this->studentId(self::STUDENT_ID),
-                $this->courseOfferingId(100)
-            )
-            ->andReturn(null);
-
-        $this->enrollments
-            ->shouldReceive('save')
-            ->once()
-            ->with(Mockery::type(Enrollment::class))
+            ->withArgs(fn (Enrollment $enrollment) => $enrollment->status() === EnrollmentStatus::ENROLLED
+                && $enrollment->studentId()->value() === $student->requireId()->value()
+                && $enrollment->courseOfferingId()->value() === $command->courseOfferingId->value())
             ->andReturnUsing(fn (Enrollment $enrollment) => $enrollment);
 
-        $result = $this->useCase->execute($this->command());
+        $result = $this->useCase->execute($command);
 
-        $this->assertInstanceOf(Enrollment::class, $result);
+        self::assertSame($student->requireId()->value(), $result->studentId()->value());
+        self::assertSame(EnrollmentStatus::ENROLLED, $result->status());
     }
 
-    public function test_can_not_enroll_when_student_does_not_exist(): void
+    public function test_re_enrolls_when_existing_enrollment_exists(): void
     {
-        $this->students
-            ->shouldReceive('findByUserId')
+        $student = $this->student();
+        $command = $this->command();
+
+        $existing = $this->enrollment(
+            studentId: $student->requireId()->value(),
+            courseOfferingId: $command->courseOfferingId->value(),
+            status: EnrollmentStatus::DROPPED,
+        );
+
+        $this->expectStudent($this->students, $student);
+        $this->expectEnrollment($this->enrollments, $existing, $student->requireId(), $command->courseOfferingId);
+
+        $this->enrollments->shouldReceive('save')
             ->once()
-            ->with($this->userId(999))
-            ->andReturn(null);
+            ->withArgs(fn (Enrollment $enrollment) => $enrollment->requireId()->value() === $existing->requireId()->value()
+                && $enrollment->status() === EnrollmentStatus::ENROLLED)
+            ->andReturnUsing(fn (Enrollment $enrollment) => $enrollment);
+
+        $result = $this->useCase->execute($command);
+
+        self::assertSame($existing->requireId()->value(), $result->requireId()->value());
+        self::assertSame(EnrollmentStatus::ENROLLED, $result->status());
+    }
+
+    public function test_throws_exception_when_student_does_not_exist(): void
+    {
+        $this->expectStudent($this->students, null);
+        $this->enrollments->shouldNotReceive('find');
+        $this->enrollments->shouldNotReceive('save');
 
         $this->expectException(StudentNotFoundException::class);
-
-        $this->useCase->execute($this->command(userId: 999));
+        $this->useCase->execute($this->command());
     }
 
-    private function command(int $userId = self::USER_ID): EnrollCommand
+    private function command(): EnrollCommand
     {
         return new EnrollCommand(
-            userId: new UserId($userId),
-            courseOfferingId: new CourseOfferingId(100)
+            userId: $this->userId(),
+            courseOfferingId: $this->courseOfferingId(),
         );
-    }
-
-    private function userId(int $value): Closure
-    {
-        return Mockery::on(fn (UserId $id) => $id->value() === $value);
-    }
-
-    private function studentId(int $value): Closure
-    {
-        return Mockery::on(fn (StudentId $id) => $id->value() === $value);
-    }
-
-    private function courseOfferingId(int $value): Closure
-    {
-        return Mockery::on(fn (CourseOfferingId $id) => $id->value() === $value);
     }
 }
