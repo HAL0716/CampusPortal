@@ -41,16 +41,20 @@ final readonly class Enrollment
 
     public function drop(): self
     {
-        return new self($this->id, $this->studentId, $this->courseOfferingId, EnrollmentStatus::DROPPED);
+        return match ($this->status) {
+            EnrollmentStatus::ENROLLED => new self($this->id, $this->studentId, $this->courseOfferingId, EnrollmentStatus::DROPPED),
+            EnrollmentStatus::DROPPED => $this,
+            default => throw new InvalidEnrollmentStatusException,
+        };
     }
 
     public function complete(): self
     {
-        if ($this->status !== EnrollmentStatus::ENROLLED) {
-            throw new InvalidEnrollmentStatusException;
-        }
-
-        return new self($this->id, $this->studentId, $this->courseOfferingId, EnrollmentStatus::COMPLETED);
+        return match ($this->status) {
+            EnrollmentStatus::ENROLLED => new self($this->id, $this->studentId, $this->courseOfferingId, EnrollmentStatus::COMPLETED),
+            EnrollmentStatus::COMPLETED => $this,
+            default => throw new InvalidEnrollmentStatusException,
+        };
     }
 
     public function id(): ?EnrollmentId
