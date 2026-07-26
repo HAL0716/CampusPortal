@@ -36,9 +36,12 @@ Route::middleware('auth')->group(function () {
         ->can(PermissionType::CourseOfferingAdministration->value);
 
     Route::post('/course-offerings/{courseOffering}/enroll', [EnrollmentController::class, 'enroll'])
-        ->name('course-offerings.enroll');
+        ->name('course-offerings.enroll')
+        ->can(PermissionType::CourseOfferingEnrollment->value);
     Route::post('/course-offerings/{courseOffering}/drop', [EnrollmentController::class, 'drop'])
-        ->name('course-offerings.drop');
+        ->name('course-offerings.drop')
+        ->can(PermissionType::CourseOfferingEnrollment->value);
     Route::post('/enrollments/{enrollment}/complete', [EnrollmentController::class, 'complete'])
-        ->name('enrollments.complete');
+        ->name('enrollments.complete')
+        ->can(PermissionType::CourseOfferingManagement->value);
 });
