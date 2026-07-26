@@ -3,14 +3,14 @@
 namespace Tests\Support\Teacher;
 
 use App\Domain\Teacher\Teacher;
-use App\Domain\Teacher\TeacherId;
 use App\Domain\Teacher\TeacherRepositoryInterface;
-use App\Domain\User\UserId;
 use Mockery\MockInterface;
+use Tests\Support\Id\IdTestHelper;
 use Tests\Support\Matchers\UseMatcher;
 
 trait TeacherTestHelper
 {
+    use IdTestHelper;
     use UseMatcher;
 
     private function teacher(
@@ -18,14 +18,9 @@ trait TeacherTestHelper
         ?int $userId = null,
     ): Teacher {
         return Teacher::reconstruct(
-            id: new TeacherId($id ?? 20),
-            userId: new UserId($userId ?? 100),
+            id: $this->teacherId($id),
+            userId: $this->userId($userId),
         );
-    }
-
-    private function userId(?int $id = null): UserId
-    {
-        return new UserId($id ?? 100);
     }
 
     private function expectTeacher(

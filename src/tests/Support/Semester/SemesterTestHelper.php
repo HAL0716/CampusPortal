@@ -4,14 +4,15 @@ namespace Tests\Support\Semester;
 
 use App\Domain\Academic\Term;
 use App\Domain\Semester\Semester;
-use App\Domain\Semester\SemesterId;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use Carbon\CarbonImmutable;
 use Mockery\MockInterface;
+use Tests\Support\Id\IdTestHelper;
 use Tests\Support\Matchers\UseMatcher;
 
 trait SemesterTestHelper
 {
+    use IdTestHelper;
     use UseMatcher;
 
     private function semester(
@@ -20,7 +21,7 @@ trait SemesterTestHelper
         ?Term $term = null,
     ): Semester {
         return Semester::reconstruct(
-            id: new SemesterId($id ?? 1),
+            id: $this->semesterId($id),
             academicYear: $academicYear ?? '2025',
             term: $term ?? Term::FIRST,
         );
