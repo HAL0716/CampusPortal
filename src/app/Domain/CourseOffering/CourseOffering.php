@@ -47,4 +47,12 @@ final readonly class CourseOffering
     {
         return $this->semesterId;
     }
+
+    /**
+     * @return TeacherId[]|null
+     */
+    public function teacherIds(): ?array
+    {
+        return $this->teacherIds;
+    }
 }

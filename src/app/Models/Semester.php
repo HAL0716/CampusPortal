@@ -4,12 +4,15 @@ namespace App\Models;
 
 use App\Domain\Academic\Term;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['academic_year', 'term', 'start_date', 'end_date'])]
 class Semester extends Model
 {
+    use HasFactory;
+
     protected function casts(): array
     {
         return [
