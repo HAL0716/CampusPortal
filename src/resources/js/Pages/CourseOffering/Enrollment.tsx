@@ -40,12 +40,12 @@ function Action({ offering }: ActionProps) {
   );
 }
 
-type pageProps = {
+type PageProps = {
   offerings: EnrollmentCourseOffering[];
 };
 
 export default function Enrollment() {
-  const { flash, offerings } = usePage<SharedProps & pageProps>().props;
+  const { flash, offerings } = usePage<SharedProps & PageProps>().props;
 
   return (
     <>
