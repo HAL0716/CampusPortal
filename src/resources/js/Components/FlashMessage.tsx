@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 type FlashMessageProps = {
-  key: string;
   type: 'success' | 'error';
-  children: React.ReactNode;
+  children: ReactNode;
   duration?: number;
 };
 
