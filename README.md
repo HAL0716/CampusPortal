@@ -590,10 +590,10 @@ permissions ||--o{ role_permission : "included_in"
 
 ### submissions
 
-| 項目                        | 制約   |
-| --------------------------- | ------ |
-| (assignment_id, student_id) | UNIQUE |
-| file_path                  | NOT NULL |
+| 項目                        | 制約     |
+| --------------------------- | -------- |
+| (assignment_id, student_id) | UNIQUE   |
+| file_path                   | NOT NULL |
 
 ### grades
 
@@ -661,13 +661,13 @@ enrolled（履修中）
 
 1. **Teacher** が担当する **CourseOffering** を選択する。
 2. 資料のアップロードで **Material** を作成・保存する。
-4. `publish_date` に達すると **Student** に公開される。
+3. `publish_date` に達すると **Student** に公開される。
 
 ## 8.3 課題管理
 
 1. **Teacher** が **CourseOffering** を選択する。
 2. 課題の作成で **Assignment** を作成・保存する。
-4. `publish_date` に達すると **Student** に公開される。
+3. `publish_date` に達すると **Student** に公開される。
 
 ## 8.4 課題提出
 
@@ -684,7 +684,7 @@ enrolled（履修中）
 
 1. **Teacher** が **CourseOffering** を選択する。
 2. **Enrollment** ごとに **FinalGrade** を作成・保存する。
-4. **Enrollment** の状態を `completed` に更新する。
+3. **Enrollment** の状態を `completed` に更新する。
 
 ## 8.7 ユーザー管理
 

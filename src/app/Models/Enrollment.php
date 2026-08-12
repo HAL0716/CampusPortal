@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable(['student_id', 'course_offering_id', 'status'])]
 class Enrollment extends Model
@@ -28,5 +29,10 @@ class Enrollment extends Model
     public function courseOffering(): BelongsTo
     {
         return $this->belongsTo(CourseOffering::class);
+    }
+
+    public function finalGrade(): HasOne
+    {
+        return $this->hasOne(FinalGrade::class);
     }
 }
