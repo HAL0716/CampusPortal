@@ -6,7 +6,7 @@ use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\FinalGrade\FinalGradeType;
 use App\Domain\User\UserId;
 
-final readonly class CompleteCommand
+final readonly class FinalizeGradeCommand
 {
     public function __construct(
         public UserId $userId,

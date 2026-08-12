@@ -20,6 +20,9 @@ function Action({ student }: ActionProps) {
 
     case 'completed':
       return <span>修得済</span>;
+
+    case 'failed':
+      return <span>不合格</span>;
   }
 
   return (

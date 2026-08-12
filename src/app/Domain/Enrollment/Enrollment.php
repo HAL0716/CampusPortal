@@ -57,6 +57,15 @@ final readonly class Enrollment
         };
     }
 
+    public function fail(): self
+    {
+        return match ($this->status) {
+            EnrollmentStatus::ENROLLED => new self($this->id, $this->studentId, $this->courseOfferingId, EnrollmentStatus::FAILED),
+            EnrollmentStatus::FAILED => $this,
+            default => throw new InvalidEnrollmentStatusException,
+        };
+    }
+
     public function id(): ?EnrollmentId
     {
         return $this->id;

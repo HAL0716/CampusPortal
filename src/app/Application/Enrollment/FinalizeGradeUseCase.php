@@ -7,9 +7,10 @@ use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
 use App\Domain\FinalGrade\FinalGrade;
 use App\Domain\FinalGrade\FinalGradeRepositoryInterface;
+use App\Domain\FinalGrade\FinalGradeType;
 use App\Infrastructure\Authorization\Exceptions\UnauthorizedException;
 
-final readonly class CompleteUseCase
+final readonly class FinalizeGradeUseCase
 {
     public function __construct(
         private EnrollmentRepositoryInterface $enrollments,
@@ -17,7 +18,7 @@ final readonly class CompleteUseCase
         private EnrollmentAuthorizationServiceInterface $auth,
     ) {}
 
-    public function execute(CompleteCommand $command): void
+    public function execute(FinalizeGradeCommand $command): void
     {
         $enrollment = $this->enrollments->findById($command->enrollmentId);
         if ($enrollment === null) {
@@ -36,7 +37,7 @@ final readonly class CompleteUseCase
         );
 
         $this->enrollments->save(
-            $enrollment->complete()
+            $command->grade === FinalGradeType::F ? $enrollment->fail() : $enrollment->complete()
         );
     }
 }

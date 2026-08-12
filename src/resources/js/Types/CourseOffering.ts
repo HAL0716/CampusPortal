@@ -1,7 +1,9 @@
+type Status = 'enrolled' | 'dropped' | 'completed' | 'failed';
+
 export type Student = {
   id: number;
   studentNumber: string;
-  status: 'enrolled' | 'dropped' | 'completed';
+  status: Status;
 };
 
 type CourseOfferingBase = {
@@ -10,7 +12,7 @@ type CourseOfferingBase = {
 };
 
 export type EnrollmentCourseOffering = CourseOfferingBase & {
-  status: 'enrolled' | 'dropped' | 'completed' | null;
+  status: Status | null; // null: 履修前
 };
 
 export type ManagementCourseOffering = CourseOfferingBase & {

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Enrollment;
 
-use App\Application\Enrollment\CompleteCommand;
+use App\Application\Enrollment\FinalizeGradeCommand;
 use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\FinalGrade\FinalGradeType;
 use App\Domain\User\UserId;
@@ -10,7 +10,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CompleteRequest extends FormRequest
+class FinalizeGradeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,9 +32,9 @@ class CompleteRequest extends FormRequest
         ];
     }
 
-    public function toCommand(UserId $userId): CompleteCommand
+    public function toCommand(UserId $userId): FinalizeGradeCommand
     {
-        return new CompleteCommand(
+        return new FinalizeGradeCommand(
             userId: $userId,
             enrollmentId: new EnrollmentId($this->route('enrollment')),
             grade: FinalGradeType::from($this->validated('grade')),

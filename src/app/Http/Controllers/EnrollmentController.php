@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Application\Authentication\AuthenticationServiceInterface;
-use App\Application\Enrollment\CompleteUseCase;
 use App\Application\Enrollment\DropUseCase;
 use App\Application\Enrollment\EnrollUseCase;
+use App\Application\Enrollment\FinalizeGradeUseCase;
 use App\Http\Controllers\Concerns\HasFlashMessages;
-use App\Http\Requests\Enrollment\CompleteRequest;
 use App\Http\Requests\Enrollment\DropRequest;
 use App\Http\Requests\Enrollment\EnrollRequest;
+use App\Http\Requests\Enrollment\FinalizeGradeRequest;
 use Illuminate\Http\RedirectResponse;
 use Throwable;
 
@@ -51,7 +51,7 @@ final class EnrollmentController extends Controller
         }
     }
 
-    public function complete(CompleteRequest $request, CompleteUseCase $useCase): RedirectResponse
+    public function complete(FinalizeGradeRequest $request, FinalizeGradeUseCase $useCase): RedirectResponse
     {
         try {
             $useCase->execute(

@@ -18,13 +18,13 @@ function Action({ offering }: ActionProps) {
       return <span>修得済</span>;
   }
 
-  const enrolling = offering.status === null;
+  const enrolling = offering.status === null || offering.status === 'failed';
 
   const href = route(enrolling ? 'course-offerings.enroll' : 'course-offerings.drop', {
     courseOffering: offering.id,
   });
 
-  const label = enrolling ? '履修登録' : '履修取消';
+  const label = enrolling ? (offering.status === 'failed' ? '再履修' : '履修登録') : '履修取消';
 
   const buttonClass = enrolling ? 'bg-blue-600 hover:bg-blue-700' : 'bg-red-600 hover:bg-red-700';
 

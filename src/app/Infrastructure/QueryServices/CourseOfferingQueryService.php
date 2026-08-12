@@ -12,6 +12,7 @@ use App\Domain\Semester\SemesterId;
 use App\Domain\Student\StudentId;
 use App\Domain\Teacher\TeacherId;
 use App\Models\CourseOffering;
+use App\Models\Enrollment;
 use Illuminate\Database\Eloquent\Builder;
 
 final class CourseOfferingQueryService implements CourseOfferingQueryServiceInterface
@@ -34,38 +35,25 @@ final class CourseOfferingQueryService implements CourseOfferingQueryServiceInte
 
     public function findForEnrollment(SemesterId $semesterId, StudentId $studentId): array
     {
-        $completedCourseIds = CourseOffering::query()
-            ->join('enrollments', 'enrollments.course_offering_id', '=', 'course_offerings.id')
+        $latestEnrollments = Enrollment::query()
+            ->join('course_offerings', 'course_offerings.id', '=', 'enrollments.course_offering_id')
             ->where('enrollments.student_id', $studentId->value())
-            ->where('enrollments.status', EnrollmentStatus::COMPLETED->value)
-            ->pluck('course_offerings.course_id');
+            ->selectRaw('MAX(enrollments.id) as id, course_offerings.course_id')
+            ->groupBy('course_offerings.course_id');
 
         return $this->baseQuery($semesterId)
             ->join('courses', 'courses.id', '=', 'course_offerings.course_id')
-            ->leftJoin('enrollments', function ($join) use ($studentId) {
-                $join->on('enrollments.course_offering_id', '=', 'course_offerings.id')
-                    ->where('enrollments.student_id', $studentId->value());
+            ->leftJoinSub($latestEnrollments, 'latest_enrollments', function ($join) {
+                $join->on('latest_enrollments.course_id', '=', 'course_offerings.course_id');
             })
-            ->select(
-                'course_offerings.id',
-                'course_offerings.course_id',
-                'courses.name',
-                'enrollments.status',
-            )
+            ->leftJoin('enrollments', 'enrollments.id', '=', 'latest_enrollments.id')
+            ->select('course_offerings.id', 'course_offerings.course_id', 'courses.name', 'enrollments.status')
             ->get()
-            ->map(function ($offering) use ($completedCourseIds) {
-                $status = $completedCourseIds->contains($offering->course_id)
-                    ? EnrollmentStatus::COMPLETED
-                    : ($offering->status
-                        ? EnrollmentStatus::from($offering->status)
-                        : null);
-
-                return new EnrollmentDTO(
-                    id: $offering->id,
-                    name: $offering->name,
-                    status: $status,
-                );
-            })
+            ->map(fn ($offering) => new EnrollmentDTO(
+                id: $offering->id,
+                name: $offering->name,
+                status: $offering->status ? EnrollmentStatus::from($offering->status) : null,
+            ))
             ->all();
     }
 

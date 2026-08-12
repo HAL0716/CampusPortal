@@ -564,10 +564,10 @@ permissions ||--o{ role_permission : "included_in"
 
 ### enrollments
 
-| 項目                             | 制約                                      |
-| -------------------------------- | ----------------------------------------- |
-| (student_id, course_offering_id) | UNIQUE                                    |
-| status                           | ENUM (`enrolled`, `dropped`, `completed`) |
+| 項目                             | 制約                                                |
+| -------------------------------- | --------------------------------------------------- |
+| (student_id, course_offering_id) | UNIQUE                                              |
+| status                           | ENUM (`enrolled`, `dropped`, `completed`, `failed`) |
 
 ### materials
 
@@ -643,7 +643,8 @@ active（在職）
 ```text
 enrolled（履修中）
 ├── dropped（履修取消）
-└── completed（履修完了）
+├── completed（合格）
+└── failed（不合格）
 ```
 
 # 8. 業務フロー

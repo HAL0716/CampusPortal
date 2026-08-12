@@ -3,8 +3,8 @@
 namespace Tests\Unit\Application\Enrollment;
 
 use App\Application\Authorization\EnrollmentAuthorizationServiceInterface;
-use App\Application\Enrollment\CompleteCommand;
-use App\Application\Enrollment\CompleteUseCase;
+use App\Application\Enrollment\FinalizeGradeCommand;
+use App\Application\Enrollment\FinalizeGradeUseCase;
 use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentStatus;
@@ -21,7 +21,7 @@ use Tests\Support\Id\IdTestHelper;
 use Tests\Support\Matchers\UseMatcher;
 use Tests\TestCase;
 
-class CompleteUseCaseTest extends TestCase
+class FinalizeGradeUseCaseTest extends TestCase
 {
     use EnrollmentTestHelper;
     use IdTestHelper;
@@ -34,7 +34,7 @@ class CompleteUseCaseTest extends TestCase
 
     private EnrollmentAuthorizationServiceInterface&MockInterface $auth;
 
-    private CompleteUseCase $useCase;
+    private FinalizeGradeUseCase $useCase;
 
     protected function setUp(): void
     {
@@ -44,7 +44,7 @@ class CompleteUseCaseTest extends TestCase
         $this->finalGrades = Mockery::mock(FinalGradeRepositoryInterface::class);
         $this->auth = Mockery::mock(EnrollmentAuthorizationServiceInterface::class);
 
-        $this->useCase = new CompleteUseCase(
+        $this->useCase = new FinalizeGradeUseCase(
             $this->enrollments,
             $this->finalGrades,
             $this->auth,
@@ -111,9 +111,9 @@ class CompleteUseCaseTest extends TestCase
         $this->useCase->execute($command);
     }
 
-    private function command(): CompleteCommand
+    private function command(): FinalizeGradeCommand
     {
-        return new CompleteCommand(
+        return new FinalizeGradeCommand(
             userId: $this->userId(),
             enrollmentId: $this->enrollment()->requireId(),
             grade: FinalGradeType::A,
