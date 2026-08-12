@@ -34,6 +34,6 @@ final class EnrollmentAuthorizationService implements EnrollmentAuthorizationSer
             return false;
         }
 
-        return $courseOffering->hasTeacher($teacher->id());
+        return $courseOffering->hasTeacher($teacher->requireId());
     }
 }
