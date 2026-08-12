@@ -7,10 +7,12 @@ use App\Application\Authorization\EnrollmentAuthorizationServiceInterface;
 use App\Application\Authorization\PermissionServiceInterface;
 use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Application\Enrollment\EnrollmentDuplicateDetectorInterface;
+use App\Application\FinalGrade\FinalGradeDuplicateDetectorInterface;
 use App\Application\Security\PasswordHasherInterface;
 use App\Application\User\UserDuplicateDetectorInterface;
 use App\Domain\CourseOffering\CourseOfferingRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
+use App\Domain\FinalGrade\FinalGradeRepositoryInterface;
 use App\Domain\Permission\PermissionRepositoryInterface;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use App\Domain\Student\StudentRepositoryInterface;
@@ -20,12 +22,15 @@ use App\Infrastructure\Authentication\AuthenticationService;
 use App\Infrastructure\Authorization\EnrollmentAuthorizationService;
 use App\Infrastructure\Authorization\PermissionService;
 use App\Infrastructure\Database\Mysql\MysqlEnrollmentDuplicateDetector;
+use App\Infrastructure\Database\Mysql\MysqlFinalGradeDuplicateDetector;
 use App\Infrastructure\Database\Mysql\MysqlUserDuplicateDetector;
 use App\Infrastructure\Database\Sqlite\SqliteEnrollmentDuplicateDetector;
+use App\Infrastructure\Database\Sqlite\SqliteFinalGradeDuplicateDetector;
 use App\Infrastructure\Database\Sqlite\SqliteUserDuplicateDetector;
 use App\Infrastructure\QueryServices\CourseOfferingQueryService;
 use App\Infrastructure\Repositories\CourseOfferingRepository;
 use App\Infrastructure\Repositories\EnrollmentRepository;
+use App\Infrastructure\Repositories\FinalGradeRepository;
 use App\Infrastructure\Repositories\PermissionRepository;
 use App\Infrastructure\Repositories\SemesterRepository;
 use App\Infrastructure\Repositories\StudentRepository;
@@ -55,6 +60,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(EnrollmentRepositoryInterface::class, EnrollmentRepository::class);
 
+        $this->app->bind(FinalGradeRepositoryInterface::class, FinalGradeRepository::class);
+
         $this->app->bind(
             UserDuplicateDetectorInterface::class,
             fn ($app) => match (config('database.default')) {
@@ -68,6 +75,14 @@ class AppServiceProvider extends ServiceProvider
             fn ($app) => match (config('database.default')) {
                 'sqlite' => $app->make(SqliteEnrollmentDuplicateDetector::class),
                 default => $app->make(MysqlEnrollmentDuplicateDetector::class),
+            }
+        );
+
+        $this->app->bind(
+            FinalGradeDuplicateDetectorInterface::class,
+            fn ($app) => match (config('database.default')) {
+                'sqlite' => $app->make(SqliteFinalGradeDuplicateDetector::class),
+                default => $app->make(MysqlFinalGradeDuplicateDetector::class),
             }
         );
 

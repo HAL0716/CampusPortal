@@ -9,6 +9,9 @@ use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
+use App\Domain\FinalGrade\FinalGrade;
+use App\Domain\FinalGrade\FinalGradeRepositoryInterface;
+use App\Domain\FinalGrade\FinalGradeType;
 use App\Infrastructure\Authorization\Exceptions\UnauthorizedException;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -27,6 +30,8 @@ class CompleteUseCaseTest extends TestCase
 
     private EnrollmentRepositoryInterface&MockInterface $enrollments;
 
+    private FinalGradeRepositoryInterface&MockInterface $finalGrades;
+
     private EnrollmentAuthorizationServiceInterface&MockInterface $auth;
 
     private CompleteUseCase $useCase;
@@ -36,15 +41,17 @@ class CompleteUseCaseTest extends TestCase
         parent::setUp();
 
         $this->enrollments = Mockery::mock(EnrollmentRepositoryInterface::class);
+        $this->finalGrades = Mockery::mock(FinalGradeRepositoryInterface::class);
         $this->auth = Mockery::mock(EnrollmentAuthorizationServiceInterface::class);
 
         $this->useCase = new CompleteUseCase(
             $this->enrollments,
+            $this->finalGrades,
             $this->auth,
         );
     }
 
-    public function test_completes_and_saves_enrollment_when_authorized(): void
+    public function test_completes_and_saves_enrollment_and_final_grade_when_authorized(): void
     {
         $enrollment = $this->enrollment();
         $command = $this->command();
@@ -61,6 +68,14 @@ class CompleteUseCaseTest extends TestCase
             ->withArgs(fn (Enrollment $enrollment) => $enrollment->status() === EnrollmentStatus::COMPLETED)
             ->andReturnUsing(fn (Enrollment $enrollment) => $enrollment);
 
+        $this->finalGrades->shouldReceive('save')
+            ->once()
+            ->withArgs(
+                fn (FinalGrade $finalGrade) => $finalGrade->enrollmentId() === $command->enrollmentId
+                    && $finalGrade->grade() === $command->grade
+            )
+            ->andReturnUsing(fn (FinalGrade $finalGrade) => $finalGrade);
+
         $this->useCase->execute($command);
     }
 
@@ -71,6 +86,7 @@ class CompleteUseCaseTest extends TestCase
         $this->expectEnrollmentById($this->enrollments, null);
         $this->auth->shouldNotReceive('canManage');
         $this->enrollments->shouldNotReceive('save');
+        $this->finalGrades->shouldNotReceive('save');
 
         $this->expectException(EnrollmentNotFoundException::class);
         $this->useCase->execute($command);
@@ -89,6 +105,7 @@ class CompleteUseCaseTest extends TestCase
             ->andReturnFalse();
 
         $this->enrollments->shouldNotReceive('save');
+        $this->finalGrades->shouldNotReceive('save');
 
         $this->expectException(UnauthorizedException::class);
         $this->useCase->execute($command);
@@ -99,6 +116,7 @@ class CompleteUseCaseTest extends TestCase
         return new CompleteCommand(
             userId: $this->userId(),
             enrollmentId: $this->enrollment()->requireId(),
+            grade: FinalGradeType::A,
         );
     }
 }

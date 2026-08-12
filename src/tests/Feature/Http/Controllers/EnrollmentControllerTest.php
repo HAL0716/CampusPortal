@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Domain\Enrollment\EnrollmentStatus;
+use App\Domain\FinalGrade\FinalGradeType;
 use App\Domain\Permission\PermissionType;
 use App\Models\Course;
 use App\Models\CourseOffering;
@@ -79,7 +80,9 @@ final class EnrollmentControllerTest extends TestCase
         ]);
 
         $this->actingAs($user);
-        $response = $this->post(route('enrollments.complete', $enrollment));
+        $response = $this->post(route('enrollments.complete', $enrollment), [
+            'grade' => FinalGradeType::A->value,
+        ]);
 
         $response->assertRedirect();
         $response->assertSessionHas('success');
@@ -87,6 +90,11 @@ final class EnrollmentControllerTest extends TestCase
         $this->assertDatabaseHas('enrollments', [
             'id' => $enrollment->id,
             'status' => EnrollmentStatus::COMPLETED,
+        ]);
+
+        $this->assertDatabaseHas('final_grades', [
+            'enrollment_id' => $enrollment->id,
+            'grade' => FinalGradeType::A->value,
         ]);
     }
 

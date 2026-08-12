@@ -1,4 +1,4 @@
-import { Link, usePage } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
 import FlashMessage from '@/Components/FlashMessage';
@@ -10,6 +10,10 @@ type ActionProps = {
 };
 
 function Action({ student }: ActionProps) {
+  const { data, setData, post, processing } = useForm({
+    grade: '',
+  });
+
   switch (student.status) {
     case 'dropped':
       return <span>取消済</span>;
@@ -19,14 +23,37 @@ function Action({ student }: ActionProps) {
   }
 
   return (
-    <Link
-      href={route('enrollments.complete', { enrollment: student.id })}
-      method="post"
-      as="button"
-      className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
-    >
-      修得完了
-    </Link>
+    <div className="flex items-center gap-2">
+      <select
+        value={data.grade}
+        onChange={(e) => setData('grade', e.target.value)}
+        className="rounded border px-3 py-2"
+      >
+        <option value="" disabled>
+          成績
+        </option>
+        <option value="S">S</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="F">F</option>
+      </select>
+
+      <button
+        type="button"
+        disabled={!data.grade || processing}
+        onClick={() =>
+          post(
+            route('enrollments.complete', {
+              enrollment: student.id,
+            }),
+          )
+        }
+        className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700 disabled:opacity-50"
+      >
+        修得完了
+      </button>
+    </div>
   );
 }
 

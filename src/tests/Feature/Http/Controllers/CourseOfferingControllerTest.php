@@ -2,20 +2,40 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Domain\Academic\Term;
 use App\Domain\Permission\PermissionType;
 use App\Models\CourseOffering;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\Semester;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
+use Tests\Support\Clock\UseClock;
 use Tests\TestCase;
 
 final class CourseOfferingControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use UseClock;
+
+    private const DATE = '2025-04-01';
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->useClock(self::DATE);
+
+        Semester::create([
+            'academic_year' => '2025',
+            'term' => Term::FIRST,
+            'start_date' => self::DATE,
+            'end_date' => '2025-07-31',
+        ]);
+    }
 
     public function test_can_render_enrollment_page(): void
     {
