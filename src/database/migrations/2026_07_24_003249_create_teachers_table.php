@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('position_id')->nullable()->constrained()->restrictOnDelete();
-            $table->string('status')->default(TeacherStatus::ACTIVE);
+            $table->string('status')->default(TeacherStatus::ACTIVE->value);
             $table->timestamps();
 
             $table->unique('user_id');

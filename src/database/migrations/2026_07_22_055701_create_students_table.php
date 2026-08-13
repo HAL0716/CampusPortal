@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('department_id')->constrained()->restrictOnDelete();
             $table->string('student_number')->unique();
-            $table->string('status')->default(StudentStatus::ACTIVE);
+            $table->string('status')->default(StudentStatus::ACTIVE->value);
             $table->timestamps();
 
             $table->unique('user_id');
