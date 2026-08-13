@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Domain\Position\PositionType;
 use App\Domain\Role\RoleType;
-use App\Domain\Teacher\TeacherStatus;
+use App\Domain\Teacher\Enums\TeacherStatus;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\Role;

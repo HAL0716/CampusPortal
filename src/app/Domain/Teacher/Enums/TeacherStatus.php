@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Teacher;
+namespace App\Domain\Teacher\Enums;
 
 enum TeacherStatus: string
 {
