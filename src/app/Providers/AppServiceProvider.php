@@ -35,7 +35,7 @@ use App\Infrastructure\Repositories\FinalGradeRepository;
 use App\Infrastructure\Repositories\PermissionRepository;
 use App\Infrastructure\Repositories\SemesterRepository;
 use App\Infrastructure\Repositories\StudentRepository;
-use App\Infrastructure\Repositories\TeacherRepository;
+use App\Infrastructure\Repositories\EloquentTeacherRepository;
 use App\Infrastructure\Security\PasswordHasher;
 use Illuminate\Support\ServiceProvider;
 
@@ -52,7 +52,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(StudentRepositoryInterface::class, StudentRepository::class);
 
-        $this->app->bind(TeacherRepositoryInterface::class, TeacherRepository::class);
+        $this->app->bind(TeacherRepositoryInterface::class, EloquentTeacherRepository::class);
 
         $this->app->bind(SemesterRepositoryInterface::class, SemesterRepository::class);
 

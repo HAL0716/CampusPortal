@@ -8,7 +8,7 @@ use App\Domain\Teacher\ValueObjects\TeacherId;
 use App\Domain\User\ValueObjects\UserId;
 use App\Models\Teacher as TeacherModel;
 
-final class TeacherRepository implements TeacherRepositoryInterface
+final class EloquentTeacherRepository implements TeacherRepositoryInterface
 {
     public function findByUserId(UserId $userId): ?Teacher
     {

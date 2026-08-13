@@ -4,22 +4,22 @@ namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\Teacher\Entities\Teacher;
 use App\Domain\User\ValueObjects\UserId;
-use App\Infrastructure\Repositories\TeacherRepository;
+use App\Infrastructure\Repositories\EloquentTeacherRepository;
 use App\Models\Teacher as TeacherModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-final class TeacherRepositoryTest extends TestCase
+final class EloquentTeacherRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    private TeacherRepository $repository;
+    private EloquentTeacherRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->repository = $this->app->make(TeacherRepository::class);
+        $this->repository = $this->app->make(EloquentTeacherRepository::class);
     }
 
     public function test_can_find_teacher_by_user_id(): void
