@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\User;
+namespace App\Domain\User\ValueObjects;
 
 use App\Domain\User\Exceptions\InvalidUserPasswordException;
 

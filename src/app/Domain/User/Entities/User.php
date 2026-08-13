@@ -3,9 +3,9 @@
 namespace App\Domain\User\Entities;
 
 use App\Domain\User\Exceptions\UserIdNotAssignedException;
-use App\Domain\User\UserPassword;
 use App\Domain\User\ValueObjects\UserEmail;
 use App\Domain\User\ValueObjects\UserId;
+use App\Domain\User\ValueObjects\UserPassword;
 
 final class User
 {
