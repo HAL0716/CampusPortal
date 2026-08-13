@@ -22,7 +22,7 @@ trait CreatesDomainFinalGrade
     }
 
     protected function createFinalGrade(
-        ?EnrollmentId $enrollmentId = null,
+        ?int $enrollmentId = null,
         ?FinalGradeType $grade = null,
     ): FinalGrade {
         return FinalGrade::create(
@@ -33,7 +33,7 @@ trait CreatesDomainFinalGrade
 
     protected function reconstructFinalGrade(
         ?int $id = null,
-        ?EnrollmentId $enrollmentId = null,
+        ?int $enrollmentId = null,
         ?FinalGradeType $grade = null,
     ): FinalGrade {
         return FinalGrade::reconstruct(
