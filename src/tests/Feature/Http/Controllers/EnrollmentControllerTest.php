@@ -35,7 +35,7 @@ final class EnrollmentControllerTest extends TestCase
         $this->assertDatabaseHas('enrollments', [
             'student_id' => $user->student->id,
             'course_offering_id' => $courseOffering->id,
-            'status' => EnrollmentStatus::ENROLLED,
+            'status' => EnrollmentStatus::ENROLLED->value,
         ]);
     }
 
@@ -58,7 +58,7 @@ final class EnrollmentControllerTest extends TestCase
 
         $this->assertDatabaseHas('enrollments', [
             'id' => $enrollment->id,
-            'status' => EnrollmentStatus::DROPPED,
+            'status' => EnrollmentStatus::DROPPED->value,
         ]);
     }
 
