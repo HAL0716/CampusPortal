@@ -9,33 +9,45 @@ type ActionProps = {
   offering: EnrollmentCourseOffering;
 };
 
-function Action({ offering }: ActionProps) {
-  switch (offering.status) {
-    case 'dropped':
-      return <span>取消済</span>;
+const actionConfig = {
+  enrolled: {
+    route: 'course-offerings.drop',
+    label: '取消',
+    className: 'bg-red-600 hover:bg-red-700',
+  },
+  dropped: {
+    route: 'course-offerings.enroll',
+    label: '再登録',
+    className: 'bg-blue-600 hover:bg-blue-700',
+  },
+  failed: {
+    route: 'course-offerings.enroll',
+    label: '再履修',
+    className: 'bg-blue-600 hover:bg-blue-700',
+  },
+  default: {
+    route: 'course-offerings.enroll',
+    label: '登録',
+    className: 'bg-blue-600 hover:bg-blue-700',
+  },
+} as const;
 
-    case 'completed':
-      return <span>修得済</span>;
+function Action({ offering }: ActionProps) {
+  if (offering.status === 'completed') {
+    return <span>修得済</span>;
   }
 
-  const enrolling = offering.status === null || offering.status === 'failed';
-
-  const href = route(enrolling ? 'course-offerings.enroll' : 'course-offerings.drop', {
-    courseOffering: offering.id,
-  });
-
-  const label = enrolling ? (offering.status === 'failed' ? '再履修' : '履修登録') : '履修取消';
-
-  const buttonClass = enrolling ? 'bg-blue-600 hover:bg-blue-700' : 'bg-red-600 hover:bg-red-700';
+  const status = offering.status ?? 'default';
+  const action = actionConfig[status];
 
   return (
     <Link
-      href={href}
+      href={route(action.route, { courseOffering: offering.id })}
       method="post"
       as="button"
-      className={`rounded px-4 py-2 text-white ${buttonClass}`}
+      className={`rounded px-4 py-2 text-white ${action.className}`}
     >
-      {label}
+      {action.label}
     </Link>
   );
 }
