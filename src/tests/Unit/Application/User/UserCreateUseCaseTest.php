@@ -6,7 +6,7 @@ use App\Application\User\UserCreateCommand;
 use App\Application\User\UserCreateUseCase;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
-use App\Domain\User\Repositories\UserRepositoryInterface;
+use App\Domain\User\Repositories\UserRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
@@ -18,13 +18,13 @@ final class UserCreateUseCaseTest extends TestCase
     use CreatesDomainUser;
     use MockeryPHPUnitIntegration;
 
-    private UserRepositoryInterface&MockInterface $users;
+    private UserRepository&MockInterface $users;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->users = Mockery::mock(UserRepositoryInterface::class);
+        $this->users = Mockery::mock(UserRepository::class);
     }
 
     public function test_creates_user(): void

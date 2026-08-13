@@ -4,7 +4,7 @@ namespace Tests\Feature\Infrastructure\Authentication;
 
 use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
-use App\Domain\User\Repositories\UserRepositoryInterface;
+use App\Domain\User\Repositories\UserRepository;
 use App\Domain\User\ValueObjects\UserId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Support\User\CreatesModelUser;
@@ -17,14 +17,14 @@ final class AuthenticationServiceTest extends TestCase
 
     private AuthenticationServiceInterface $auth;
 
-    private UserRepositoryInterface $users;
+    private UserRepository $users;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->auth = $this->app->make(AuthenticationServiceInterface::class);
-        $this->users = $this->app->make(UserRepositoryInterface::class);
+        $this->users = $this->app->make(UserRepository::class);
     }
 
     public function test_login_user(): void

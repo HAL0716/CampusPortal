@@ -6,7 +6,7 @@ use App\Domain\User\Entities\User;
 use App\Domain\User\ValueObjects\UserEmail;
 use App\Domain\User\ValueObjects\UserId;
 
-interface UserRepositoryInterface
+interface UserRepository
 {
     public function save(User $user): User;
 

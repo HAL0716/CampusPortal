@@ -17,7 +17,7 @@ use App\Domain\Permission\PermissionRepositoryInterface;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use App\Domain\Student\StudentRepositoryInterface;
 use App\Domain\Teacher\TeacherRepositoryInterface;
-use App\Domain\User\Repositories\UserRepositoryInterface;
+use App\Domain\User\Repositories\UserRepository;
 use App\Infrastructure\Authentication\AuthenticationService;
 use App\Infrastructure\Authorization\EnrollmentAuthorizationService;
 use App\Infrastructure\Authorization\PermissionService;
@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(UserRepositoryInterface::class, EloquentUserRepository::class);
+        $this->app->bind(UserRepository::class, EloquentUserRepository::class);
 
         $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
 

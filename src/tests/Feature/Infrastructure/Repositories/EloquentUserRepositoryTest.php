@@ -4,7 +4,7 @@ namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use App\Domain\User\Exceptions\UserNotFoundException;
-use App\Domain\User\Repositories\UserRepositoryInterface;
+use App\Domain\User\Repositories\UserRepository;
 use App\Models\User as UserModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -16,13 +16,13 @@ final class EloquentUserRepositoryTest extends TestCase
     use CreatesDomainUser;
     use RefreshDatabase;
 
-    private UserRepositoryInterface $users;
+    private UserRepository $users;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->users = $this->app->make(UserRepositoryInterface::class);
+        $this->users = $this->app->make(UserRepository::class);
     }
 
     public function test_saves_user(): void

@@ -3,7 +3,7 @@
 namespace Tests\Support\User;
 
 use App\Domain\User\Entities\User;
-use App\Domain\User\Repositories\UserRepositoryInterface;
+use App\Domain\User\Repositories\UserRepository;
 use App\Domain\User\ValueObjects\UserId;
 use App\Models\User as UserModel;
 use Illuminate\Support\Facades\Hash;
@@ -27,6 +27,6 @@ trait CreatesModelUser
     protected function toDomainUser(
         UserModel $user
     ): User {
-        return app(UserRepositoryInterface::class)->findById(new UserId($user->id));
+        return app(UserRepository::class)->findById(new UserId($user->id));
     }
 }

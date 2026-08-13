@@ -8,14 +8,14 @@ use App\Application\User\UserDuplicateTarget;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use App\Domain\User\Exceptions\UserNotFoundException;
-use App\Domain\User\Repositories\UserRepositoryInterface;
+use App\Domain\User\Repositories\UserRepository;
 use App\Domain\User\ValueObjects\UserEmail;
 use App\Domain\User\ValueObjects\UserId;
 use App\Domain\User\ValueObjects\UserPassword;
 use App\Models\User as UserModel;
 use Illuminate\Database\QueryException;
 
-final class EloquentUserRepository implements UserRepositoryInterface
+final class EloquentUserRepository implements UserRepository
 {
     public function __construct(
         private readonly PasswordHasherInterface $hasher,

@@ -8,7 +8,7 @@ use App\Application\Authentication\LoginUseCase;
 use App\Application\Security\PasswordHasherInterface;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
-use App\Domain\User\Repositories\UserRepositoryInterface;
+use App\Domain\User\Repositories\UserRepository;
 use App\Domain\User\ValueObjects\UserEmail;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -21,7 +21,7 @@ final class LoginUseCaseTest extends TestCase
     use CreatesDomainUser;
     use MockeryPHPUnitIntegration;
 
-    private UserRepositoryInterface&MockInterface $users;
+    private UserRepository&MockInterface $users;
 
     private AuthenticationServiceInterface&MockInterface $auth;
 
@@ -31,7 +31,7 @@ final class LoginUseCaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->users = Mockery::mock(UserRepositoryInterface::class);
+        $this->users = Mockery::mock(UserRepository::class);
         $this->auth = Mockery::mock(AuthenticationServiceInterface::class);
         $this->hasher = Mockery::mock(PasswordHasherInterface::class);
     }

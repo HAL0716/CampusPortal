@@ -5,7 +5,7 @@ namespace App\Infrastructure\Authentication;
 use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
-use App\Domain\User\Repositories\UserRepositoryInterface;
+use App\Domain\User\Repositories\UserRepository;
 use App\Domain\User\ValueObjects\UserId;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +16,7 @@ final class AuthenticationService implements AuthenticationServiceInterface
     private bool $userResolved = false;
 
     public function __construct(
-        private UserRepositoryInterface $users,
+        private UserRepository $users,
     ) {}
 
     public function login(User $user): void
