@@ -16,7 +16,7 @@ use App\Domain\FinalGrade\FinalGradeRepositoryInterface;
 use App\Domain\Permission\PermissionRepositoryInterface;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use App\Domain\Student\StudentRepositoryInterface;
-use App\Domain\Teacher\Repositories\TeacherRepositoryInterface;
+use App\Domain\Teacher\Repositories\TeacherRepository;
 use App\Domain\User\Repositories\UserRepository;
 use App\Infrastructure\Authentication\AuthenticationService;
 use App\Infrastructure\Authorization\EnrollmentAuthorizationService;
@@ -52,7 +52,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(StudentRepositoryInterface::class, StudentRepository::class);
 
-        $this->app->bind(TeacherRepositoryInterface::class, EloquentTeacherRepository::class);
+        $this->app->bind(TeacherRepository::class, EloquentTeacherRepository::class);
 
         $this->app->bind(SemesterRepositoryInterface::class, SemesterRepository::class);
 
