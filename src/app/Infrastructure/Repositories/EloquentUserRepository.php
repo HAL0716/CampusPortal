@@ -15,7 +15,7 @@ use App\Domain\User\ValueObjects\UserPassword;
 use App\Models\User as UserModel;
 use Illuminate\Database\QueryException;
 
-final class UserRepository implements UserRepositoryInterface
+final class EloquentUserRepository implements UserRepositoryInterface
 {
     public function __construct(
         private readonly PasswordHasherInterface $hasher,

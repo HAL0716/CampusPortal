@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Tests\Support\User\CreatesDomainUser;
 use Tests\TestCase;
 
-final class UserRepositoryTest extends TestCase
+final class EloquentUserRepositoryTest extends TestCase
 {
     use CreatesDomainUser;
     use RefreshDatabase;
