@@ -8,7 +8,7 @@ use App\Domain\Student\ValueObjects\StudentId;
 use App\Domain\User\ValueObjects\UserId;
 use App\Models\Student as StudentModel;
 
-final class StudentRepository implements StudentRepositoryInterface
+final class EloquentStudentRepository implements StudentRepositoryInterface
 {
     public function findByUserId(UserId $userId): ?Student
     {

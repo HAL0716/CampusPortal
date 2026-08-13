@@ -4,22 +4,22 @@ namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\Student\Entities\Student;
 use App\Domain\User\ValueObjects\UserId;
-use App\Infrastructure\Repositories\StudentRepository;
+use App\Infrastructure\Repositories\EloquentStudentRepository;
 use App\Models\Student as StudentModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-final class StudentRepositoryTest extends TestCase
+final class EloquentStudentRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    private StudentRepository $repository;
+    private EloquentStudentRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->repository = $this->app->make(StudentRepository::class);
+        $this->repository = $this->app->make(EloquentStudentRepository::class);
     }
 
     public function test_can_find_student_by_user_id(): void
