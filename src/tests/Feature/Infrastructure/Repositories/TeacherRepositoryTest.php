@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Infrastructure\Repositories;
 
-use App\Domain\Teacher\Teacher;
+use App\Domain\Teacher\Entities\Teacher;
 use App\Domain\User\ValueObjects\UserId;
 use App\Infrastructure\Repositories\TeacherRepository;
 use App\Models\Teacher as TeacherModel;

@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Repositories;
 
-use App\Domain\Teacher\Teacher;
+use App\Domain\Teacher\Entities\Teacher;
 use App\Domain\Teacher\TeacherId;
 use App\Domain\Teacher\TeacherRepositoryInterface;
 use App\Domain\User\ValueObjects\UserId;

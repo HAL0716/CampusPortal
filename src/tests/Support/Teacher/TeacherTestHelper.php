@@ -2,7 +2,7 @@
 
 namespace Tests\Support\Teacher;
 
-use App\Domain\Teacher\Teacher;
+use App\Domain\Teacher\Entities\Teacher;
 use App\Domain\Teacher\TeacherRepositoryInterface;
 use Mockery\MockInterface;
 use Tests\Support\Id\IdTestHelper;
