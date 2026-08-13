@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Repositories;
 
 use App\Domain\Teacher\Entities\Teacher;
-use App\Domain\Teacher\TeacherRepositoryInterface;
+use App\Domain\Teacher\Repositories\TeacherRepositoryInterface;
 use App\Domain\Teacher\ValueObjects\TeacherId;
 use App\Domain\User\ValueObjects\UserId;
 use App\Models\Teacher as TeacherModel;

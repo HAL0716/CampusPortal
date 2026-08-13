@@ -11,7 +11,7 @@ use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use App\Domain\Teacher\Exceptions\TeacherNotFoundException;
-use App\Domain\Teacher\TeacherRepositoryInterface;
+use App\Domain\Teacher\Repositories\TeacherRepositoryInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;

@@ -6,7 +6,7 @@ use App\Application\Authorization\EnrollmentAuthorizationServiceInterface;
 use App\Domain\CourseOffering\CourseOfferingRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
-use App\Domain\Teacher\TeacherRepositoryInterface;
+use App\Domain\Teacher\Repositories\TeacherRepositoryInterface;
 use App\Domain\User\ValueObjects\UserId;
 
 final class EnrollmentAuthorizationService implements EnrollmentAuthorizationServiceInterface

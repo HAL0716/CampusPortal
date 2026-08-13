@@ -16,7 +16,7 @@ use App\Domain\FinalGrade\FinalGradeRepositoryInterface;
 use App\Domain\Permission\PermissionRepositoryInterface;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use App\Domain\Student\StudentRepositoryInterface;
-use App\Domain\Teacher\TeacherRepositoryInterface;
+use App\Domain\Teacher\Repositories\TeacherRepositoryInterface;
 use App\Domain\User\Repositories\UserRepository;
 use App\Infrastructure\Authentication\AuthenticationService;
 use App\Infrastructure\Authorization\EnrollmentAuthorizationService;

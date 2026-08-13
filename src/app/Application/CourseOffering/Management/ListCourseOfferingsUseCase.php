@@ -6,7 +6,7 @@ use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use App\Domain\Teacher\Exceptions\TeacherNotFoundException;
-use App\Domain\Teacher\TeacherRepositoryInterface;
+use App\Domain\Teacher\Repositories\TeacherRepositoryInterface;
 
 final class ListCourseOfferingsUseCase
 {
