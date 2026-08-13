@@ -9,9 +9,9 @@ use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use App\Domain\User\Exceptions\UserNotFoundException;
 use App\Domain\User\UserEmail;
-use App\Domain\User\UserId;
 use App\Domain\User\UserPassword;
 use App\Domain\User\UserRepositoryInterface;
+use App\Domain\User\ValueObjects\UserId;
 use App\Models\User as UserModel;
 use Illuminate\Database\QueryException;
 

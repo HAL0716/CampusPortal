@@ -3,7 +3,7 @@
 namespace App\Application\Enrollment;
 
 use App\Domain\CourseOffering\CourseOfferingId;
-use App\Domain\User\UserId;
+use App\Domain\User\ValueObjects\UserId;
 
 final readonly class EnrollCommand
 {

@@ -2,7 +2,7 @@
 
 namespace App\Application\CourseOffering\Enrollment;
 
-use App\Domain\User\UserId;
+use App\Domain\User\ValueObjects\UserId;
 use Carbon\CarbonImmutable;
 
 final readonly class ListCourseOfferingsQuery

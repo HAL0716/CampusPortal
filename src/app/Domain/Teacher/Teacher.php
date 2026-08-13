@@ -3,7 +3,7 @@
 namespace App\Domain\Teacher;
 
 use App\Domain\Teacher\Exceptions\TeacherIdNotAssignedException;
-use App\Domain\User\UserId;
+use App\Domain\User\ValueObjects\UserId;
 
 final readonly class Teacher
 {

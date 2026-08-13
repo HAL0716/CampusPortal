@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\User;
+namespace App\Domain\User\ValueObjects;
 
 final readonly class UserId
 {

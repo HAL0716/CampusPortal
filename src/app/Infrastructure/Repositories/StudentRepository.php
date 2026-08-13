@@ -5,7 +5,7 @@ namespace App\Infrastructure\Repositories;
 use App\Domain\Student\Student;
 use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
-use App\Domain\User\UserId;
+use App\Domain\User\ValueObjects\UserId;
 use App\Models\Student as StudentModel;
 
 final class StudentRepository implements StudentRepositoryInterface

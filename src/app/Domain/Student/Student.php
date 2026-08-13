@@ -3,7 +3,7 @@
 namespace App\Domain\Student;
 
 use App\Domain\Student\Exceptions\StudentIdNotAssignedException;
-use App\Domain\User\UserId;
+use App\Domain\User\ValueObjects\UserId;
 
 final readonly class Student
 {

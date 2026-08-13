@@ -2,7 +2,7 @@
 
 namespace App\Domain\Teacher;
 
-use App\Domain\User\UserId;
+use App\Domain\User\ValueObjects\UserId;
 
 interface TeacherRepositoryInterface
 {
