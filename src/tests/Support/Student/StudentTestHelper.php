@@ -2,7 +2,7 @@
 
 namespace Tests\Support\Student;
 
-use App\Domain\Student\Student;
+use App\Domain\Student\Entities\Student;
 use App\Domain\Student\StudentRepositoryInterface;
 use Mockery\MockInterface;
 use Tests\Support\Id\IdTestHelper;

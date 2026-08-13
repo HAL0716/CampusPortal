@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Infrastructure\Repositories;
 
-use App\Domain\Student\Student;
+use App\Domain\Student\Entities\Student;
 use App\Domain\User\ValueObjects\UserId;
 use App\Infrastructure\Repositories\StudentRepository;
 use App\Models\Student as StudentModel;

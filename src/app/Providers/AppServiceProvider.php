@@ -29,13 +29,13 @@ use App\Infrastructure\Database\Sqlite\SqliteFinalGradeDuplicateDetector;
 use App\Infrastructure\Database\Sqlite\SqliteUserDuplicateDetector;
 use App\Infrastructure\QueryServices\CourseOfferingQueryService;
 use App\Infrastructure\Repositories\CourseOfferingRepository;
+use App\Infrastructure\Repositories\EloquentTeacherRepository;
 use App\Infrastructure\Repositories\EloquentUserRepository;
 use App\Infrastructure\Repositories\EnrollmentRepository;
 use App\Infrastructure\Repositories\FinalGradeRepository;
 use App\Infrastructure\Repositories\PermissionRepository;
 use App\Infrastructure\Repositories\SemesterRepository;
 use App\Infrastructure\Repositories\StudentRepository;
-use App\Infrastructure\Repositories\EloquentTeacherRepository;
 use App\Infrastructure\Security\PasswordHasher;
 use Illuminate\Support\ServiceProvider;
 

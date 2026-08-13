@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domain\Student;
 
+use App\Domain\Student\Entities\Student;
 use App\Domain\Student\Exceptions\StudentIdNotAssignedException;
-use App\Domain\Student\Student;
 use App\Domain\Student\StudentId;
 use App\Domain\User\ValueObjects\UserId;
 use PHPUnit\Framework\TestCase;

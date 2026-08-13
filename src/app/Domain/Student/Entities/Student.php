@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Domain\Student;
+namespace App\Domain\Student\Entities;
 
 use App\Domain\Student\Exceptions\StudentIdNotAssignedException;
+use App\Domain\Student\StudentId;
 use App\Domain\User\ValueObjects\UserId;
 
 final readonly class Student
