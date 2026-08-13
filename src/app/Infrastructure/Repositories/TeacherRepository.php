@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Infrastructure\Repositories;
+
+use App\Domain\Teacher\Teacher;
+use App\Domain\Teacher\TeacherId;
+use App\Domain\Teacher\TeacherRepositoryInterface;
+use App\Domain\User\UserId;
+use App\Models\Teacher as TeacherModel;
+
+final class TeacherRepository implements TeacherRepositoryInterface
+{
+    public function findByUserId(UserId $userId): ?Teacher
+    {
+        $model = TeacherModel::where('user_id', $userId->value())->first();
+
+        return $model ? $this->toEntity($model) : null;
+    }
+
+    private function toEntity(TeacherModel $model): Teacher
+    {
+        return Teacher::reconstruct(
+            new TeacherId((int) $model->id),
+            new UserId((int) $model->user_id)
+        );
+    }
+}

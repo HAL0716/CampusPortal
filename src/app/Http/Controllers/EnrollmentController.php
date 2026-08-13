@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Application\Authentication\AuthenticationServiceInterface;
+use App\Application\Enrollment\DropUseCase;
+use App\Application\Enrollment\EnrollUseCase;
+use App\Application\Enrollment\FinalizeGradeUseCase;
+use App\Exceptions\UserMessageException;
+use App\Http\Controllers\Concerns\HasFlashMessages;
+use App\Http\Requests\Enrollment\DropRequest;
+use App\Http\Requests\Enrollment\EnrollRequest;
+use App\Http\Requests\Enrollment\FinalizeGradeRequest;
+use Illuminate\Http\RedirectResponse;
+use Throwable;
+
+final class EnrollmentController extends Controller
+{
+    use HasFlashMessages;
+
+    public function __construct(
+        private readonly AuthenticationServiceInterface $auth,
+    ) {}
+
+    public function enroll(EnrollRequest $request, EnrollUseCase $useCase): RedirectResponse
+    {
+        try {
+            $useCase->execute(
+                $request->toCommand(
+                    $this->auth->requireUser()->requireId()
+                )
+            );
+
+            return back()->with($this->withSuccess('履修登録しました'));
+        } catch (UserMessageException $e) {
+            return back()->with($this->withError($e->userMessage()));
+        } catch (Throwable $e) {
+            report($e);
+
+            return back()->with($this->withError('履修登録に失敗しました'));
+        }
+    }
+
+    public function drop(DropRequest $request, DropUseCase $useCase): RedirectResponse
+    {
+        try {
+            $useCase->execute(
+                $request->toCommand(
+                    $this->auth->requireUser()->requireId()
+                )
+            );
+
+            return back()->with($this->withSuccess('履修取消しました'));
+        } catch (UserMessageException $e) {
+            return back()->with($this->withError($e->userMessage()));
+        } catch (Throwable $e) {
+            report($e);
+
+            return back()->with($this->withError('履修取消に失敗しました'));
+        }
+    }
+
+    public function complete(FinalizeGradeRequest $request, FinalizeGradeUseCase $useCase): RedirectResponse
+    {
+        try {
+            $useCase->execute(
+                $request->toCommand(
+                    $this->auth->requireUser()->requireId()
+                )
+            );
+
+            return back()->with($this->withSuccess('履修完了しました'));
+        } catch (UserMessageException $e) {
+            return back()->with($this->withError($e->userMessage()));
+        } catch (Throwable $e) {
+            report($e);
+
+            return back()->with($this->withError('履修完了に失敗しました'));
+        }
+    }
+}

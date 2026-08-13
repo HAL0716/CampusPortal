@@ -17,6 +17,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Time
+    |--------------------------------------------------------------------------
+    |
+    | This value is the time of your application, which will be used when the
+    | framework needs to place the application's time in a notification or
+    | other UI elements where an application time needs to be displayed.
+    |
+    */
+
+    'now' => env('APP_NOW', null),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |

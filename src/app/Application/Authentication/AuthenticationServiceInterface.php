@@ -11,4 +11,6 @@ interface AuthenticationServiceInterface
     public function logout(): void;
 
     public function user(): ?User;
+
+    public function requireUser(): User;
 }
