@@ -4,7 +4,7 @@ namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use App\Domain\User\Exceptions\UserNotFoundException;
-use App\Domain\User\UserRepositoryInterface;
+use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Models\User as UserModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;

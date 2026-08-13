@@ -8,7 +8,7 @@ use App\Application\Authentication\LoginUseCase;
 use App\Application\Security\PasswordHasherInterface;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
-use App\Domain\User\UserRepositoryInterface;
+use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Domain\User\ValueObjects\UserEmail;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;

@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Application\Authorization\PermissionServiceInterface;
 use App\Domain\Permission\PermissionType;
-use App\Domain\User\UserRepositoryInterface;
+use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Domain\User\ValueObjects\UserId;
 use App\Models\User as UserModel;
 use Illuminate\Support\Facades\Gate;

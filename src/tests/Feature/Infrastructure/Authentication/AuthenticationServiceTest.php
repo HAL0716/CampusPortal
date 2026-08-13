@@ -4,7 +4,7 @@ namespace Tests\Feature\Infrastructure\Authentication;
 
 use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
-use App\Domain\User\UserRepositoryInterface;
+use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Domain\User\ValueObjects\UserId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Support\User\CreatesModelUser;
