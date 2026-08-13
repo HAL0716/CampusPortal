@@ -9,7 +9,7 @@ use App\Application\CourseOffering\Management\CourseOfferingDTO as ManagementDTO
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Semester\SemesterId;
 use App\Domain\Student\StudentId;
-use App\Domain\Teacher\TeacherId;
+use App\Domain\Teacher\ValueObjects\TeacherId;
 use App\Models\Course;
 use App\Models\CourseOffering;
 use App\Models\Enrollment;

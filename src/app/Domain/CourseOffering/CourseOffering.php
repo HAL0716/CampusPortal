@@ -4,7 +4,7 @@ namespace App\Domain\CourseOffering;
 
 use App\Domain\Course\CourseId;
 use App\Domain\Semester\SemesterId;
-use App\Domain\Teacher\TeacherId;
+use App\Domain\Teacher\ValueObjects\TeacherId;
 
 final readonly class CourseOffering
 {

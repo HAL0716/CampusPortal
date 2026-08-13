@@ -10,7 +10,7 @@ use App\Application\CourseOffering\Management\EnrollmentDTO as ManagementEnrollm
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Semester\SemesterId;
 use App\Domain\Student\StudentId;
-use App\Domain\Teacher\TeacherId;
+use App\Domain\Teacher\ValueObjects\TeacherId;
 use App\Models\CourseOffering;
 use App\Models\Enrollment;
 use Illuminate\Database\Eloquent\Builder;

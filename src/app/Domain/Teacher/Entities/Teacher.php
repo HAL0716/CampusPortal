@@ -3,7 +3,7 @@
 namespace App\Domain\Teacher\Entities;
 
 use App\Domain\Teacher\Exceptions\TeacherIdNotAssignedException;
-use App\Domain\Teacher\TeacherId;
+use App\Domain\Teacher\ValueObjects\TeacherId;
 use App\Domain\User\ValueObjects\UserId;
 
 final readonly class Teacher

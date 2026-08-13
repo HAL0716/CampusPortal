@@ -6,7 +6,7 @@ use App\Domain\CourseOffering\CourseOfferingId;
 use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\Semester\SemesterId;
 use App\Domain\Student\StudentId;
-use App\Domain\Teacher\TeacherId;
+use App\Domain\Teacher\ValueObjects\TeacherId;
 use App\Domain\User\ValueObjects\UserId;
 
 trait IdTestHelper

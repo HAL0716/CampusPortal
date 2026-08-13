@@ -4,7 +4,7 @@ namespace Tests\Unit\Domain\Teacher;
 
 use App\Domain\Teacher\Entities\Teacher;
 use App\Domain\Teacher\Exceptions\TeacherIdNotAssignedException;
-use App\Domain\Teacher\TeacherId;
+use App\Domain\Teacher\ValueObjects\TeacherId;
 use App\Domain\User\ValueObjects\UserId;
 use PHPUnit\Framework\TestCase;
 
