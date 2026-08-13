@@ -2,19 +2,19 @@ import { useForm, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
 import FlashMessage from '@/Components/FlashMessage';
-import { ManagementCourseOffering, Student } from '@/Types/CourseOffering';
+import { Enrollment, ManagementCourseOffering } from '@/Types/CourseOffering';
 import { SharedProps } from '@/Types/SharedProps';
 
 type ActionProps = {
-  student: Student;
+  enrollment: Enrollment;
 };
 
-function Action({ student }: ActionProps) {
+function Action({ enrollment }: ActionProps) {
   const { data, setData, post, processing } = useForm({
     grade: '',
   });
 
-  switch (student.status) {
+  switch (enrollment.status) {
     case 'dropped':
       return <span>取消済</span>;
 
@@ -48,7 +48,7 @@ function Action({ student }: ActionProps) {
         onClick={() =>
           post(
             route('enrollments.complete', {
-              enrollment: student.id,
+              enrollment: enrollment.id,
             }),
           )
         }
@@ -96,11 +96,11 @@ export default function Management() {
             </thead>
 
             <tbody>
-              {offering.students.map((student) => (
-                <tr key={student.id}>
-                  <td className="border px-4 py-2">{student.studentNumber}</td>
+              {offering.enrollments.map((enrollment) => (
+                <tr key={enrollment.id}>
+                  <td className="border px-4 py-2">{enrollment.studentNumber}</td>
                   <td className="border px-4 py-2 text-center">
-                    <Action student={student} />
+                    <Action enrollment={enrollment} />
                   </td>
                 </tr>
               ))}

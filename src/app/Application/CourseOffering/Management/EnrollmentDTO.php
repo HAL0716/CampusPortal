@@ -4,7 +4,7 @@ namespace App\Application\CourseOffering\Management;
 
 use App\Domain\Enrollment\EnrollmentStatus;
 
-final readonly class StudentDTO
+final readonly class EnrollmentDTO
 {
     public function __construct(
         public int $id,

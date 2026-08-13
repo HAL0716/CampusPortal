@@ -4,9 +4,9 @@ namespace Tests\Unit\Application\CourseOffering\Management;
 
 use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Application\CourseOffering\Management\CourseOfferingDTO;
+use App\Application\CourseOffering\Management\EnrollmentDTO;
 use App\Application\CourseOffering\Management\ListCourseOfferingsQuery;
 use App\Application\CourseOffering\Management\ListCourseOfferingsUseCase;
-use App\Application\CourseOffering\Management\StudentDTO;
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\SemesterRepositoryInterface;
@@ -54,8 +54,8 @@ class ListCourseOfferingsUseCaseTest extends TestCase
             new CourseOfferingDTO(
                 id: 1,
                 name: 'Webプログラミング',
-                students: [
-                    new StudentDTO(
+                enrollments: [
+                    new EnrollmentDTO(
                         id: 10,
                         studentNumber: 'S001',
                         status: EnrollmentStatus::ENROLLED,

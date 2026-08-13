@@ -1,6 +1,6 @@
 type Status = 'enrolled' | 'dropped' | 'completed' | 'failed';
 
-export type Student = {
+export type Enrollment = {
   id: number;
   studentNumber: string;
   status: Status;
@@ -16,7 +16,7 @@ export type EnrollmentCourseOffering = CourseOfferingBase & {
 };
 
 export type ManagementCourseOffering = CourseOfferingBase & {
-  students: Student[];
+  enrollments: Enrollment[];
 };
 
 export type AdministrationCourseOffering = CourseOfferingBase;

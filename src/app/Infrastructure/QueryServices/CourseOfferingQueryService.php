@@ -6,7 +6,7 @@ use App\Application\CourseOffering\Administration\CourseOfferingDTO as Administr
 use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Application\CourseOffering\Enrollment\CourseOfferingDTO as EnrollmentDTO;
 use App\Application\CourseOffering\Management\CourseOfferingDTO as ManagementDTO;
-use App\Application\CourseOffering\Management\StudentDTO;
+use App\Application\CourseOffering\Management\EnrollmentDTO as ManagementEnrollmentDTO;
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Semester\SemesterId;
 use App\Domain\Student\StudentId;
@@ -71,9 +71,9 @@ final class CourseOfferingQueryService implements CourseOfferingQueryServiceInte
             ->map(fn ($offering) => new ManagementDTO(
                 id: $offering->id,
                 name: $offering->course->name,
-                students: $offering->enrollments
+                enrollments: $offering->enrollments
                     ->sortBy(fn ($enrollment) => $enrollment->student->student_number)
-                    ->map(fn ($enrollment) => new StudentDTO(
+                    ->map(fn ($enrollment) => new ManagementEnrollmentDTO(
                         id: $enrollment->id,
                         studentNumber: $enrollment->student->student_number,
                         status: $enrollment->status,
