@@ -2,7 +2,7 @@
 
 namespace Tests\Support\User;
 
-use App\Domain\User\User;
+use App\Domain\User\Entities\User;
 use App\Domain\User\UserId;
 use App\Domain\User\UserRepositoryInterface;
 use App\Models\User as UserModel;

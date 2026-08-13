@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Application\Authorization\PermissionServiceInterface;
 use App\Domain\Permission\PermissionType;
-use App\Domain\User\User;
+use App\Domain\User\Entities\User;
 use Inertia\Inertia;
 use Inertia\Response;
 

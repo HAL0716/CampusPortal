@@ -2,7 +2,7 @@
 
 namespace App\Application\Authentication;
 
-use App\Domain\User\User;
+use App\Domain\User\Entities\User;
 
 interface AuthenticationServiceInterface
 {

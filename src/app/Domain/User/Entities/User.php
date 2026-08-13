@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Domain\User;
+namespace App\Domain\User\Entities;
 
 use App\Domain\User\Exceptions\UserIdNotAssignedException;
+use App\Domain\User\UserEmail;
+use App\Domain\User\UserId;
+use App\Domain\User\UserPassword;
 
 final class User
 {

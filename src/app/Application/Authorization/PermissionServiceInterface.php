@@ -3,7 +3,7 @@
 namespace App\Application\Authorization;
 
 use App\Domain\Permission\PermissionType;
-use App\Domain\User\User;
+use App\Domain\User\Entities\User;
 
 interface PermissionServiceInterface
 {

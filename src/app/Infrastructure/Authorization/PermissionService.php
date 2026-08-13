@@ -5,7 +5,7 @@ namespace App\Infrastructure\Authorization;
 use App\Application\Authorization\PermissionServiceInterface;
 use App\Domain\Permission\PermissionRepositoryInterface;
 use App\Domain\Permission\PermissionType;
-use App\Domain\User\User;
+use App\Domain\User\Entities\User;
 
 final class PermissionService implements PermissionServiceInterface
 {

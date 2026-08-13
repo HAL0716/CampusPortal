@@ -4,8 +4,8 @@ namespace Tests\Unit\Application\User;
 
 use App\Application\User\UserCreateCommand;
 use App\Application\User\UserCreateUseCase;
+use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
-use App\Domain\User\User;
 use App\Domain\User\UserRepositoryInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;

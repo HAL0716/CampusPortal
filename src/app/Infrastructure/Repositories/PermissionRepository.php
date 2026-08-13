@@ -5,8 +5,8 @@ namespace App\Infrastructure\Repositories;
 use App\Domain\Permission\Permission;
 use App\Domain\Permission\PermissionId;
 use App\Domain\Permission\PermissionRepositoryInterface;
+use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserNotFoundException;
-use App\Domain\User\User;
 use App\Models\Permission as PermissionModel;
 use App\Models\User as UserModel;
 
