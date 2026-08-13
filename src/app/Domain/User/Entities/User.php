@@ -3,8 +3,8 @@
 namespace App\Domain\User\Entities;
 
 use App\Domain\User\Exceptions\UserIdNotAssignedException;
-use App\Domain\User\UserEmail;
 use App\Domain\User\UserPassword;
+use App\Domain\User\ValueObjects\UserEmail;
 use App\Domain\User\ValueObjects\UserId;
 
 final class User

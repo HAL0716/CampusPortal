@@ -3,8 +3,8 @@
 namespace Tests\Support\User;
 
 use App\Domain\User\Entities\User;
-use App\Domain\User\UserEmail;
 use App\Domain\User\UserPassword;
+use App\Domain\User\ValueObjects\UserEmail;
 use App\Domain\User\ValueObjects\UserId;
 
 trait CreatesDomainUser

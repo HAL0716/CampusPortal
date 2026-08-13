@@ -3,7 +3,7 @@
 namespace App\Rules\User;
 
 use App\Domain\User\Exceptions\InvalidUserEmailException;
-use App\Domain\User\UserEmail;
+use App\Domain\User\ValueObjects\UserEmail;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
