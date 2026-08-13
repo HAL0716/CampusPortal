@@ -7,7 +7,7 @@ use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentAlreadyExistsException;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\ValueObjects\StudentId;
 use App\Infrastructure\Repositories\EnrollmentRepository;
 use App\Models\CourseOffering;
 use App\Models\Enrollment as EnrollmentModel;

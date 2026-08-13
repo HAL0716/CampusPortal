@@ -6,7 +6,7 @@ use App\Application\CourseOffering\Administration\CourseOfferingDTO as Administr
 use App\Application\CourseOffering\Enrollment\CourseOfferingDTO as EnrollmentDTO;
 use App\Application\CourseOffering\Management\CourseOfferingDTO as ManagementDTO;
 use App\Domain\Semester\SemesterId;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\ValueObjects\StudentId;
 use App\Domain\Teacher\ValueObjects\TeacherId;
 
 interface CourseOfferingQueryServiceInterface

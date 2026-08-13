@@ -5,7 +5,7 @@ namespace App\Domain\Enrollment;
 use App\Domain\CourseOffering\CourseOfferingId;
 use App\Domain\Enrollment\Exceptions\EnrollmentIdNotAssignedException;
 use App\Domain\Enrollment\Exceptions\InvalidEnrollmentStatusException;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\ValueObjects\StudentId;
 
 final readonly class Enrollment
 {

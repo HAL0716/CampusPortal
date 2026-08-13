@@ -10,7 +10,7 @@ use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Exceptions\EnrollmentAlreadyExistsException;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\ValueObjects\StudentId;
 use App\Models\Enrollment as EnrollmentModel;
 use Illuminate\Database\QueryException;
 

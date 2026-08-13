@@ -3,8 +3,8 @@
 namespace App\Infrastructure\Repositories;
 
 use App\Domain\Student\Entities\Student;
-use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\ValueObjects\StudentId;
 use App\Domain\User\ValueObjects\UserId;
 use App\Models\Student as StudentModel;
 

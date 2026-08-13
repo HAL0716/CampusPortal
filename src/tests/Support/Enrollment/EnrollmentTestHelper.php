@@ -6,7 +6,7 @@ use App\Domain\CourseOffering\CourseOfferingId;
 use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentStatus;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\ValueObjects\StudentId;
 use Mockery\MockInterface;
 use Tests\Support\Id\IdTestHelper;
 use Tests\Support\Matchers\UseMatcher;

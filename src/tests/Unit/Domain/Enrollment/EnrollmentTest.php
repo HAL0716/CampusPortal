@@ -8,7 +8,7 @@ use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentIdNotAssignedException;
 use App\Domain\Enrollment\Exceptions\InvalidEnrollmentStatusException;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\ValueObjects\StudentId;
 use PHPUnit\Framework\TestCase;
 
 final class EnrollmentTest extends TestCase

@@ -3,7 +3,7 @@
 namespace App\Domain\Enrollment;
 
 use App\Domain\CourseOffering\CourseOfferingId;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\ValueObjects\StudentId;
 
 interface EnrollmentRepositoryInterface
 {
