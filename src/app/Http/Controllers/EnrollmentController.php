@@ -6,6 +6,7 @@ use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Application\Enrollment\DropUseCase;
 use App\Application\Enrollment\EnrollUseCase;
 use App\Application\Enrollment\FinalizeGradeUseCase;
+use App\Exceptions\UserMessageException;
 use App\Http\Controllers\Concerns\HasFlashMessages;
 use App\Http\Requests\Enrollment\DropRequest;
 use App\Http\Requests\Enrollment\EnrollRequest;
@@ -31,8 +32,12 @@ final class EnrollmentController extends Controller
             );
 
             return back()->with($this->withSuccess('履修登録しました'));
+        } catch (UserMessageException $e) {
+            return back()->with($this->withError($e->userMessage()));
         } catch (Throwable $e) {
-            return back()->with($this->withError($e->getMessage()));
+            report($e);
+
+            return back()->with($this->withError('履修登録に失敗しました'));
         }
     }
 
@@ -46,8 +51,12 @@ final class EnrollmentController extends Controller
             );
 
             return back()->with($this->withSuccess('履修取消しました'));
+        } catch (UserMessageException $e) {
+            return back()->with($this->withError($e->userMessage()));
         } catch (Throwable $e) {
-            return back()->with($this->withError($e->getMessage()));
+            report($e);
+
+            return back()->with($this->withError('履修取消に失敗しました'));
         }
     }
 
@@ -61,8 +70,12 @@ final class EnrollmentController extends Controller
             );
 
             return back()->with($this->withSuccess('履修完了しました'));
+        } catch (UserMessageException $e) {
+            return back()->with($this->withError($e->userMessage()));
         } catch (Throwable $e) {
-            return back()->with($this->withError($e->getMessage()));
+            report($e);
+
+            return back()->with($this->withError('履修完了に失敗しました'));
         }
     }
 }
