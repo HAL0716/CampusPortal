@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Student;
+namespace App\Domain\Student\Enums;
 
 enum StudentStatus: string
 {

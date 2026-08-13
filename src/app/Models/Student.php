@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domain\Student\StudentStatus;
+use App\Domain\Student\Enums\StudentStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
