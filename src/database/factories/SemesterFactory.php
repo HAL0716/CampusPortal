@@ -25,4 +25,24 @@ class SemesterFactory extends Factory
             'end_date' => '2026-07-31',
         ];
     }
+
+    public function second(): static
+    {
+        return $this->state([
+            'academic_year' => '2026',
+            'term' => Term::SECOND,
+            'start_date' => '2026-08-01',
+            'end_date' => '2026-12-31',
+        ]);
+    }
+
+    public function third(): static
+    {
+        return $this->state([
+            'academic_year' => '2026',
+            'term' => Term::THIRD,
+            'start_date' => '2027-01-01',
+            'end_date' => '2027-03-31',
+        ]);
+    }
 }
