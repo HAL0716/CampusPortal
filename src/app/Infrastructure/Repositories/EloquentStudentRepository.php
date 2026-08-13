@@ -3,12 +3,12 @@
 namespace App\Infrastructure\Repositories;
 
 use App\Domain\Student\Entities\Student;
-use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\Repositories\StudentRepository;
 use App\Domain\Student\ValueObjects\StudentId;
 use App\Domain\User\ValueObjects\UserId;
 use App\Models\Student as StudentModel;
 
-final class EloquentStudentRepository implements StudentRepositoryInterface
+final class EloquentStudentRepository implements StudentRepository
 {
     public function findByUserId(UserId $userId): ?Student
     {

@@ -5,12 +5,12 @@ namespace App\Application\Enrollment;
 use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Student\Exceptions\StudentNotFoundException;
-use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\Repositories\StudentRepository;
 
 final class EnrollUseCase
 {
     public function __construct(
-        private StudentRepositoryInterface $students,
+        private StudentRepository $students,
         private EnrollmentRepositoryInterface $enrollments
     ) {}
 

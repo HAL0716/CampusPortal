@@ -6,13 +6,13 @@ use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use App\Domain\Student\Exceptions\StudentNotFoundException;
-use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\Repositories\StudentRepository;
 
 final class ListCourseOfferingsUseCase
 {
     public function __construct(
         private SemesterRepositoryInterface $semesters,
-        private StudentRepositoryInterface $students,
+        private StudentRepository $students,
         private CourseOfferingQueryServiceInterface $queryService,
     ) {}
 

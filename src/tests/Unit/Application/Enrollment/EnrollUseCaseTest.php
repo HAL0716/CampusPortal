@@ -8,7 +8,7 @@ use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Student\Exceptions\StudentNotFoundException;
-use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\Repositories\StudentRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
@@ -24,7 +24,7 @@ class EnrollUseCaseTest extends TestCase
     use StudentTestHelper;
     use UseMatcher;
 
-    private StudentRepositoryInterface&MockInterface $students;
+    private StudentRepository&MockInterface $students;
 
     private EnrollmentRepositoryInterface&MockInterface $enrollments;
 
@@ -34,7 +34,7 @@ class EnrollUseCaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->students = Mockery::mock(StudentRepositoryInterface::class);
+        $this->students = Mockery::mock(StudentRepository::class);
         $this->enrollments = Mockery::mock(EnrollmentRepositoryInterface::class);
 
         $this->useCase = new EnrollUseCase(

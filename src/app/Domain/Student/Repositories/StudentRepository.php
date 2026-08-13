@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domain\Student;
+namespace App\Domain\Student\Repositories;
 
 use App\Domain\Student\Entities\Student;
 use App\Domain\User\ValueObjects\UserId;
 
-interface StudentRepositoryInterface
+interface StudentRepository
 {
     public function findByUserId(UserId $userId): ?Student;
 }
