@@ -10,14 +10,6 @@ use App\Application\Enrollment\EnrollmentDuplicateDetectorInterface;
 use App\Application\FinalGrade\FinalGradeDuplicateDetectorInterface;
 use App\Application\Security\PasswordHasherInterface;
 use App\Application\User\UserDuplicateDetectorInterface;
-use App\Domain\CourseOffering\Repositories\CourseOfferingRepository;
-use App\Domain\Enrollment\Repositories\EnrollmentRepository;
-use App\Domain\FinalGrade\Repositories\FinalGradeRepository;
-use App\Domain\Permission\Repositories\PermissionRepository;
-use App\Domain\Semester\Repositories\SemesterRepository;
-use App\Domain\Student\Repositories\StudentRepository;
-use App\Domain\Teacher\Repositories\TeacherRepository;
-use App\Domain\User\Repositories\UserRepository;
 use App\Infrastructure\Authentication\AuthenticationService;
 use App\Infrastructure\Authorization\EnrollmentAuthorizationService;
 use App\Infrastructure\Authorization\PermissionService;
@@ -28,14 +20,6 @@ use App\Infrastructure\Database\Sqlite\SqliteEnrollmentDuplicateDetector;
 use App\Infrastructure\Database\Sqlite\SqliteFinalGradeDuplicateDetector;
 use App\Infrastructure\Database\Sqlite\SqliteUserDuplicateDetector;
 use App\Infrastructure\QueryServices\CourseOfferingQueryService;
-use App\Infrastructure\Repositories\EloquentCourseOfferingRepository;
-use App\Infrastructure\Repositories\EloquentEnrollmentRepository;
-use App\Infrastructure\Repositories\EloquentFinalGradeRepository;
-use App\Infrastructure\Repositories\EloquentPermissionRepository;
-use App\Infrastructure\Repositories\EloquentSemesterRepository;
-use App\Infrastructure\Repositories\EloquentStudentRepository;
-use App\Infrastructure\Repositories\EloquentTeacherRepository;
-use App\Infrastructure\Repositories\EloquentUserRepository;
 use App\Infrastructure\Security\PasswordHasher;
 use Illuminate\Support\ServiceProvider;
 
@@ -46,22 +30,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(UserRepository::class, EloquentUserRepository::class);
-
-        $this->app->bind(PermissionRepository::class, EloquentPermissionRepository::class);
-
-        $this->app->bind(StudentRepository::class, EloquentStudentRepository::class);
-
-        $this->app->bind(TeacherRepository::class, EloquentTeacherRepository::class);
-
-        $this->app->bind(SemesterRepository::class, EloquentSemesterRepository::class);
-
-        $this->app->bind(CourseOfferingRepository::class, EloquentCourseOfferingRepository::class);
-
-        $this->app->bind(EnrollmentRepository::class, EloquentEnrollmentRepository::class);
-
-        $this->app->bind(FinalGradeRepository::class, EloquentFinalGradeRepository::class);
-
         $this->app->bind(
             UserDuplicateDetectorInterface::class,
             fn ($app) => match (config('database.default')) {
