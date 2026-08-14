@@ -19,7 +19,7 @@ use App\Models\Teacher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-final class CourseOfferingQueryServiceTest extends TestCase
+final class EloquentCourseOfferingQueryServiceTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -15,7 +15,7 @@ use App\Models\CourseOffering;
 use App\Models\Enrollment;
 use Illuminate\Database\Eloquent\Builder;
 
-final class CourseOfferingQueryService implements CourseOfferingQueryServiceInterface
+final class EloquentCourseOfferingQueryService implements CourseOfferingQueryServiceInterface
 {
     public function findForAdministration(SemesterId $semesterId): array
     {
