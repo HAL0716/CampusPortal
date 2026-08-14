@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Repositories;
 
-use App\Domain\Semester\Semester;
+use App\Domain\Semester\Entities\Semester;
 use App\Domain\Semester\SemesterId;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use App\Models\Semester as SemesterModel;

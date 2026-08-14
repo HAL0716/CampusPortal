@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Infrastructure\Repositories;
 
-use App\Domain\Semester\Semester;
+use App\Domain\Semester\Entities\Semester;
 use App\Infrastructure\Repositories\SemesterRepository;
 use App\Models\Semester as SemesterModel;
 use Carbon\CarbonImmutable;

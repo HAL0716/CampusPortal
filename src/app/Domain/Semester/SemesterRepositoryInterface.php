@@ -2,6 +2,7 @@
 
 namespace App\Domain\Semester;
 
+use App\Domain\Semester\Entities\Semester;
 use Carbon\CarbonImmutable;
 
 interface SemesterRepositoryInterface

@@ -3,7 +3,7 @@
 namespace Tests\Support\Semester;
 
 use App\Domain\Academic\Term;
-use App\Domain\Semester\Semester;
+use App\Domain\Semester\Entities\Semester;
 use App\Domain\Semester\SemesterRepositoryInterface;
 use Carbon\CarbonImmutable;
 use Mockery\MockInterface;

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Domain\Semester;
+namespace App\Domain\Semester\Entities;
 
 use App\Domain\Academic\Term;
 use App\Domain\Semester\Exceptions\SemesterIdNotAssignedException;
+use App\Domain\Semester\SemesterId;
 
 final readonly class Semester
 {

@@ -3,8 +3,8 @@
 namespace Tests\Unit\Domain\Semester;
 
 use App\Domain\Academic\Term;
+use App\Domain\Semester\Entities\Semester;
 use App\Domain\Semester\Exceptions\SemesterIdNotAssignedException;
-use App\Domain\Semester\Semester;
 use App\Domain\Semester\SemesterId;
 use PHPUnit\Framework\TestCase;
 
