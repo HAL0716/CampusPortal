@@ -8,8 +8,8 @@ use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\FinalGrade\Entities\FinalGrade;
 use App\Domain\FinalGrade\Exceptions\FinalGradeAlreadyExistsException;
 use App\Domain\FinalGrade\Exceptions\FinalGradeNotFoundException;
-use App\Domain\FinalGrade\FinalGradeId;
 use App\Domain\FinalGrade\FinalGradeRepositoryInterface;
+use App\Domain\FinalGrade\ValueObjects\FinalGradeId;
 use App\Models\FinalGrade as FinalGradeModel;
 use Illuminate\Database\QueryException;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\FinalGrade;
+namespace App\Domain\FinalGrade\ValueObjects;
 
 final readonly class FinalGradeId
 {
