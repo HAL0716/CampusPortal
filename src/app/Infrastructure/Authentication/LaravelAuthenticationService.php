@@ -9,7 +9,7 @@ use App\Domain\User\Repositories\UserRepository;
 use App\Domain\User\ValueObjects\UserId;
 use Illuminate\Support\Facades\Auth;
 
-final class AuthenticationService implements AuthenticationServiceInterface
+final class LaravelAuthenticationService implements AuthenticationServiceInterface
 {
     private ?User $cachedUser = null;
 

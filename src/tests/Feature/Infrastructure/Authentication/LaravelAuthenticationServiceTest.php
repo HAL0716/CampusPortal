@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Support\User\CreatesModelUser;
 use Tests\TestCase;
 
-final class AuthenticationServiceTest extends TestCase
+final class LaravelAuthenticationServiceTest extends TestCase
 {
     use CreatesModelUser;
     use RefreshDatabase;

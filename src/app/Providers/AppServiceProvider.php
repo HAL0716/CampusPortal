@@ -7,7 +7,7 @@ use App\Application\Authorization\EnrollmentAuthorizationServiceInterface;
 use App\Application\Authorization\PermissionServiceInterface;
 use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Application\Security\PasswordHasherInterface;
-use App\Infrastructure\Authentication\AuthenticationService;
+use App\Infrastructure\Authentication\LaravelAuthenticationService;
 use App\Infrastructure\Authorization\EnrollmentAuthorizationService;
 use App\Infrastructure\Authorization\PermissionService;
 use App\Infrastructure\QueryServices\CourseOfferingQueryService;
@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->scoped(AuthenticationServiceInterface::class, AuthenticationService::class);
+        $this->app->scoped(AuthenticationServiceInterface::class, LaravelAuthenticationService::class);
         $this->app->scoped(PermissionServiceInterface::class, PermissionService::class);
         $this->app->bind(EnrollmentAuthorizationServiceInterface::class, EnrollmentAuthorizationService::class);
         $this->app->bind(CourseOfferingQueryServiceInterface::class, CourseOfferingQueryService::class);
