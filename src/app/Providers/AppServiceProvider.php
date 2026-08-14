@@ -28,7 +28,7 @@ use App\Infrastructure\Database\Sqlite\SqliteEnrollmentDuplicateDetector;
 use App\Infrastructure\Database\Sqlite\SqliteFinalGradeDuplicateDetector;
 use App\Infrastructure\Database\Sqlite\SqliteUserDuplicateDetector;
 use App\Infrastructure\QueryServices\CourseOfferingQueryService;
-use App\Infrastructure\Repositories\CourseOfferingRepository;
+use App\Infrastructure\Repositories\EloquentCourseOfferingRepository;
 use App\Infrastructure\Repositories\EloquentEnrollmentRepository;
 use App\Infrastructure\Repositories\EloquentFinalGradeRepository;
 use App\Infrastructure\Repositories\EloquentPermissionRepository;
@@ -56,7 +56,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(SemesterRepository::class, EloquentSemesterRepository::class);
 
-        $this->app->bind(CourseOfferingRepositoryInterface::class, CourseOfferingRepository::class);
+        $this->app->bind(CourseOfferingRepositoryInterface::class, EloquentCourseOfferingRepository::class);
 
         $this->app->bind(EnrollmentRepository::class, EloquentEnrollmentRepository::class);
 

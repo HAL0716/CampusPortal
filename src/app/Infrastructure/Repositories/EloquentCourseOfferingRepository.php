@@ -10,7 +10,7 @@ use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Teacher\ValueObjects\TeacherId;
 use App\Models\CourseOffering as CourseOfferingModel;
 
-final class CourseOfferingRepository implements CourseOfferingRepositoryInterface
+final class EloquentCourseOfferingRepository implements CourseOfferingRepositoryInterface
 {
     public function findById(CourseOfferingId $id): ?CourseOffering
     {

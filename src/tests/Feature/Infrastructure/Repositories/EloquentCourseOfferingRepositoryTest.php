@@ -4,23 +4,23 @@ namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\CourseOffering\Entities\CourseOffering;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
-use App\Infrastructure\Repositories\CourseOfferingRepository;
+use App\Infrastructure\Repositories\EloquentCourseOfferingRepository;
 use App\Models\CourseOffering as CourseOfferingModel;
 use App\Models\Teacher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-final class CourseOfferingRepositoryTest extends TestCase
+final class EloquentCourseOfferingRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    private CourseOfferingRepository $repository;
+    private EloquentCourseOfferingRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->repository = $this->app->make(CourseOfferingRepository::class);
+        $this->repository = $this->app->make(EloquentCourseOfferingRepository::class);
     }
 
     public function test_can_find_course_offering_by_id(): void
