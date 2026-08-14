@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Contexts\CourseOffering\Administration;
+namespace App\Application\Contexts\CourseOffering\Administration\Queries;
 
 use Carbon\CarbonImmutable;
 

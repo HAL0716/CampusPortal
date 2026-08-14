@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Contexts\CourseOffering\Enrollment;
+namespace App\Application\Contexts\CourseOffering\Enrollment\Queries;
 
 use App\Domain\User\ValueObjects\UserId;
 use Carbon\CarbonImmutable;

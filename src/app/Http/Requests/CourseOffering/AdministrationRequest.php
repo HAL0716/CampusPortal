@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\CourseOffering;
 
-use App\Application\Contexts\CourseOffering\Administration\ListCourseOfferingsQuery;
+use App\Application\Contexts\CourseOffering\Administration\Queries\ListCourseOfferingsQuery;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
