@@ -7,7 +7,7 @@ use App\Application\CourseOffering\Administration\ListCourseOfferingsQuery;
 use App\Application\CourseOffering\Administration\ListCourseOfferingsUseCase;
 use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
-use App\Domain\Semester\SemesterRepositoryInterface;
+use App\Domain\Semester\Repositories\SemesterRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
@@ -21,7 +21,7 @@ class ListCourseOfferingsUseCaseTest extends TestCase
     use SemesterTestHelper;
     use UseMatcher;
 
-    private SemesterRepositoryInterface&MockInterface $semesters;
+    private SemesterRepository&MockInterface $semesters;
 
     private CourseOfferingQueryServiceInterface&MockInterface $queryService;
 
@@ -31,7 +31,7 @@ class ListCourseOfferingsUseCaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->semesters = Mockery::mock(SemesterRepositoryInterface::class);
+        $this->semesters = Mockery::mock(SemesterRepository::class);
         $this->queryService = Mockery::mock(CourseOfferingQueryServiceInterface::class);
 
         $this->useCase = new ListCourseOfferingsUseCase(

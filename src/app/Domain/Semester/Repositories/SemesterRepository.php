@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domain\Semester;
+namespace App\Domain\Semester\Repositories;
 
 use App\Domain\Semester\Entities\Semester;
 use Carbon\CarbonImmutable;
 
-interface SemesterRepositoryInterface
+interface SemesterRepository
 {
     public function findByDate(CarbonImmutable $date): ?Semester;
 }

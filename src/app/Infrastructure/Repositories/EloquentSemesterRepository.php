@@ -3,12 +3,12 @@
 namespace App\Infrastructure\Repositories;
 
 use App\Domain\Semester\Entities\Semester;
-use App\Domain\Semester\SemesterRepositoryInterface;
+use App\Domain\Semester\Repositories\SemesterRepository;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Models\Semester as SemesterModel;
 use Carbon\CarbonImmutable;
 
-final class EloquentSemesterRepository implements SemesterRepositoryInterface
+final class EloquentSemesterRepository implements SemesterRepository
 {
     public function findByDate(CarbonImmutable $date): ?Semester
     {

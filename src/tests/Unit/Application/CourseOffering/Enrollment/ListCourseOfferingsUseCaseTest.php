@@ -7,7 +7,7 @@ use App\Application\CourseOffering\Enrollment\CourseOfferingDTO;
 use App\Application\CourseOffering\Enrollment\ListCourseOfferingsQuery;
 use App\Application\CourseOffering\Enrollment\ListCourseOfferingsUseCase;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
-use App\Domain\Semester\SemesterRepositoryInterface;
+use App\Domain\Semester\Repositories\SemesterRepository;
 use App\Domain\Student\Exceptions\StudentNotFoundException;
 use App\Domain\Student\Repositories\StudentRepository;
 use Mockery;
@@ -23,7 +23,7 @@ class ListCourseOfferingsUseCaseTest extends TestCase
     use SemesterTestHelper;
     use StudentTestHelper;
 
-    private SemesterRepositoryInterface&MockInterface $semesters;
+    private SemesterRepository&MockInterface $semesters;
 
     private StudentRepository&MockInterface $students;
 
@@ -35,7 +35,7 @@ class ListCourseOfferingsUseCaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->semesters = Mockery::mock(SemesterRepositoryInterface::class);
+        $this->semesters = Mockery::mock(SemesterRepository::class);
         $this->students = Mockery::mock(StudentRepository::class);
         $this->queryService = Mockery::mock(CourseOfferingQueryServiceInterface::class);
 
