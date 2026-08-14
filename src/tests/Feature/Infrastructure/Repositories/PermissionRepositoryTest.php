@@ -3,8 +3,8 @@
 namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\Permission\Entities\Permission;
+use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\Permission\PermissionRepositoryInterface;
-use App\Domain\Permission\PermissionType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Support\Permission\CreatesModelPermission;
 use Tests\Support\User\CreatesModelUser;

@@ -3,7 +3,7 @@
 namespace Tests\Support\Permission;
 
 use App\Domain\Permission\Entities\Permission;
-use App\Domain\Permission\PermissionType;
+use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\Permission\ValueObjects\PermissionId;
 
 trait CreatesDomainPermission
@@ -18,7 +18,7 @@ trait CreatesDomainPermission
     protected function permissionType(
         ?PermissionType $permission = null
     ): PermissionType {
-        return $permission ?? PermissionType::TEST;
+        return $permission ?? PermissionType::DashboardView;
     }
 
     protected function createPermission(

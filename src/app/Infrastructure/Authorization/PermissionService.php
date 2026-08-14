@@ -3,8 +3,8 @@
 namespace App\Infrastructure\Authorization;
 
 use App\Application\Authorization\PermissionServiceInterface;
+use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\Permission\PermissionRepositoryInterface;
-use App\Domain\Permission\PermissionType;
 use App\Domain\User\Entities\User;
 
 final class PermissionService implements PermissionServiceInterface

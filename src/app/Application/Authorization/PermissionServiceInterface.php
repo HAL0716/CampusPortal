@@ -2,7 +2,7 @@
 
 namespace App\Application\Authorization;
 
-use App\Domain\Permission\PermissionType;
+use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\User\Entities\User;
 
 interface PermissionServiceInterface

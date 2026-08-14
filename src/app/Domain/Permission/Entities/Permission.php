@@ -2,8 +2,8 @@
 
 namespace App\Domain\Permission\Entities;
 
+use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\Permission\Exceptions\PermissionIdNotAssignedException;
-use App\Domain\Permission\PermissionType;
 use App\Domain\Permission\ValueObjects\PermissionId;
 
 final class Permission

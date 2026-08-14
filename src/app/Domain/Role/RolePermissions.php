@@ -2,7 +2,7 @@
 
 namespace App\Domain\Role;
 
-use App\Domain\Permission\PermissionType;
+use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\Role\Enums\RoleType;
 
 final class RolePermissions

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Permission;
+namespace App\Domain\Permission\Enums;
 
 enum PermissionType: string
 {
@@ -9,6 +9,4 @@ enum PermissionType: string
     case CourseOfferingEnrollment = 'course_offering.enrollment';
     case CourseOfferingManagement = 'course_offering.management';
     case CourseOfferingAdministration = 'course_offering.administration';
-
-    case TEST = 'test';
 }

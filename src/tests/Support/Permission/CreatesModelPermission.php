@@ -2,7 +2,7 @@
 
 namespace Tests\Support\Permission;
 
-use App\Domain\Permission\PermissionType;
+use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\Role\Enums\RoleType;
 use App\Models\Permission as PermissionModel;
 use App\Models\Role as RoleModel;

@@ -4,7 +4,7 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\FinalGrade\FinalGradeType;
-use App\Domain\Permission\PermissionType;
+use App\Domain\Permission\Enums\PermissionType;
 use App\Models\Course;
 use App\Models\CourseOffering;
 use App\Models\Enrollment;

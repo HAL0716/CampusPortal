@@ -3,7 +3,7 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Domain\Academic\Term;
-use App\Domain\Permission\PermissionType;
+use App\Domain\Permission\Enums\PermissionType;
 use App\Models\Semester;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Support\Clock\UseClock;

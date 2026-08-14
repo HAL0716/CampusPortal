@@ -3,7 +3,7 @@
 namespace Tests\Feature\Infrastructure\Authorization;
 
 use App\Application\Authorization\PermissionServiceInterface;
-use App\Domain\Permission\PermissionType;
+use App\Domain\Permission\Enums\PermissionType;
 use App\Models\Permission as PermissionModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Support\Permission\CreatesModelPermission;

@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Permission\PermissionType;
+use App\Domain\Permission\Enums\PermissionType;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseOfferingController;
 use App\Http\Controllers\DashboardController;
