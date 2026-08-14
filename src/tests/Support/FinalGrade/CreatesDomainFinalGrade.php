@@ -3,7 +3,7 @@
 namespace Tests\Support\FinalGrade;
 
 use App\Domain\Enrollment\EnrollmentId;
-use App\Domain\FinalGrade\FinalGrade;
+use App\Domain\FinalGrade\Entities\FinalGrade;
 use App\Domain\FinalGrade\FinalGradeId;
 use App\Domain\FinalGrade\FinalGradeType;
 

@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Domain\FinalGrade;
+namespace App\Domain\FinalGrade\Entities;
 
 use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\FinalGrade\Exceptions\FinalGradeIdNotAssignedException;
+use App\Domain\FinalGrade\FinalGradeId;
+use App\Domain\FinalGrade\FinalGradeType;
 
 final readonly class FinalGrade
 {

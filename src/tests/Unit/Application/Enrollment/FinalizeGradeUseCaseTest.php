@@ -9,7 +9,7 @@ use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
-use App\Domain\FinalGrade\FinalGrade;
+use App\Domain\FinalGrade\Entities\FinalGrade;
 use App\Domain\FinalGrade\FinalGradeRepositoryInterface;
 use App\Domain\FinalGrade\FinalGradeType;
 use App\Infrastructure\Authorization\Exceptions\UnauthorizedException;
