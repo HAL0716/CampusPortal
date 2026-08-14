@@ -3,8 +3,8 @@
 namespace App\Infrastructure\Repositories;
 
 use App\Domain\Semester\Entities\Semester;
-use App\Domain\Semester\SemesterId;
 use App\Domain\Semester\SemesterRepositoryInterface;
+use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Models\Semester as SemesterModel;
 use Carbon\CarbonImmutable;
 

@@ -5,7 +5,7 @@ namespace Tests\Unit\Domain\CourseOffering;
 use App\Domain\Course\CourseId;
 use App\Domain\CourseOffering\CourseOffering;
 use App\Domain\CourseOffering\CourseOfferingId;
-use App\Domain\Semester\SemesterId;
+use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Teacher\ValueObjects\TeacherId;
 use Tests\TestCase;
 

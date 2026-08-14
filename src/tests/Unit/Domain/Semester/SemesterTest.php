@@ -5,7 +5,7 @@ namespace Tests\Unit\Domain\Semester;
 use App\Domain\Academic\Term;
 use App\Domain\Semester\Entities\Semester;
 use App\Domain\Semester\Exceptions\SemesterIdNotAssignedException;
-use App\Domain\Semester\SemesterId;
+use App\Domain\Semester\ValueObjects\SemesterId;
 use PHPUnit\Framework\TestCase;
 
 final class SemesterTest extends TestCase

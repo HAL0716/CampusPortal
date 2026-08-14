@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Semester;
+namespace App\Domain\Semester\ValueObjects;
 
 final readonly class SemesterId
 {
