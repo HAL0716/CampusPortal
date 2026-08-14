@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Domain\Permission;
+namespace App\Domain\Permission\Entities;
 
 use App\Domain\Permission\Exceptions\PermissionIdNotAssignedException;
+use App\Domain\Permission\PermissionId;
+use App\Domain\Permission\PermissionType;
 
 final class Permission
 {

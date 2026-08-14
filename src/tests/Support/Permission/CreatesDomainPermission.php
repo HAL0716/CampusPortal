@@ -2,7 +2,7 @@
 
 namespace Tests\Support\Permission;
 
-use App\Domain\Permission\Permission;
+use App\Domain\Permission\Entities\Permission;
 use App\Domain\Permission\PermissionId;
 use App\Domain\Permission\PermissionType;
 

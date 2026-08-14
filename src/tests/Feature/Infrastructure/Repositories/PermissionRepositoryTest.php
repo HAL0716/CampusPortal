@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Infrastructure\Repositories;
 
-use App\Domain\Permission\Permission;
+use App\Domain\Permission\Entities\Permission;
 use App\Domain\Permission\PermissionRepositoryInterface;
 use App\Domain\Permission\PermissionType;
 use Illuminate\Foundation\Testing\RefreshDatabase;

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Permission;
 
+use App\Domain\Permission\Entities\Permission;
 use App\Domain\User\Entities\User;
 
 interface PermissionRepositoryInterface
