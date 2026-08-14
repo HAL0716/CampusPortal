@@ -21,14 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(CourseOfferingQueryServiceInterface::class, CourseOfferingQueryService::class);
-
         $this->app->scoped(AuthenticationServiceInterface::class, AuthenticationService::class);
-
         $this->app->scoped(PermissionServiceInterface::class, PermissionService::class);
-
         $this->app->bind(EnrollmentAuthorizationServiceInterface::class, EnrollmentAuthorizationService::class);
-
+        $this->app->bind(CourseOfferingQueryServiceInterface::class, CourseOfferingQueryService::class);
         $this->app->bind(PasswordHasherInterface::class, PasswordHasher::class);
     }
 
