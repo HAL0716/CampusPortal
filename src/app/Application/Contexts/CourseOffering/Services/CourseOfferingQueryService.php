@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Contexts\CourseOffering;
+namespace App\Application\Contexts\CourseOffering\Services;
 
 use App\Application\Contexts\CourseOffering\Administration\DTOs\CourseOfferingDTO as AdministrationDTO;
 use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO as EnrollmentDTO;

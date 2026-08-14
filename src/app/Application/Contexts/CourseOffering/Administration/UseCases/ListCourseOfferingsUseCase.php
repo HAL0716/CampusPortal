@@ -4,7 +4,7 @@ namespace App\Application\Contexts\CourseOffering\Administration\UseCases;
 
 use App\Application\Contexts\CourseOffering\Administration\DTOs\CourseOfferingDTO;
 use App\Application\Contexts\CourseOffering\Administration\Queries\ListCourseOfferingsQuery;
-use App\Application\Contexts\CourseOffering\CourseOfferingQueryService;
+use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\Repositories\SemesterRepository;
 

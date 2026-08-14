@@ -3,10 +3,10 @@
 namespace App\Infrastructure\QueryServices;
 
 use App\Application\Contexts\CourseOffering\Administration\DTOs\CourseOfferingDTO as AdministrationDTO;
-use App\Application\Contexts\CourseOffering\CourseOfferingQueryService;
 use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO as EnrollmentDTO;
 use App\Application\Contexts\CourseOffering\Management\DTOs\CourseOfferingDTO as ManagementDTO;
 use App\Application\Contexts\CourseOffering\Management\DTOs\EnrollmentDTO as ManagementEnrollmentDTO;
+use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Student\ValueObjects\StudentId;
