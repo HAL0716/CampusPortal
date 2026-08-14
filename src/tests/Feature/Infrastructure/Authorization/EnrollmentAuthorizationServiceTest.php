@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Infrastructure\Authorization;
 
-use App\Domain\Enrollment\EnrollmentId;
+use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\User\ValueObjects\UserId;
 use App\Infrastructure\Authorization\EnrollmentAuthorizationService;
 use App\Models\CourseOffering;

@@ -4,8 +4,8 @@ namespace App\Infrastructure\Authorization;
 
 use App\Application\Authorization\EnrollmentAuthorizationServiceInterface;
 use App\Domain\CourseOffering\CourseOfferingRepositoryInterface;
-use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
+use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\Teacher\Repositories\TeacherRepository;
 use App\Domain\User\ValueObjects\UserId;
 

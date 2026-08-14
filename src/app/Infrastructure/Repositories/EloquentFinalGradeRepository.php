@@ -4,7 +4,7 @@ namespace App\Infrastructure\Repositories;
 
 use App\Application\FinalGrade\FinalGradeDuplicateDetectorInterface;
 use App\Application\FinalGrade\FinalGradeDuplicateTarget;
-use App\Domain\Enrollment\EnrollmentId;
+use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\FinalGrade\Entities\FinalGrade;
 use App\Domain\FinalGrade\Exceptions\FinalGradeAlreadyExistsException;
 use App\Domain\FinalGrade\Exceptions\FinalGradeNotFoundException;

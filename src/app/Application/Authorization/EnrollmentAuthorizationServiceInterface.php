@@ -2,7 +2,7 @@
 
 namespace App\Application\Authorization;
 
-use App\Domain\Enrollment\EnrollmentId;
+use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\User\ValueObjects\UserId;
 
 interface EnrollmentAuthorizationServiceInterface

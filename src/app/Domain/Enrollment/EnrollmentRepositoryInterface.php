@@ -4,6 +4,7 @@ namespace App\Domain\Enrollment;
 
 use App\Domain\CourseOffering\CourseOfferingId;
 use App\Domain\Enrollment\Entities\Enrollment;
+use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\Student\ValueObjects\StudentId;
 
 interface EnrollmentRepositoryInterface

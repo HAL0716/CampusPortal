@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domain\Enrollment;
 
-use App\Domain\Enrollment\EnrollmentId;
+use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use Tests\TestCase;
 
 final class EnrollmentIdTest extends TestCase

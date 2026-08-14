@@ -2,7 +2,7 @@
 
 namespace App\Application\Enrollment;
 
-use App\Domain\Enrollment\EnrollmentId;
+use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\FinalGrade\Enums\FinalGradeType;
 use App\Domain\User\ValueObjects\UserId;
 

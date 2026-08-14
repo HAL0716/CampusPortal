@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Infrastructure\Repositories;
 
-use App\Domain\Enrollment\EnrollmentId;
+use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\FinalGrade\Entities\FinalGrade;
 use App\Domain\FinalGrade\Enums\FinalGradeType;
 use App\Domain\FinalGrade\ValueObjects\FinalGradeId;

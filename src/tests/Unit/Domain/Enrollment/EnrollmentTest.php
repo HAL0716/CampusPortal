@@ -3,11 +3,11 @@
 namespace Tests\Unit\Domain\Enrollment;
 
 use App\Domain\CourseOffering\CourseOfferingId;
-use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Exceptions\EnrollmentIdNotAssignedException;
 use App\Domain\Enrollment\Exceptions\InvalidEnrollmentStatusException;
+use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\Student\ValueObjects\StudentId;
 use PHPUnit\Framework\TestCase;
 
