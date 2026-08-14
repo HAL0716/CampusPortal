@@ -5,7 +5,7 @@ namespace App\Domain\Role;
 use App\Domain\Permission\PermissionType;
 use App\Domain\Role\Enums\RoleType;
 
-final class RolePermissionMap
+final class RolePermissions
 {
     public static function permissions(RoleType $role): array
     {
