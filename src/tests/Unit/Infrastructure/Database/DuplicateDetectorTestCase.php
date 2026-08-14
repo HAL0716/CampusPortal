@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Infrastructure\Database;
 
-use App\Application\Database\DuplicateDetectorInterface;
+use App\Application\Services\Database\DuplicateDetector;
 use Illuminate\Database\QueryException;
 use PDOException;
 use Tests\TestCase;
@@ -10,7 +10,7 @@ use UnitEnum;
 
 abstract class DuplicateDetectorTestCase extends TestCase
 {
-    abstract protected function detector(): DuplicateDetectorInterface;
+    abstract protected function detector(): DuplicateDetector;
 
     abstract protected function connection(): string;
 

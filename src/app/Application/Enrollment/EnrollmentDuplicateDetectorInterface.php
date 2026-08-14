@@ -2,6 +2,6 @@
 
 namespace App\Application\Enrollment;
 
-use App\Application\Database\DuplicateDetectorInterface;
+use App\Application\Services\Database\DuplicateDetector;
 
-interface EnrollmentDuplicateDetectorInterface extends DuplicateDetectorInterface {}
+interface EnrollmentDuplicateDetectorInterface extends DuplicateDetector {}

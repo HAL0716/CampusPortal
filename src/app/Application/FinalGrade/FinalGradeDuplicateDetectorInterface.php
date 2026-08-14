@@ -2,6 +2,6 @@
 
 namespace App\Application\FinalGrade;
 
-use App\Application\Database\DuplicateDetectorInterface;
+use App\Application\Services\Database\DuplicateDetector;
 
-interface FinalGradeDuplicateDetectorInterface extends DuplicateDetectorInterface {}
+interface FinalGradeDuplicateDetectorInterface extends DuplicateDetector {}

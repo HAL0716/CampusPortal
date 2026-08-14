@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\Database;
+namespace App\Application\Services\Database;
 
 use Illuminate\Database\QueryException;
 use UnitEnum;
 
-interface DuplicateDetectorInterface
+interface DuplicateDetector
 {
     public function isDuplicate(QueryException $e, UnitEnum ...$targets): bool;
 }
