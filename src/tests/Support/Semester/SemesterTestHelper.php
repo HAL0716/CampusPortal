@@ -2,7 +2,7 @@
 
 namespace Tests\Support\Semester;
 
-use App\Domain\Academic\Term;
+use App\Domain\Academic\Enums\Term;
 use App\Domain\Semester\Entities\Semester;
 use App\Domain\Semester\Repositories\SemesterRepository;
 use Carbon\CarbonImmutable;

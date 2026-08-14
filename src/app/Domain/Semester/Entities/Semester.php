@@ -2,7 +2,7 @@
 
 namespace App\Domain\Semester\Entities;
 
-use App\Domain\Academic\Term;
+use App\Domain\Academic\Enums\Term;
 use App\Domain\Semester\Exceptions\SemesterIdNotAssignedException;
 use App\Domain\Semester\ValueObjects\SemesterId;
 

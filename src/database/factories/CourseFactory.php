@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domain\Academic\Term;
+use App\Domain\Academic\Enums\Term;
 use App\Models\Course;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

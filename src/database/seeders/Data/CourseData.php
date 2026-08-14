@@ -2,7 +2,7 @@
 
 namespace Database\Seeders\Data;
 
-use App\Domain\Academic\Term;
+use App\Domain\Academic\Enums\Term;
 
 final class CourseData
 {

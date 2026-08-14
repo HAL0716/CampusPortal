@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Academic;
+namespace App\Domain\Academic\Enums;
 
 enum Term: string
 {
