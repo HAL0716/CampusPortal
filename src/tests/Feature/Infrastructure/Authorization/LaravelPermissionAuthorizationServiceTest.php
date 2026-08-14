@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Infrastructure\Authorization;
 
-use App\Application\Authorization\PermissionServiceInterface;
+use App\Application\Services\Authorization\PermissionAuthorizationService;
 use App\Domain\Permission\Enums\PermissionType;
 use App\Models\Permission as PermissionModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,13 +16,13 @@ final class LaravelPermissionAuthorizationServiceTest extends TestCase
     use CreatesModelUser;
     use RefreshDatabase;
 
-    private PermissionServiceInterface $permissions;
+    private PermissionAuthorizationService $permissions;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->permissions = $this->app->make(PermissionServiceInterface::class);
+        $this->permissions = $this->app->make(PermissionAuthorizationService::class);
     }
 
     public function test_returns_user_permissions(): void

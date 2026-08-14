@@ -2,12 +2,12 @@
 
 namespace App\Infrastructure\Authorization;
 
-use App\Application\Authorization\PermissionServiceInterface;
+use App\Application\Services\Authorization\PermissionAuthorizationService;
 use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\Permission\Repositories\PermissionRepository;
 use App\Domain\User\Entities\User;
 
-final class LaravelPermissionAuthorizationService implements PermissionServiceInterface
+final class LaravelPermissionAuthorizationService implements PermissionAuthorizationService
 {
     private array $cachedPermissions = [];
 

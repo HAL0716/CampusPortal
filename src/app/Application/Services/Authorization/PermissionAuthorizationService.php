@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\Authorization;
+namespace App\Application\Services\Authorization;
 
 use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\User\Entities\User;
 
-interface PermissionServiceInterface
+interface PermissionAuthorizationService
 {
     /**
      * @return array<string>

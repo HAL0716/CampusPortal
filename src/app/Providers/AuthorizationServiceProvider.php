@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Application\Authorization\PermissionServiceInterface;
+use App\Application\Services\Authorization\PermissionAuthorizationService;
 use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\User\Repositories\UserRepository;
 use App\Domain\User\ValueObjects\UserId;
@@ -25,7 +25,7 @@ class AuthorizationServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $permissions = app(PermissionServiceInterface::class);
+        $permissions = app(PermissionAuthorizationService::class);
         $users = app(UserRepository::class);
 
         foreach (PermissionType::cases() as $permission) {
