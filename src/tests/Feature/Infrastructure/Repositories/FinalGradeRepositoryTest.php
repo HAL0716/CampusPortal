@@ -4,7 +4,7 @@ namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\FinalGrade\Entities\FinalGrade;
-use App\Domain\FinalGrade\FinalGradeType;
+use App\Domain\FinalGrade\Enums\FinalGradeType;
 use App\Domain\FinalGrade\ValueObjects\FinalGradeId;
 use App\Infrastructure\Repositories\FinalGradeRepository;
 use App\Models\Enrollment;

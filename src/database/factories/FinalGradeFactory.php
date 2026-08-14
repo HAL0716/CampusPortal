@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domain\FinalGrade\FinalGradeType;
+use App\Domain\FinalGrade\Enums\FinalGradeType;
 use App\Models\Enrollment;
 use App\Models\FinalGrade;
 use Illuminate\Database\Eloquent\Factories\Factory;

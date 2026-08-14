@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\FinalGrade;
+namespace App\Domain\FinalGrade\Enums;
 
 enum FinalGradeType: string
 {

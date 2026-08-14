@@ -4,7 +4,7 @@ namespace App\Http\Requests\Enrollment;
 
 use App\Application\Enrollment\FinalizeGradeCommand;
 use App\Domain\Enrollment\EnrollmentId;
-use App\Domain\FinalGrade\FinalGradeType;
+use App\Domain\FinalGrade\Enums\FinalGradeType;
 use App\Domain\User\ValueObjects\UserId;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;

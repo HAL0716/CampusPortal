@@ -3,8 +3,8 @@
 namespace App\Domain\FinalGrade\Entities;
 
 use App\Domain\Enrollment\EnrollmentId;
+use App\Domain\FinalGrade\Enums\FinalGradeType;
 use App\Domain\FinalGrade\Exceptions\FinalGradeIdNotAssignedException;
-use App\Domain\FinalGrade\FinalGradeType;
 use App\Domain\FinalGrade\ValueObjects\FinalGradeId;
 
 final readonly class FinalGrade

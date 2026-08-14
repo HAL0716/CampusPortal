@@ -3,7 +3,7 @@
 namespace App\Application\Enrollment;
 
 use App\Domain\Enrollment\EnrollmentId;
-use App\Domain\FinalGrade\FinalGradeType;
+use App\Domain\FinalGrade\Enums\FinalGradeType;
 use App\Domain\User\ValueObjects\UserId;
 
 final readonly class FinalizeGradeCommand
