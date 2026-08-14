@@ -10,24 +10,29 @@ use App\Models\User as UserModel;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
-final class AuthorizationServiceProvider extends ServiceProvider
+class AuthorizationServiceProvider extends ServiceProvider
 {
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        //
+    }
+
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
+        $permissions = app(PermissionServiceInterface::class);
+        $users = app(UserRepository::class);
+
         foreach (PermissionType::cases() as $permission) {
-            Gate::define(
-                $permission->value,
-                function (UserModel $user) use ($permission): bool {
-                    return app(PermissionServiceInterface::class)
-                        ->can(
-                            app(UserRepository::class)
-                                ->findById(new UserId($user->id)),
-                            $permission
-                        );
-                }
+            Gate::define($permission->value, fn (UserModel $user): bool => $permissions->can(
+                $users->findById(new UserId($user->id)),
+                $permission
+            )
             );
         }
     }
