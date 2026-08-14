@@ -7,14 +7,14 @@ use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
 use App\Domain\FinalGrade\Entities\FinalGrade;
 use App\Domain\FinalGrade\Enums\FinalGradeType;
-use App\Domain\FinalGrade\FinalGradeRepositoryInterface;
+use App\Domain\FinalGrade\Repositories\FinalGradeRepository;
 use App\Infrastructure\Authorization\Exceptions\UnauthorizedException;
 
 final readonly class FinalizeGradeUseCase
 {
     public function __construct(
         private EnrollmentRepositoryInterface $enrollments,
-        private FinalGradeRepositoryInterface $finalGrades,
+        private FinalGradeRepository $finalGrades,
         private EnrollmentAuthorizationServiceInterface $auth,
     ) {}
 

@@ -11,7 +11,7 @@ use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
 use App\Domain\FinalGrade\Entities\FinalGrade;
 use App\Domain\FinalGrade\Enums\FinalGradeType;
-use App\Domain\FinalGrade\FinalGradeRepositoryInterface;
+use App\Domain\FinalGrade\Repositories\FinalGradeRepository;
 use App\Infrastructure\Authorization\Exceptions\UnauthorizedException;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -30,7 +30,7 @@ class FinalizeGradeUseCaseTest extends TestCase
 
     private EnrollmentRepositoryInterface&MockInterface $enrollments;
 
-    private FinalGradeRepositoryInterface&MockInterface $finalGrades;
+    private FinalGradeRepository&MockInterface $finalGrades;
 
     private EnrollmentAuthorizationServiceInterface&MockInterface $auth;
 
@@ -41,7 +41,7 @@ class FinalizeGradeUseCaseTest extends TestCase
         parent::setUp();
 
         $this->enrollments = Mockery::mock(EnrollmentRepositoryInterface::class);
-        $this->finalGrades = Mockery::mock(FinalGradeRepositoryInterface::class);
+        $this->finalGrades = Mockery::mock(FinalGradeRepository::class);
         $this->auth = Mockery::mock(EnrollmentAuthorizationServiceInterface::class);
 
         $this->useCase = new FinalizeGradeUseCase(

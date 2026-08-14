@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\FinalGrade;
+namespace App\Domain\FinalGrade\Repositories;
 
 use App\Domain\FinalGrade\Entities\FinalGrade;
 
-interface FinalGradeRepositoryInterface
+interface FinalGradeRepository
 {
     public function save(FinalGrade $finalGrade): FinalGrade;
 }

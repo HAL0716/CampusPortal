@@ -12,7 +12,7 @@ use App\Application\Security\PasswordHasherInterface;
 use App\Application\User\UserDuplicateDetectorInterface;
 use App\Domain\CourseOffering\CourseOfferingRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
-use App\Domain\FinalGrade\FinalGradeRepositoryInterface;
+use App\Domain\FinalGrade\Repositories\FinalGradeRepository;
 use App\Domain\Permission\Repositories\PermissionRepository;
 use App\Domain\Semester\Repositories\SemesterRepository;
 use App\Domain\Student\Repositories\StudentRepository;
@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(EnrollmentRepositoryInterface::class, EnrollmentRepository::class);
 
-        $this->app->bind(FinalGradeRepositoryInterface::class, EloquentFinalGradeRepository::class);
+        $this->app->bind(FinalGradeRepository::class, EloquentFinalGradeRepository::class);
 
         $this->app->bind(
             UserDuplicateDetectorInterface::class,
