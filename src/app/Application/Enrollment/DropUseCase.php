@@ -2,9 +2,9 @@
 
 namespace App\Application\Enrollment;
 
-use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
+use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\Student\Exceptions\StudentNotFoundException;
 use App\Domain\Student\Repositories\StudentRepository;
 
@@ -12,7 +12,7 @@ final readonly class DropUseCase
 {
     public function __construct(
         private StudentRepository $students,
-        private EnrollmentRepositoryInterface $enrollments
+        private EnrollmentRepository $enrollments
     ) {}
 
     public function execute(DropCommand $command): Enrollment

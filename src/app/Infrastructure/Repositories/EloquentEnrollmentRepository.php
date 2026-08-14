@@ -5,16 +5,16 @@ namespace App\Infrastructure\Repositories;
 use App\Application\Enrollment\EnrollmentDuplicateDetectorInterface;
 use App\Application\Enrollment\EnrollmentDuplicateTarget;
 use App\Domain\CourseOffering\CourseOfferingId;
-use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Exceptions\EnrollmentAlreadyExistsException;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
+use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\Student\ValueObjects\StudentId;
 use App\Models\Enrollment as EnrollmentModel;
 use Illuminate\Database\QueryException;
 
-final class EloquentEnrollmentRepository implements EnrollmentRepositoryInterface
+final class EloquentEnrollmentRepository implements EnrollmentRepository
 {
     public function __construct(
         private readonly EnrollmentDuplicateDetectorInterface $duplicateDetector

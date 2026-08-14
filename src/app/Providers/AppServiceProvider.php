@@ -11,7 +11,7 @@ use App\Application\FinalGrade\FinalGradeDuplicateDetectorInterface;
 use App\Application\Security\PasswordHasherInterface;
 use App\Application\User\UserDuplicateDetectorInterface;
 use App\Domain\CourseOffering\CourseOfferingRepositoryInterface;
-use App\Domain\Enrollment\EnrollmentRepositoryInterface;
+use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\FinalGrade\Repositories\FinalGradeRepository;
 use App\Domain\Permission\Repositories\PermissionRepository;
 use App\Domain\Semester\Repositories\SemesterRepository;
@@ -58,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(CourseOfferingRepositoryInterface::class, CourseOfferingRepository::class);
 
-        $this->app->bind(EnrollmentRepositoryInterface::class, EloquentEnrollmentRepository::class);
+        $this->app->bind(EnrollmentRepository::class, EloquentEnrollmentRepository::class);
 
         $this->app->bind(FinalGradeRepository::class, EloquentFinalGradeRepository::class);
 

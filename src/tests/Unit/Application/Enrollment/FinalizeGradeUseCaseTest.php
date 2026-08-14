@@ -5,10 +5,10 @@ namespace Tests\Unit\Application\Enrollment;
 use App\Application\Authorization\EnrollmentAuthorizationServiceInterface;
 use App\Application\Enrollment\FinalizeGradeCommand;
 use App\Application\Enrollment\FinalizeGradeUseCase;
-use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
+use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\FinalGrade\Entities\FinalGrade;
 use App\Domain\FinalGrade\Enums\FinalGradeType;
 use App\Domain\FinalGrade\Repositories\FinalGradeRepository;
@@ -28,7 +28,7 @@ class FinalizeGradeUseCaseTest extends TestCase
     use MockeryPHPUnitIntegration;
     use UseMatcher;
 
-    private EnrollmentRepositoryInterface&MockInterface $enrollments;
+    private EnrollmentRepository&MockInterface $enrollments;
 
     private FinalGradeRepository&MockInterface $finalGrades;
 
@@ -40,7 +40,7 @@ class FinalizeGradeUseCaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->enrollments = Mockery::mock(EnrollmentRepositoryInterface::class);
+        $this->enrollments = Mockery::mock(EnrollmentRepository::class);
         $this->finalGrades = Mockery::mock(FinalGradeRepository::class);
         $this->auth = Mockery::mock(EnrollmentAuthorizationServiceInterface::class);
 

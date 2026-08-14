@@ -3,9 +3,9 @@
 namespace Tests\Support\Enrollment;
 
 use App\Domain\CourseOffering\CourseOfferingId;
-use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
+use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\Student\ValueObjects\StudentId;
 use Mockery\MockInterface;
 use Tests\Support\Id\IdTestHelper;
@@ -31,7 +31,7 @@ trait EnrollmentTestHelper
     }
 
     private function expectEnrollmentById(
-        EnrollmentRepositoryInterface&MockInterface $enrollments,
+        EnrollmentRepository&MockInterface $enrollments,
         ?Enrollment $enrollment,
     ): void {
         $enrollments
@@ -42,7 +42,7 @@ trait EnrollmentTestHelper
     }
 
     private function expectEnrollment(
-        EnrollmentRepositoryInterface&MockInterface $enrollments,
+        EnrollmentRepository&MockInterface $enrollments,
         ?Enrollment $enrollment,
         StudentId $studentId,
         CourseOfferingId $courseOfferingId,

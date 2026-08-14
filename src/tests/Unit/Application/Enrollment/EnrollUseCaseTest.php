@@ -4,9 +4,9 @@ namespace Tests\Unit\Application\Enrollment;
 
 use App\Application\Enrollment\EnrollCommand;
 use App\Application\Enrollment\EnrollUseCase;
-use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
+use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\Student\Exceptions\StudentNotFoundException;
 use App\Domain\Student\Repositories\StudentRepository;
 use Mockery;
@@ -26,7 +26,7 @@ class EnrollUseCaseTest extends TestCase
 
     private StudentRepository&MockInterface $students;
 
-    private EnrollmentRepositoryInterface&MockInterface $enrollments;
+    private EnrollmentRepository&MockInterface $enrollments;
 
     private EnrollUseCase $useCase;
 
@@ -35,7 +35,7 @@ class EnrollUseCaseTest extends TestCase
         parent::setUp();
 
         $this->students = Mockery::mock(StudentRepository::class);
-        $this->enrollments = Mockery::mock(EnrollmentRepositoryInterface::class);
+        $this->enrollments = Mockery::mock(EnrollmentRepository::class);
 
         $this->useCase = new EnrollUseCase(
             $this->students,
