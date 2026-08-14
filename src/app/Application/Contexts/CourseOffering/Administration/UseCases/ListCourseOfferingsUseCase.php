@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Application\Contexts\CourseOffering\Enrollment;
+namespace App\Application\Contexts\CourseOffering\Administration\UseCases;
 
+use App\Application\Contexts\CourseOffering\Administration\DTOs\CourseOfferingDTO;
+use App\Application\Contexts\CourseOffering\Administration\Queries\ListCourseOfferingsQuery;
 use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
-use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO;
-use App\Application\Contexts\CourseOffering\Enrollment\Queries\ListCourseOfferingsQuery;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\Repositories\SemesterRepository;
-use App\Domain\Student\Exceptions\StudentNotFoundException;
-use App\Domain\Student\Repositories\StudentRepository;
 
 final class ListCourseOfferingsUseCase
 {
     public function __construct(
         private SemesterRepository $semesters,
-        private StudentRepository $students,
         private CourseOfferingQueryServiceInterface $queryService,
     ) {}
 
@@ -28,14 +25,8 @@ final class ListCourseOfferingsUseCase
             throw new SemesterNotFoundException;
         }
 
-        $student = $this->students->findByUserId($query->userId);
-        if ($student === null) {
-            throw new StudentNotFoundException;
-        }
-
-        return $this->queryService->findForEnrollment(
+        return $this->queryService->findForAdministration(
             $semester->requireId(),
-            $student->requireId(),
         );
     }
 }

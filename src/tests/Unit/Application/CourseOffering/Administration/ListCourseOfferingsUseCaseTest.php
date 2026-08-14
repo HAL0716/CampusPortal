@@ -3,8 +3,8 @@
 namespace Tests\Unit\Application\Contexts\CourseOffering\Administration;
 
 use App\Application\Contexts\CourseOffering\Administration\DTOs\CourseOfferingDTO;
-use App\Application\Contexts\CourseOffering\Administration\ListCourseOfferingsUseCase;
 use App\Application\Contexts\CourseOffering\Administration\Queries\ListCourseOfferingsQuery;
+use App\Application\Contexts\CourseOffering\Administration\UseCases\ListCourseOfferingsUseCase;
 use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\Repositories\SemesterRepository;

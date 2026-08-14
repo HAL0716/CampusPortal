@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Application\Contexts\CourseOffering\Management;
+namespace App\Application\Contexts\CourseOffering\Enrollment\UseCases;
 
 use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
-use App\Application\Contexts\CourseOffering\Management\DTOs\CourseOfferingDTO;
-use App\Application\Contexts\CourseOffering\Management\Queries\ListCourseOfferingsQuery;
+use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO;
+use App\Application\Contexts\CourseOffering\Enrollment\Queries\ListCourseOfferingsQuery;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\Repositories\SemesterRepository;
-use App\Domain\Teacher\Exceptions\TeacherNotFoundException;
-use App\Domain\Teacher\Repositories\TeacherRepository;
+use App\Domain\Student\Exceptions\StudentNotFoundException;
+use App\Domain\Student\Repositories\StudentRepository;
 
 final class ListCourseOfferingsUseCase
 {
     public function __construct(
         private SemesterRepository $semesters,
-        private TeacherRepository $teachers,
+        private StudentRepository $students,
         private CourseOfferingQueryServiceInterface $queryService,
     ) {}
 
@@ -28,14 +28,14 @@ final class ListCourseOfferingsUseCase
             throw new SemesterNotFoundException;
         }
 
-        $teacher = $this->teachers->findByUserId($query->userId);
-        if ($teacher === null) {
-            throw new TeacherNotFoundException;
+        $student = $this->students->findByUserId($query->userId);
+        if ($student === null) {
+            throw new StudentNotFoundException;
         }
 
-        return $this->queryService->findForManagement(
+        return $this->queryService->findForEnrollment(
             $semester->requireId(),
-            $teacher->requireId(),
+            $student->requireId(),
         );
     }
 }
