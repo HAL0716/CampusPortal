@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Infrastructure\Database\Mysql;
 
+use App\Application\Contexts\User\UserDuplicateTarget;
 use App\Application\Services\Database\DuplicateDetector;
-use App\Application\User\UserDuplicateTarget;
 use App\Infrastructure\Database\Mysql\MysqlUserDuplicateDetector;
 
 final class MysqlUserDuplicateDetectorTest extends MysqlDuplicateDetectorTestCase

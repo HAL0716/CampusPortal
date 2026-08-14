@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\User;
+namespace App\Application\Contexts\User;
 
 enum UserDuplicateTarget
 {

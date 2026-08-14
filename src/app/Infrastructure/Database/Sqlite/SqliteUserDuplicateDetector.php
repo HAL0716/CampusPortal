@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Database\Sqlite;
 
-use App\Application\User\UserDuplicateDetectorInterface;
-use App\Application\User\UserDuplicateTarget;
+use App\Application\Contexts\User\UserDuplicateDetectorInterface;
+use App\Application\Contexts\User\UserDuplicateTarget;
 use UnitEnum;
 
 final class SqliteUserDuplicateDetector extends AbstractSqliteDuplicateDetector implements UserDuplicateDetectorInterface

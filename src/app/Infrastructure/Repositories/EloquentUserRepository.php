@@ -2,9 +2,9 @@
 
 namespace App\Infrastructure\Repositories;
 
+use App\Application\Contexts\User\UserDuplicateDetectorInterface;
+use App\Application\Contexts\User\UserDuplicateTarget;
 use App\Application\Services\Security\PasswordHasher;
-use App\Application\User\UserDuplicateDetectorInterface;
-use App\Application\User\UserDuplicateTarget;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use App\Domain\User\Exceptions\UserNotFoundException;

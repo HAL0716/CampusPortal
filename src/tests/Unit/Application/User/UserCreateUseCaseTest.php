@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Application\User;
+namespace Tests\Unit\Application\Contexts\User;
 
-use App\Application\User\UserCreateCommand;
-use App\Application\User\UserCreateUseCase;
+use App\Application\Contexts\User\UserCreateCommand;
+use App\Application\Contexts\User\UserCreateUseCase;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use App\Domain\User\Repositories\UserRepository;
