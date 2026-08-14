@@ -2,7 +2,7 @@
 
 namespace App\Application\Enrollment;
 
-use App\Domain\CourseOffering\CourseOfferingId;
+use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\User\ValueObjects\UserId;
 
 final readonly class DropCommand

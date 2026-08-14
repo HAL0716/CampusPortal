@@ -2,7 +2,7 @@
 
 namespace App\Domain\Enrollment\Repositories;
 
-use App\Domain\CourseOffering\CourseOfferingId;
+use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\Student\ValueObjects\StudentId;

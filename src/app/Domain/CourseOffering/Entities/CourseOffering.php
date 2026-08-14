@@ -3,7 +3,7 @@
 namespace App\Domain\CourseOffering\Entities;
 
 use App\Domain\Course\CourseId;
-use App\Domain\CourseOffering\CourseOfferingId;
+use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Teacher\ValueObjects\TeacherId;
 

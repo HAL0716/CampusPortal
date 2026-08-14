@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Infrastructure\Repositories;
 
-use App\Domain\CourseOffering\CourseOfferingId;
 use App\Domain\CourseOffering\Entities\CourseOffering;
+use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Infrastructure\Repositories\CourseOfferingRepository;
 use App\Models\CourseOffering as CourseOfferingModel;
 use App\Models\Teacher;
