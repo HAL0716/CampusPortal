@@ -2,6 +2,7 @@
 
 namespace App\Application\Contexts\User;
 
+use App\Application\Contexts\User\Commands\UserCreateCommand;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Repositories\UserRepository;
 use App\Domain\User\ValueObjects\UserEmail;

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Application\Contexts\User;
 
-use App\Application\Contexts\User\UserCreateCommand;
+use App\Application\Contexts\User\Commands\UserCreateCommand;
 use App\Application\Contexts\User\UserCreateUseCase;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;

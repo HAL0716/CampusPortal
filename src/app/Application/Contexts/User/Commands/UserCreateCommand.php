@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Contexts\User;
+namespace App\Application\Contexts\User\Commands;
 
 final readonly class UserCreateCommand
 {
