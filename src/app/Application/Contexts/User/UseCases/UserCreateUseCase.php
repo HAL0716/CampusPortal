@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Contexts\User;
+namespace App\Application\Contexts\User\UseCases;
 
 use App\Application\Contexts\User\Commands\UserCreateCommand;
 use App\Domain\User\Entities\User;
