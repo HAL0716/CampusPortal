@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Application\Services\Authentication\AuthenticationService;
+use App\Application\Contexts\Authentication\AuthenticationService;
 use App\Application\Services\Authorization\PermissionAuthorizationService;
 use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\User\Entities\User;

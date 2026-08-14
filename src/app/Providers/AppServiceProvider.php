@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use App\Application\Contexts\Authentication\AuthenticationService;
 use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
-use App\Application\Services\Authentication\AuthenticationService;
 use App\Application\Services\Authorization\EnrollmentAuthorizationService;
 use App\Application\Services\Authorization\PermissionAuthorizationService;
 use App\Application\Services\Security\PasswordHasher;

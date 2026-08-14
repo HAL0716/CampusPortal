@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Authentication;
 
-use App\Application\Services\Authentication\AuthenticationService;
+use App\Application\Contexts\Authentication\AuthenticationService;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
 use App\Domain\User\Repositories\UserRepository;

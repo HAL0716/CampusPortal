@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Application\Services\Authentication\UseCases;
+namespace App\Application\Contexts\Authentication\UseCases;
 
-use App\Application\Services\Authentication\AuthenticationService;
-use App\Application\Services\Authentication\Commands\LoginCommand;
+use App\Application\Contexts\Authentication\AuthenticationService;
+use App\Application\Contexts\Authentication\Commands\LoginCommand;
 use App\Application\Services\Security\PasswordHasher;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
 use App\Domain\User\Repositories\UserRepository;

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Infrastructure\Authentication;
 
-use App\Application\Services\Authentication\AuthenticationService;
+use App\Application\Contexts\Authentication\AuthenticationService;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
 use App\Domain\User\Repositories\UserRepository;
 use App\Domain\User\ValueObjects\UserId;

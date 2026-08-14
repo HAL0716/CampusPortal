@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Application\Services\Authentication\AuthenticationService;
+use App\Application\Contexts\Authentication\AuthenticationService;
 use App\Application\Services\Clock\Clock;
 use Illuminate\Http\Request;
 use Inertia\Middleware;

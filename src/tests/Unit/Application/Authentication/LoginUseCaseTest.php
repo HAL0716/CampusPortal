@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Application\Authentication;
 
-use App\Application\Services\Authentication\AuthenticationService;
-use App\Application\Services\Authentication\Commands\LoginCommand;
-use App\Application\Services\Authentication\UseCases\LoginUseCase;
+use App\Application\Contexts\Authentication\AuthenticationService;
+use App\Application\Contexts\Authentication\Commands\LoginCommand;
+use App\Application\Contexts\Authentication\UseCases\LoginUseCase;
 use App\Application\Services\Security\PasswordHasher;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
