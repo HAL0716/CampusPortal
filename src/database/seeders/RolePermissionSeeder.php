@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Domain\Role\Enums\RoleType;
 use App\Domain\Role\RolePermissionMap;
-use App\Domain\Role\RoleType;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Seeder;

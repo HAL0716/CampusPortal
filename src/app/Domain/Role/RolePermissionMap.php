@@ -3,6 +3,7 @@
 namespace App\Domain\Role;
 
 use App\Domain\Permission\PermissionType;
+use App\Domain\Role\Enums\RoleType;
 
 final class RolePermissionMap
 {

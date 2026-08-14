@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domain\Role\RoleType;
+use App\Domain\Role\Enums\RoleType;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
