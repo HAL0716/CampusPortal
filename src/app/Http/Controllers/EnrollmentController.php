@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Application\Enrollment\DropUseCase;
 use App\Application\Enrollment\EnrollUseCase;
 use App\Application\Enrollment\FinalizeGradeUseCase;
+use App\Application\Services\Authentication\AuthenticationService;
 use App\Exceptions\UserMessageException;
 use App\Http\Controllers\Concerns\HasFlashMessages;
 use App\Http\Requests\Enrollment\DropRequest;
@@ -19,7 +19,7 @@ final class EnrollmentController extends Controller
     use HasFlashMessages;
 
     public function __construct(
-        private readonly AuthenticationServiceInterface $auth,
+        private readonly AuthenticationService $auth,
     ) {}
 
     public function enroll(EnrollRequest $request, EnrollUseCase $useCase): RedirectResponse

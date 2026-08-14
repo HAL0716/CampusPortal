@@ -2,14 +2,14 @@
 
 namespace App\Infrastructure\Authentication;
 
-use App\Application\Authentication\AuthenticationServiceInterface;
+use App\Application\Services\Authentication\AuthenticationService;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
 use App\Domain\User\Repositories\UserRepository;
 use App\Domain\User\ValueObjects\UserId;
 use Illuminate\Support\Facades\Auth;
 
-final class LaravelAuthenticationService implements AuthenticationServiceInterface
+final class LaravelAuthenticationService implements AuthenticationService
 {
     private ?User $cachedUser = null;
 

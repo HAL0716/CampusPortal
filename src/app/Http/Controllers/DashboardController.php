@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Application\Authorization\PermissionServiceInterface;
+use App\Application\Services\Authentication\AuthenticationService;
 use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\User\Entities\User;
 use Inertia\Inertia;
@@ -12,7 +12,7 @@ use Inertia\Response;
 class DashboardController extends Controller
 {
     public function __construct(
-        private readonly AuthenticationServiceInterface $auth,
+        private readonly AuthenticationService $auth,
         private readonly PermissionServiceInterface $permissions,
     ) {}
 

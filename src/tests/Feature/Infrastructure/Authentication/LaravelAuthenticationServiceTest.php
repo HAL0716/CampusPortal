@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Infrastructure\Authentication;
 
-use App\Application\Authentication\AuthenticationServiceInterface;
+use App\Application\Services\Authentication\AuthenticationService;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
 use App\Domain\User\Repositories\UserRepository;
 use App\Domain\User\ValueObjects\UserId;
@@ -15,7 +15,7 @@ final class LaravelAuthenticationServiceTest extends TestCase
     use CreatesModelUser;
     use RefreshDatabase;
 
-    private AuthenticationServiceInterface $auth;
+    private AuthenticationService $auth;
 
     private UserRepository $users;
 
@@ -23,7 +23,7 @@ final class LaravelAuthenticationServiceTest extends TestCase
     {
         parent::setUp();
 
-        $this->auth = $this->app->make(AuthenticationServiceInterface::class);
+        $this->auth = $this->app->make(AuthenticationService::class);
         $this->users = $this->app->make(UserRepository::class);
     }
 

@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Application\Authentication;
 
-use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Application\Authentication\LoginCommand;
 use App\Application\Authentication\LoginUseCase;
 use App\Application\Security\PasswordHasherInterface;
+use App\Application\Services\Authentication\AuthenticationService;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
 use App\Domain\User\Repositories\UserRepository;
@@ -23,7 +23,7 @@ final class LoginUseCaseTest extends TestCase
 
     private UserRepository&MockInterface $users;
 
-    private AuthenticationServiceInterface&MockInterface $auth;
+    private AuthenticationService&MockInterface $auth;
 
     private PasswordHasherInterface&MockInterface $hasher;
 
@@ -32,7 +32,7 @@ final class LoginUseCaseTest extends TestCase
         parent::setUp();
 
         $this->users = Mockery::mock(UserRepository::class);
-        $this->auth = Mockery::mock(AuthenticationServiceInterface::class);
+        $this->auth = Mockery::mock(AuthenticationService::class);
         $this->hasher = Mockery::mock(PasswordHasherInterface::class);
     }
 

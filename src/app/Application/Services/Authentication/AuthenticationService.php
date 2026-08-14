@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\Authentication;
+namespace App\Application\Services\Authentication;
 
 use App\Domain\User\Entities\User;
 
-interface AuthenticationServiceInterface
+interface AuthenticationService
 {
     public function login(User $user): void;
 

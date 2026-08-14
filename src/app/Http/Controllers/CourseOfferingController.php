@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Application\Authentication\AuthenticationServiceInterface;
 use App\Application\Clock\ClockInterface;
 use App\Application\CourseOffering\Administration\ListCourseOfferingsUseCase as AdministrationUseCase;
 use App\Application\CourseOffering\Enrollment\ListCourseOfferingsUseCase as EnrollmentUseCase;
 use App\Application\CourseOffering\Management\ListCourseOfferingsUseCase as ManagementUseCase;
+use App\Application\Services\Authentication\AuthenticationService;
 use App\Http\Requests\CourseOffering\AdministrationRequest;
 use App\Http\Requests\CourseOffering\EnrollmentRequest;
 use App\Http\Requests\CourseOffering\ManagementRequest;
@@ -16,7 +16,7 @@ class CourseOfferingController extends Controller
 {
     public function __construct(
         private readonly ClockInterface $clock,
-        private readonly AuthenticationServiceInterface $auth,
+        private readonly AuthenticationService $auth,
     ) {}
 
     public function enrollment(EnrollmentRequest $request, EnrollmentUseCase $useCase)
