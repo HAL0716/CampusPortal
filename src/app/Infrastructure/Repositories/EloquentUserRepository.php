@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Repositories;
 
-use App\Application\Contexts\User\UserDuplicateDetectorInterface;
-use App\Application\Contexts\User\UserDuplicateTarget;
+use App\Application\Contexts\User\Duplicate\UserDuplicateDetector;
+use App\Application\Contexts\User\Duplicate\UserDuplicateTarget;
 use App\Application\Services\Security\PasswordHasher;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
@@ -19,7 +19,7 @@ final class EloquentUserRepository implements UserRepository
 {
     public function __construct(
         private readonly PasswordHasher $hasher,
-        private readonly UserDuplicateDetectorInterface $duplicateDetector
+        private readonly UserDuplicateDetector $duplicateDetector
     ) {}
 
     public function save(User $user): User

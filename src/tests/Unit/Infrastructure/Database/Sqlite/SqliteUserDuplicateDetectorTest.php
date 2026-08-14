@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Infrastructure\Database\Sqlite;
 
-use App\Application\Contexts\User\UserDuplicateTarget;
+use App\Application\Contexts\User\Duplicate\UserDuplicateTarget;
 use App\Application\Services\Database\DuplicateDetector;
 use App\Infrastructure\Database\Sqlite\SqliteUserDuplicateDetector;
 
