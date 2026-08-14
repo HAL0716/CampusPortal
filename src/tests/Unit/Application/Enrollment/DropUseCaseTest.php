@@ -4,9 +4,9 @@ namespace Tests\Unit\Application\Enrollment;
 
 use App\Application\Enrollment\DropCommand;
 use App\Application\Enrollment\DropUseCase;
-use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentStatus;
+use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
 use App\Domain\Student\Exceptions\StudentNotFoundException;
 use App\Domain\Student\Repositories\StudentRepository;

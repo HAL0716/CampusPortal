@@ -3,9 +3,9 @@
 namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\CourseOffering\CourseOfferingId;
-use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\Enrollment\EnrollmentStatus;
+use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Exceptions\EnrollmentAlreadyExistsException;
 use App\Domain\Student\ValueObjects\StudentId;
 use App\Infrastructure\Repositories\EnrollmentRepository;

@@ -3,9 +3,9 @@
 namespace Tests\Support\Enrollment;
 
 use App\Domain\CourseOffering\CourseOfferingId;
-use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentStatus;
+use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Student\ValueObjects\StudentId;
 use Mockery\MockInterface;
 use Tests\Support\Id\IdTestHelper;
