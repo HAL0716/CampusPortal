@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\CourseOffering;
+namespace App\Application\Contexts\CourseOffering;
 
-use App\Application\CourseOffering\Administration\CourseOfferingDTO as AdministrationDTO;
-use App\Application\CourseOffering\Enrollment\CourseOfferingDTO as EnrollmentDTO;
-use App\Application\CourseOffering\Management\CourseOfferingDTO as ManagementDTO;
+use App\Application\Contexts\CourseOffering\Administration\CourseOfferingDTO as AdministrationDTO;
+use App\Application\Contexts\CourseOffering\Enrollment\CourseOfferingDTO as EnrollmentDTO;
+use App\Application\Contexts\CourseOffering\Management\CourseOfferingDTO as ManagementDTO;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Student\ValueObjects\StudentId;
 use App\Domain\Teacher\ValueObjects\TeacherId;

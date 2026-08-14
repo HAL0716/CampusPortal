@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Application\CourseOffering\Administration\ListCourseOfferingsUseCase as AdministrationUseCase;
-use App\Application\CourseOffering\Enrollment\ListCourseOfferingsUseCase as EnrollmentUseCase;
-use App\Application\CourseOffering\Management\ListCourseOfferingsUseCase as ManagementUseCase;
+use App\Application\Contexts\CourseOffering\Administration\ListCourseOfferingsUseCase as AdministrationUseCase;
+use App\Application\Contexts\CourseOffering\Enrollment\ListCourseOfferingsUseCase as EnrollmentUseCase;
+use App\Application\Contexts\CourseOffering\Management\ListCourseOfferingsUseCase as ManagementUseCase;
 use App\Application\Services\Authentication\AuthenticationService;
 use App\Application\Services\Clock\Clock;
 use App\Http\Requests\CourseOffering\AdministrationRequest;

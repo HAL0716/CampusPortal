@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Unit\Application\CourseOffering\Administration;
+namespace Tests\Unit\Application\Contexts\CourseOffering\Administration;
 
-use App\Application\CourseOffering\Administration\CourseOfferingDTO;
-use App\Application\CourseOffering\Administration\ListCourseOfferingsQuery;
-use App\Application\CourseOffering\Administration\ListCourseOfferingsUseCase;
-use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
+use App\Application\Contexts\CourseOffering\Administration\CourseOfferingDTO;
+use App\Application\Contexts\CourseOffering\Administration\ListCourseOfferingsQuery;
+use App\Application\Contexts\CourseOffering\Administration\ListCourseOfferingsUseCase;
+use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\Repositories\SemesterRepository;
 use Mockery;

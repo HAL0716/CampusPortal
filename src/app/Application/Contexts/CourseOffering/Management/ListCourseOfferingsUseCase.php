@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\CourseOffering\Management;
+namespace App\Application\Contexts\CourseOffering\Management;
 
-use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
+use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\Repositories\SemesterRepository;
 use App\Domain\Teacher\Exceptions\TeacherNotFoundException;

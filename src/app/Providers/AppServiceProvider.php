@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
+use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Application\Services\Authentication\AuthenticationService;
 use App\Application\Services\Authorization\EnrollmentAuthorizationService;
 use App\Application\Services\Authorization\PermissionAuthorizationService;

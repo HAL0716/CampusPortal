@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Unit\Application\CourseOffering\Enrollment;
+namespace Tests\Unit\Application\Contexts\CourseOffering\Enrollment;
 
-use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
-use App\Application\CourseOffering\Enrollment\CourseOfferingDTO;
-use App\Application\CourseOffering\Enrollment\ListCourseOfferingsQuery;
-use App\Application\CourseOffering\Enrollment\ListCourseOfferingsUseCase;
+use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
+use App\Application\Contexts\CourseOffering\Enrollment\CourseOfferingDTO;
+use App\Application\Contexts\CourseOffering\Enrollment\ListCourseOfferingsQuery;
+use App\Application\Contexts\CourseOffering\Enrollment\ListCourseOfferingsUseCase;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\Repositories\SemesterRepository;
 use App\Domain\Student\Exceptions\StudentNotFoundException;

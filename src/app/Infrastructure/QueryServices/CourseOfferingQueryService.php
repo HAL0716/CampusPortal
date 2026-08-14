@@ -2,11 +2,11 @@
 
 namespace App\Infrastructure\QueryServices;
 
-use App\Application\CourseOffering\Administration\CourseOfferingDTO as AdministrationDTO;
-use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
-use App\Application\CourseOffering\Enrollment\CourseOfferingDTO as EnrollmentDTO;
-use App\Application\CourseOffering\Management\CourseOfferingDTO as ManagementDTO;
-use App\Application\CourseOffering\Management\EnrollmentDTO as ManagementEnrollmentDTO;
+use App\Application\Contexts\CourseOffering\Administration\CourseOfferingDTO as AdministrationDTO;
+use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
+use App\Application\Contexts\CourseOffering\Enrollment\CourseOfferingDTO as EnrollmentDTO;
+use App\Application\Contexts\CourseOffering\Management\CourseOfferingDTO as ManagementDTO;
+use App\Application\Contexts\CourseOffering\Management\EnrollmentDTO as ManagementEnrollmentDTO;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Student\ValueObjects\StudentId;

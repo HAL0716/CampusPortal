@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\CourseOffering\Administration;
+namespace App\Application\Contexts\CourseOffering\Administration;
 
 final readonly class CourseOfferingDTO
 {
