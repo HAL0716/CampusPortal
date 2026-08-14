@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Application\Contexts\Enrollment\EnrollmentDuplicateDetectorInterface;
+use App\Application\Contexts\Enrollment\Duplicate\EnrollmentDuplicateDetector;
 use App\Application\Contexts\FinalGrade\Duplicate\FinalGradeDuplicateDetector;
 use App\Application\Contexts\User\Duplicate\UserDuplicateDetector;
 use App\Infrastructure\Database\Mysql\MysqlEnrollmentDuplicateDetector;
@@ -19,12 +19,12 @@ class DuplicateDetectorServiceProvider extends ServiceProvider
     private const DUPLICATE_DETECTORS = [
         'mysql' => [
             UserDuplicateDetector::class => MysqlUserDuplicateDetector::class,
-            EnrollmentDuplicateDetectorInterface::class => MysqlEnrollmentDuplicateDetector::class,
+            EnrollmentDuplicateDetector::class => MysqlEnrollmentDuplicateDetector::class,
             FinalGradeDuplicateDetector::class => MysqlFinalGradeDuplicateDetector::class,
         ],
         'sqlite' => [
             UserDuplicateDetector::class => SqliteUserDuplicateDetector::class,
-            EnrollmentDuplicateDetectorInterface::class => SqliteEnrollmentDuplicateDetector::class,
+            EnrollmentDuplicateDetector::class => SqliteEnrollmentDuplicateDetector::class,
             FinalGradeDuplicateDetector::class => SqliteFinalGradeDuplicateDetector::class,
         ],
     ];

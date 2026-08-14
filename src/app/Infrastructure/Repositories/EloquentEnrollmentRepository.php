@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Repositories;
 
-use App\Application\Contexts\Enrollment\EnrollmentDuplicateDetectorInterface;
-use App\Application\Contexts\Enrollment\EnrollmentDuplicateTarget;
+use App\Application\Contexts\Enrollment\Duplicate\EnrollmentDuplicateDetector;
+use App\Application\Contexts\Enrollment\Duplicate\EnrollmentDuplicateTarget;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Exceptions\EnrollmentAlreadyExistsException;
@@ -17,7 +17,7 @@ use Illuminate\Database\QueryException;
 final class EloquentEnrollmentRepository implements EnrollmentRepository
 {
     public function __construct(
-        private readonly EnrollmentDuplicateDetectorInterface $duplicateDetector
+        private readonly EnrollmentDuplicateDetector $duplicateDetector
     ) {}
 
     public function save(Enrollment $enrollment): Enrollment
