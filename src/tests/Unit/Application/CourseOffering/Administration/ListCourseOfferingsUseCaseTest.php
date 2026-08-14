@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Application\Contexts\CourseOffering\Administration;
 
-use App\Application\Contexts\CourseOffering\Administration\CourseOfferingDTO;
+use App\Application\Contexts\CourseOffering\Administration\DTOs\CourseOfferingDTO;
 use App\Application\Contexts\CourseOffering\Administration\ListCourseOfferingsQuery;
 use App\Application\Contexts\CourseOffering\Administration\ListCourseOfferingsUseCase;
 use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;

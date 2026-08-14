@@ -3,7 +3,7 @@
 namespace Tests\Unit\Application\Contexts\CourseOffering\Enrollment;
 
 use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
-use App\Application\Contexts\CourseOffering\Enrollment\CourseOfferingDTO;
+use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO;
 use App\Application\Contexts\CourseOffering\Enrollment\ListCourseOfferingsQuery;
 use App\Application\Contexts\CourseOffering\Enrollment\ListCourseOfferingsUseCase;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;

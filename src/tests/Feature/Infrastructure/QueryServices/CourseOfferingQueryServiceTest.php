@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Infrastructure\QueryServices;
 
-use App\Application\Contexts\CourseOffering\Administration\CourseOfferingDTO as AdministrationDTO;
+use App\Application\Contexts\CourseOffering\Administration\DTOs\CourseOfferingDTO as AdministrationDTO;
 use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
-use App\Application\Contexts\CourseOffering\Enrollment\CourseOfferingDTO as EnrollmentDTO;
-use App\Application\Contexts\CourseOffering\Management\CourseOfferingDTO as ManagementDTO;
+use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO as EnrollmentDTO;
+use App\Application\Contexts\CourseOffering\Management\DTOs\CourseOfferingDTO as ManagementDTO;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Student\ValueObjects\StudentId;

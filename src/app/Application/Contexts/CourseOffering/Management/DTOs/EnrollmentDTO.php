@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Contexts\CourseOffering\Management;
+namespace App\Application\Contexts\CourseOffering\Management\DTOs;
 
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 

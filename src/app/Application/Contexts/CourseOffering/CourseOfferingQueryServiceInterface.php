@@ -2,9 +2,9 @@
 
 namespace App\Application\Contexts\CourseOffering;
 
-use App\Application\Contexts\CourseOffering\Administration\CourseOfferingDTO as AdministrationDTO;
-use App\Application\Contexts\CourseOffering\Enrollment\CourseOfferingDTO as EnrollmentDTO;
-use App\Application\Contexts\CourseOffering\Management\CourseOfferingDTO as ManagementDTO;
+use App\Application\Contexts\CourseOffering\Administration\DTOs\CourseOfferingDTO as AdministrationDTO;
+use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO as EnrollmentDTO;
+use App\Application\Contexts\CourseOffering\Management\DTOs\CourseOfferingDTO as ManagementDTO;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Student\ValueObjects\StudentId;
 use App\Domain\Teacher\ValueObjects\TeacherId;
