@@ -4,7 +4,7 @@ namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\Permission\Entities\Permission;
 use App\Domain\Permission\Enums\PermissionType;
-use App\Domain\Permission\PermissionRepositoryInterface;
+use App\Domain\Permission\Repositories\PermissionRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Support\Permission\CreatesModelPermission;
 use Tests\Support\User\CreatesModelUser;
@@ -16,13 +16,13 @@ final class EloquentPermissionRepositoryTest extends TestCase
     use CreatesModelUser;
     use RefreshDatabase;
 
-    private PermissionRepositoryInterface $permissions;
+    private PermissionRepository $permissions;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->permissions = $this->app->make(PermissionRepositoryInterface::class);
+        $this->permissions = $this->app->make(PermissionRepository::class);
     }
 
     public function test_finds_permissions_by_user(): void

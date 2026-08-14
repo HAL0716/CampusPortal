@@ -13,7 +13,7 @@ use App\Application\User\UserDuplicateDetectorInterface;
 use App\Domain\CourseOffering\CourseOfferingRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\FinalGrade\FinalGradeRepositoryInterface;
-use App\Domain\Permission\PermissionRepositoryInterface;
+use App\Domain\Permission\Repositories\PermissionRepository;
 use App\Domain\Semester\Repositories\SemesterRepository;
 use App\Domain\Student\Repositories\StudentRepository;
 use App\Domain\Teacher\Repositories\TeacherRepository;
@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
 
-        $this->app->bind(PermissionRepositoryInterface::class, EloquentPermissionRepository::class);
+        $this->app->bind(PermissionRepository::class, EloquentPermissionRepository::class);
 
         $this->app->bind(StudentRepository::class, EloquentStudentRepository::class);
 
