@@ -3,23 +3,23 @@
 namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\Semester\Entities\Semester;
-use App\Infrastructure\Repositories\SemesterRepository;
+use App\Infrastructure\Repositories\EloquentSemesterRepository;
 use App\Models\Semester as SemesterModel;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-final class SemesterRepositoryTest extends TestCase
+final class EloquentSemesterRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    private SemesterRepository $repository;
+    private EloquentSemesterRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->repository = $this->app->make(SemesterRepository::class);
+        $this->repository = $this->app->make(EloquentSemesterRepository::class);
     }
 
     public function test_can_find_semester_by_date(): void

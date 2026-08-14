@@ -8,7 +8,7 @@ use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Models\Semester as SemesterModel;
 use Carbon\CarbonImmutable;
 
-final class SemesterRepository implements SemesterRepositoryInterface
+final class EloquentSemesterRepository implements SemesterRepositoryInterface
 {
     public function findByDate(CarbonImmutable $date): ?Semester
     {
