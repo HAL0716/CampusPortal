@@ -5,7 +5,7 @@ namespace App\Infrastructure\Security;
 use App\Application\Security\PasswordHasherInterface;
 use Illuminate\Support\Facades\Hash;
 
-class PasswordHasher implements PasswordHasherInterface
+class LaravelPasswordHasher implements PasswordHasherInterface
 {
     public function hash(string $password): string
     {

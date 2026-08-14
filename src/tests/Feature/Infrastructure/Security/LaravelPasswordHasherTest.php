@@ -6,7 +6,7 @@ use App\Application\Security\PasswordHasherInterface;
 use RuntimeException;
 use Tests\TestCase;
 
-final class PasswordHasherTest extends TestCase
+final class LaravelPasswordHasherTest extends TestCase
 {
     private PasswordHasherInterface $hasher;
 

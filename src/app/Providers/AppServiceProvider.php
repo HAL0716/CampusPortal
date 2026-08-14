@@ -11,7 +11,7 @@ use App\Infrastructure\Authentication\LaravelAuthenticationService;
 use App\Infrastructure\Authorization\LaravelEnrollmentAuthorizationService;
 use App\Infrastructure\Authorization\LaravelPermissionAuthorizationService;
 use App\Infrastructure\QueryServices\CourseOfferingQueryService;
-use App\Infrastructure\Security\PasswordHasher;
+use App\Infrastructure\Security\LaravelPasswordHasher;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->scoped(PermissionAuthorizationService::class, LaravelPermissionAuthorizationService::class);
         $this->app->bind(EnrollmentAuthorizationService::class, LaravelEnrollmentAuthorizationService::class);
         $this->app->bind(CourseOfferingQueryServiceInterface::class, CourseOfferingQueryService::class);
-        $this->app->bind(PasswordHasherInterface::class, PasswordHasher::class);
+        $this->app->bind(PasswordHasherInterface::class, LaravelPasswordHasher::class);
     }
 
     /**
