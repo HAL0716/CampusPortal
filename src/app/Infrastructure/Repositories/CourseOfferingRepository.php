@@ -3,9 +3,9 @@
 namespace App\Infrastructure\Repositories;
 
 use App\Domain\Course\CourseId;
-use App\Domain\CourseOffering\CourseOffering;
 use App\Domain\CourseOffering\CourseOfferingId;
 use App\Domain\CourseOffering\CourseOfferingRepositoryInterface;
+use App\Domain\CourseOffering\Entities\CourseOffering;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Teacher\ValueObjects\TeacherId;
 use App\Models\CourseOffering as CourseOfferingModel;

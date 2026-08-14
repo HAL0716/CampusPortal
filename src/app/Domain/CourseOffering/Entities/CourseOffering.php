@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Domain\CourseOffering;
+namespace App\Domain\CourseOffering\Entities;
 
 use App\Domain\Course\CourseId;
+use App\Domain\CourseOffering\CourseOfferingId;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Teacher\ValueObjects\TeacherId;
 
 final readonly class CourseOffering
 {
     /**
-     * @param  TeacherId[]  $teacherIds
+     * @param  array<TeacherId>  $teacherIds
      */
     private function __construct(
         private CourseOfferingId $id,
