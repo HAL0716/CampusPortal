@@ -8,24 +8,24 @@ use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentAlreadyExistsException;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\Student\ValueObjects\StudentId;
-use App\Infrastructure\Repositories\EnrollmentRepository;
+use App\Infrastructure\Repositories\EloquentEnrollmentRepository;
 use App\Models\CourseOffering;
 use App\Models\Enrollment as EnrollmentModel;
 use App\Models\Student;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-final class EnrollmentRepositoryTest extends TestCase
+final class EloquentEnrollmentRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    private EnrollmentRepository $repository;
+    private EloquentEnrollmentRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->repository = $this->app->make(EnrollmentRepository::class);
+        $this->repository = $this->app->make(EloquentEnrollmentRepository::class);
     }
 
     public function test_can_save_new_enrollment(): void

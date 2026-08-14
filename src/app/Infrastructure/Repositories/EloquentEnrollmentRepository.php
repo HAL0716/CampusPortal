@@ -14,7 +14,7 @@ use App\Domain\Student\ValueObjects\StudentId;
 use App\Models\Enrollment as EnrollmentModel;
 use Illuminate\Database\QueryException;
 
-final class EnrollmentRepository implements EnrollmentRepositoryInterface
+final class EloquentEnrollmentRepository implements EnrollmentRepositoryInterface
 {
     public function __construct(
         private readonly EnrollmentDuplicateDetectorInterface $duplicateDetector
