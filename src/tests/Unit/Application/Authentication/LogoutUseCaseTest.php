@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Application\Authentication;
 
-use App\Application\Authentication\LogoutUseCase;
 use App\Application\Services\Authentication\AuthenticationService;
+use App\Application\Services\Authentication\UseCases\LogoutUseCase;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;

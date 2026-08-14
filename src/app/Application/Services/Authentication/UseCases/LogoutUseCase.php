@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Authentication;
+namespace App\Application\Services\Authentication\UseCases;
 
 use App\Application\Services\Authentication\AuthenticationService;
 
