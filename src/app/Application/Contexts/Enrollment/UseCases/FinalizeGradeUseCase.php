@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Contexts\Enrollment;
+namespace App\Application\Contexts\Enrollment\UseCases;
 
 use App\Application\Contexts\Enrollment\Commands\FinalizeGradeCommand;
 use App\Application\Services\Authorization\EnrollmentAuthorizationService;

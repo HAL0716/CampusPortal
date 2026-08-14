@@ -3,7 +3,7 @@
 namespace Tests\Unit\Application\Contexts\Enrollment;
 
 use App\Application\Contexts\Enrollment\Commands\EnrollCommand;
-use App\Application\Contexts\Enrollment\EnrollUseCase;
+use App\Application\Contexts\Enrollment\UseCases\EnrollUseCase;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Repositories\EnrollmentRepository;
