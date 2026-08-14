@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Position\PositionType;
+use App\Domain\Position\Enums\PositionType;
 use App\Domain\Role\Enums\RoleType;
 use App\Domain\Teacher\Enums\TeacherStatus;
 use App\Models\Department;

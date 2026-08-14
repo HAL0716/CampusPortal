@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Position;
+namespace App\Domain\Position\Enums;
 
 enum PositionType: string
 {
