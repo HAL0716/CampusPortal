@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Application\Contexts\FinalGrade\FinalGradeDuplicateDetectorInterface;
 use App\Application\Contexts\User\Duplicate\UserDuplicateDetector;
 use App\Application\Enrollment\EnrollmentDuplicateDetectorInterface;
-use App\Application\FinalGrade\FinalGradeDuplicateDetectorInterface;
 use App\Infrastructure\Database\Mysql\MysqlEnrollmentDuplicateDetector;
 use App\Infrastructure\Database\Mysql\MysqlFinalGradeDuplicateDetector;
 use App\Infrastructure\Database\Mysql\MysqlUserDuplicateDetector;

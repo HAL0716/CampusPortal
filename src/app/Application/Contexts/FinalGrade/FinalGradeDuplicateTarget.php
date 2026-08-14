@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\FinalGrade;
+namespace App\Application\Contexts\FinalGrade;
 
 enum FinalGradeDuplicateTarget
 {

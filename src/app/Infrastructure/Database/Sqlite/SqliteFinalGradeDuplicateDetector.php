@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Database\Sqlite;
 
-use App\Application\FinalGrade\FinalGradeDuplicateDetectorInterface;
-use App\Application\FinalGrade\FinalGradeDuplicateTarget;
+use App\Application\Contexts\FinalGrade\FinalGradeDuplicateDetectorInterface;
+use App\Application\Contexts\FinalGrade\FinalGradeDuplicateTarget;
 use UnitEnum;
 
 final class SqliteFinalGradeDuplicateDetector extends AbstractSqliteDuplicateDetector implements FinalGradeDuplicateDetectorInterface
