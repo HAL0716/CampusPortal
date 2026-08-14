@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\Clock;
+namespace App\Application\Services\Clock;
 
 use Carbon\CarbonImmutable;
 
-interface ClockInterface
+interface Clock
 {
     public function now(): CarbonImmutable;
 }

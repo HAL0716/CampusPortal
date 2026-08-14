@@ -2,7 +2,7 @@
 
 namespace Tests\Support\Clock;
 
-use App\Application\Clock\ClockInterface;
+use App\Application\Services\Clock\Clock;
 use Carbon\CarbonImmutable;
 use Tests\TestCase;
 
@@ -15,6 +15,6 @@ trait UseClock
     {
         config()->set('app.now', CarbonImmutable::parse($date)->toIso8601String());
 
-        app()->forgetInstance(ClockInterface::class);
+        app()->forgetInstance(Clock::class);
     }
 }
