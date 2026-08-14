@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domain\CourseOffering;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\ValueObjects\CourseId;
 use App\Domain\CourseOffering\Entities\CourseOffering;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Semester\ValueObjects\SemesterId;

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domain\Course;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\ValueObjects\CourseId;
 use Tests\TestCase;
 
 final class CourseIdTest extends TestCase

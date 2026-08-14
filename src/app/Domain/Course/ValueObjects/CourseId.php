@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Course;
+namespace App\Domain\Course\ValueObjects;
 
 final readonly class CourseId
 {
