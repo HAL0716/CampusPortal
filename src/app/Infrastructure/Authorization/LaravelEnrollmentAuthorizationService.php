@@ -9,7 +9,7 @@ use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\Teacher\Repositories\TeacherRepository;
 use App\Domain\User\ValueObjects\UserId;
 
-final class EnrollmentAuthorizationService implements EnrollmentAuthorizationServiceInterface
+final class LaravelEnrollmentAuthorizationService implements EnrollmentAuthorizationServiceInterface
 {
     public function __construct(
         private readonly TeacherRepository $teachers,

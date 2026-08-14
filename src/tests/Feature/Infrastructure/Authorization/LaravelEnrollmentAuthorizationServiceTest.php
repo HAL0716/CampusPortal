@@ -4,7 +4,7 @@ namespace Tests\Feature\Infrastructure\Authorization;
 
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\User\ValueObjects\UserId;
-use App\Infrastructure\Authorization\EnrollmentAuthorizationService;
+use App\Infrastructure\Authorization\LaravelEnrollmentAuthorizationService;
 use App\Models\CourseOffering;
 use App\Models\Enrollment;
 use App\Models\Teacher;
@@ -12,17 +12,17 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-final class EnrollmentAuthorizationServiceTest extends TestCase
+final class LaravelEnrollmentAuthorizationServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    private EnrollmentAuthorizationService $service;
+    private LaravelEnrollmentAuthorizationService $service;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->service = $this->app->make(EnrollmentAuthorizationService::class);
+        $this->service = $this->app->make(LaravelEnrollmentAuthorizationService::class);
     }
 
     public function test_can_manage_when_teacher_owns_course_offering(): void
