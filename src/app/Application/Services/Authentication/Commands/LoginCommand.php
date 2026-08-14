@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Authentication;
+namespace App\Application\Services\Authentication\Commands;
 
 final readonly class LoginCommand
 {
