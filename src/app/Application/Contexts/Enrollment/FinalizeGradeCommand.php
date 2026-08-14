@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Enrollment;
+namespace App\Application\Contexts\Enrollment;
 
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\FinalGrade\Enums\FinalGradeType;

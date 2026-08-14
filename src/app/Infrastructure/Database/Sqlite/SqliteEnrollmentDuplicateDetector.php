@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Database\Sqlite;
 
-use App\Application\Enrollment\EnrollmentDuplicateDetectorInterface;
-use App\Application\Enrollment\EnrollmentDuplicateTarget;
+use App\Application\Contexts\Enrollment\EnrollmentDuplicateDetectorInterface;
+use App\Application\Contexts\Enrollment\EnrollmentDuplicateTarget;
 use UnitEnum;
 
 final class SqliteEnrollmentDuplicateDetector extends AbstractSqliteDuplicateDetector implements EnrollmentDuplicateDetectorInterface

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Enrollment;
+namespace App\Application\Contexts\Enrollment;
 
 use App\Application\Services\Authorization\EnrollmentAuthorizationService;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;

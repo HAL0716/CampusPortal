@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Repositories;
 
-use App\Application\Enrollment\EnrollmentDuplicateDetectorInterface;
-use App\Application\Enrollment\EnrollmentDuplicateTarget;
+use App\Application\Contexts\Enrollment\EnrollmentDuplicateDetectorInterface;
+use App\Application\Contexts\Enrollment\EnrollmentDuplicateTarget;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Exceptions\EnrollmentAlreadyExistsException;

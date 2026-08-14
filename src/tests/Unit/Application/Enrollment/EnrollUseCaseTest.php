@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Application\Enrollment;
+namespace Tests\Unit\Application\Contexts\Enrollment;
 
-use App\Application\Enrollment\EnrollCommand;
-use App\Application\Enrollment\EnrollUseCase;
+use App\Application\Contexts\Enrollment\EnrollCommand;
+use App\Application\Contexts\Enrollment\EnrollUseCase;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Repositories\EnrollmentRepository;

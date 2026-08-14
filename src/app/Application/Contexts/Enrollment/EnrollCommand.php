@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Enrollment;
+namespace App\Application\Contexts\Enrollment;
 
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\User\ValueObjects\UserId;

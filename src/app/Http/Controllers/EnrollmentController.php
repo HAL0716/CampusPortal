@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Application\Enrollment\DropUseCase;
-use App\Application\Enrollment\EnrollUseCase;
-use App\Application\Enrollment\FinalizeGradeUseCase;
+use App\Application\Contexts\Enrollment\DropUseCase;
+use App\Application\Contexts\Enrollment\EnrollUseCase;
+use App\Application\Contexts\Enrollment\FinalizeGradeUseCase;
 use App\Application\Services\Authentication\AuthenticationService;
 use App\Exceptions\UserMessageException;
 use App\Http\Controllers\Concerns\HasFlashMessages;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Enrollment;
+namespace App\Application\Contexts\Enrollment;
 
 enum EnrollmentDuplicateTarget
 {

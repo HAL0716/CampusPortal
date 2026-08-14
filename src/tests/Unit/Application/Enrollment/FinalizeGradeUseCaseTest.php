@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Application\Enrollment;
+namespace Tests\Unit\Application\Contexts\Enrollment;
 
-use App\Application\Enrollment\FinalizeGradeCommand;
-use App\Application\Enrollment\FinalizeGradeUseCase;
+use App\Application\Contexts\Enrollment\FinalizeGradeCommand;
+use App\Application\Contexts\Enrollment\FinalizeGradeUseCase;
 use App\Application\Services\Authorization\EnrollmentAuthorizationService;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;

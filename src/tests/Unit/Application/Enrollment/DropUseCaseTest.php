@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Application\Enrollment;
+namespace Tests\Unit\Application\Contexts\Enrollment;
 
-use App\Application\Enrollment\DropCommand;
-use App\Application\Enrollment\DropUseCase;
+use App\Application\Contexts\Enrollment\DropCommand;
+use App\Application\Contexts\Enrollment\DropUseCase;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
