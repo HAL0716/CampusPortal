@@ -10,7 +10,7 @@ use Tests\Support\Permission\CreatesModelPermission;
 use Tests\Support\User\CreatesModelUser;
 use Tests\TestCase;
 
-final class PermissionRepositoryTest extends TestCase
+final class EloquentPermissionRepositoryTest extends TestCase
 {
     use CreatesModelPermission;
     use CreatesModelUser;

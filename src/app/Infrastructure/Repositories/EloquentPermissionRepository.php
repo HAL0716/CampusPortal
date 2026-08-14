@@ -10,7 +10,7 @@ use App\Domain\User\Exceptions\UserNotFoundException;
 use App\Models\Permission as PermissionModel;
 use App\Models\User as UserModel;
 
-final class PermissionRepository implements PermissionRepositoryInterface
+final class EloquentPermissionRepository implements PermissionRepositoryInterface
 {
     /**
      * @return Permission[]

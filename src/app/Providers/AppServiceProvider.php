@@ -29,13 +29,13 @@ use App\Infrastructure\Database\Sqlite\SqliteFinalGradeDuplicateDetector;
 use App\Infrastructure\Database\Sqlite\SqliteUserDuplicateDetector;
 use App\Infrastructure\QueryServices\CourseOfferingQueryService;
 use App\Infrastructure\Repositories\CourseOfferingRepository;
+use App\Infrastructure\Repositories\EloquentPermissionRepository;
 use App\Infrastructure\Repositories\EloquentSemesterRepository;
 use App\Infrastructure\Repositories\EloquentStudentRepository;
 use App\Infrastructure\Repositories\EloquentTeacherRepository;
 use App\Infrastructure\Repositories\EloquentUserRepository;
 use App\Infrastructure\Repositories\EnrollmentRepository;
 use App\Infrastructure\Repositories\FinalGradeRepository;
-use App\Infrastructure\Repositories\PermissionRepository;
 use App\Infrastructure\Security\PasswordHasher;
 use Illuminate\Support\ServiceProvider;
 
@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
 
-        $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
+        $this->app->bind(PermissionRepositoryInterface::class, EloquentPermissionRepository::class);
 
         $this->app->bind(StudentRepository::class, EloquentStudentRepository::class);
 
