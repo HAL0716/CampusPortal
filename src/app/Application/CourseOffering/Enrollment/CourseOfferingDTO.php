@@ -2,7 +2,7 @@
 
 namespace App\Application\CourseOffering\Enrollment;
 
-use App\Domain\Enrollment\EnrollmentStatus;
+use App\Domain\Enrollment\Enums\EnrollmentStatus;
 
 final readonly class CourseOfferingDTO
 {

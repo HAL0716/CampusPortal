@@ -3,7 +3,7 @@
 namespace App\Domain\Enrollment\Entities;
 
 use App\Domain\CourseOffering\CourseOfferingId;
-use App\Domain\Enrollment\EnrollmentStatus;
+use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentIdNotAssignedException;
 use App\Domain\Enrollment\Exceptions\InvalidEnrollmentStatusException;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;

@@ -7,7 +7,7 @@ use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
 use App\Application\CourseOffering\Enrollment\CourseOfferingDTO as EnrollmentDTO;
 use App\Application\CourseOffering\Management\CourseOfferingDTO as ManagementDTO;
 use App\Application\CourseOffering\Management\EnrollmentDTO as ManagementEnrollmentDTO;
-use App\Domain\Enrollment\EnrollmentStatus;
+use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Student\ValueObjects\StudentId;
 use App\Domain\Teacher\ValueObjects\TeacherId;

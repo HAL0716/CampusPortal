@@ -7,7 +7,7 @@ use App\Application\CourseOffering\Management\CourseOfferingDTO;
 use App\Application\CourseOffering\Management\EnrollmentDTO;
 use App\Application\CourseOffering\Management\ListCourseOfferingsQuery;
 use App\Application\CourseOffering\Management\ListCourseOfferingsUseCase;
-use App\Domain\Enrollment\EnrollmentStatus;
+use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\Repositories\SemesterRepository;
 use App\Domain\Teacher\Exceptions\TeacherNotFoundException;

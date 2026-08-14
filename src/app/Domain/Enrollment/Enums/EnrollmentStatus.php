@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Enrollment;
+namespace App\Domain\Enrollment\Enums;
 
 enum EnrollmentStatus: string
 {
