@@ -2,11 +2,11 @@
 
 namespace App\Infrastructure\Database\Sqlite;
 
-use App\Application\Contexts\FinalGrade\FinalGradeDuplicateDetectorInterface;
-use App\Application\Contexts\FinalGrade\FinalGradeDuplicateTarget;
+use App\Application\Contexts\FinalGrade\Duplicate\FinalGradeDuplicateDetector;
+use App\Application\Contexts\FinalGrade\Duplicate\FinalGradeDuplicateTarget;
 use UnitEnum;
 
-final class SqliteFinalGradeDuplicateDetector extends AbstractSqliteDuplicateDetector implements FinalGradeDuplicateDetectorInterface
+final class SqliteFinalGradeDuplicateDetector extends AbstractSqliteDuplicateDetector implements FinalGradeDuplicateDetector
 {
     protected function constraint(UnitEnum $target): ?string
     {

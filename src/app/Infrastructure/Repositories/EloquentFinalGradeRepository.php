@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Repositories;
 
-use App\Application\Contexts\FinalGrade\FinalGradeDuplicateDetectorInterface;
-use App\Application\Contexts\FinalGrade\FinalGradeDuplicateTarget;
+use App\Application\Contexts\FinalGrade\Duplicate\FinalGradeDuplicateDetector;
+use App\Application\Contexts\FinalGrade\Duplicate\FinalGradeDuplicateTarget;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\FinalGrade\Entities\FinalGrade;
 use App\Domain\FinalGrade\Exceptions\FinalGradeAlreadyExistsException;
@@ -16,7 +16,7 @@ use Illuminate\Database\QueryException;
 final class EloquentFinalGradeRepository implements FinalGradeRepository
 {
     public function __construct(
-        private readonly FinalGradeDuplicateDetectorInterface $duplicateDetector
+        private readonly FinalGradeDuplicateDetector $duplicateDetector
     ) {}
 
     public function save(FinalGrade $finalGrade): FinalGrade
