@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Authorization;
 
 use App\Application\Authorization\EnrollmentAuthorizationServiceInterface;
-use App\Domain\CourseOffering\CourseOfferingRepositoryInterface;
+use App\Domain\CourseOffering\Repositories\CourseOfferingRepository;
 use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\Teacher\Repositories\TeacherRepository;
@@ -14,7 +14,7 @@ final class EnrollmentAuthorizationService implements EnrollmentAuthorizationSer
     public function __construct(
         private readonly TeacherRepository $teachers,
         private readonly EnrollmentRepository $enrollments,
-        private readonly CourseOfferingRepositoryInterface $courseOfferings,
+        private readonly CourseOfferingRepository $courseOfferings,
     ) {}
 
     public function canManage(UserId $userId, EnrollmentId $enrollmentId): bool

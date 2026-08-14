@@ -3,14 +3,14 @@
 namespace App\Infrastructure\Repositories;
 
 use App\Domain\Course\CourseId;
-use App\Domain\CourseOffering\CourseOfferingRepositoryInterface;
 use App\Domain\CourseOffering\Entities\CourseOffering;
+use App\Domain\CourseOffering\Repositories\CourseOfferingRepository;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Teacher\ValueObjects\TeacherId;
 use App\Models\CourseOffering as CourseOfferingModel;
 
-final class EloquentCourseOfferingRepository implements CourseOfferingRepositoryInterface
+final class EloquentCourseOfferingRepository implements CourseOfferingRepository
 {
     public function findById(CourseOfferingId $id): ?CourseOffering
     {
