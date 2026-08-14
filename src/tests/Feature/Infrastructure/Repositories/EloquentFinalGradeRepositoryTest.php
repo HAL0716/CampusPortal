@@ -6,23 +6,23 @@ use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\FinalGrade\Entities\FinalGrade;
 use App\Domain\FinalGrade\Enums\FinalGradeType;
 use App\Domain\FinalGrade\ValueObjects\FinalGradeId;
-use App\Infrastructure\Repositories\FinalGradeRepository;
+use App\Infrastructure\Repositories\EloquentFinalGradeRepository;
 use App\Models\Enrollment;
 use App\Models\FinalGrade as FinalGradeModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-final class FinalGradeRepositoryTest extends TestCase
+final class EloquentFinalGradeRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    private FinalGradeRepository $repository;
+    private EloquentFinalGradeRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->repository = $this->app->make(FinalGradeRepository::class);
+        $this->repository = $this->app->make(EloquentFinalGradeRepository::class);
     }
 
     public function test_can_save_new_final_grade(): void

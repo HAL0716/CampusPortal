@@ -13,7 +13,7 @@ use App\Domain\FinalGrade\ValueObjects\FinalGradeId;
 use App\Models\FinalGrade as FinalGradeModel;
 use Illuminate\Database\QueryException;
 
-final class FinalGradeRepository implements FinalGradeRepositoryInterface
+final class EloquentFinalGradeRepository implements FinalGradeRepositoryInterface
 {
     public function __construct(
         private readonly FinalGradeDuplicateDetectorInterface $duplicateDetector
