@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Application\Contexts\Enrollment;
 
-use App\Application\Contexts\Enrollment\EnrollCommand;
+use App\Application\Contexts\Enrollment\Commands\EnrollCommand;
 use App\Application\Contexts\Enrollment\EnrollUseCase;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;

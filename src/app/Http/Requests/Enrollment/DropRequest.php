@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Enrollment;
 
-use App\Application\Contexts\Enrollment\DropCommand;
+use App\Application\Contexts\Enrollment\Commands\DropCommand;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\User\ValueObjects\UserId;
 use Illuminate\Contracts\Validation\ValidationRule;

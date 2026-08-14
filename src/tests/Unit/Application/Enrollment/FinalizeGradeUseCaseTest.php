@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Application\Contexts\Enrollment;
 
-use App\Application\Contexts\Enrollment\FinalizeGradeCommand;
+use App\Application\Contexts\Enrollment\Commands\FinalizeGradeCommand;
 use App\Application\Contexts\Enrollment\FinalizeGradeUseCase;
 use App\Application\Services\Authorization\EnrollmentAuthorizationService;
 use App\Domain\Enrollment\Entities\Enrollment;

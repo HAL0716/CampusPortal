@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Enrollment;
 
-use App\Application\Contexts\Enrollment\FinalizeGradeCommand;
+use App\Application\Contexts\Enrollment\Commands\FinalizeGradeCommand;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\FinalGrade\Enums\FinalGradeType;
 use App\Domain\User\ValueObjects\UserId;

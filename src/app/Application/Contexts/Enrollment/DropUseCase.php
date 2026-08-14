@@ -2,6 +2,7 @@
 
 namespace App\Application\Contexts\Enrollment;
 
+use App\Application\Contexts\Enrollment\Commands\DropCommand;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
 use App\Domain\Enrollment\Repositories\EnrollmentRepository;
