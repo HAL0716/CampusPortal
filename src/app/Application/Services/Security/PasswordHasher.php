@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\Security;
+namespace App\Application\Services\Security;
 
-interface PasswordHasherInterface
+interface PasswordHasher
 {
     public function hash(string $password): string;
 

@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Repositories;
 
-use App\Application\Security\PasswordHasherInterface;
+use App\Application\Services\Security\PasswordHasher;
 use App\Application\User\UserDuplicateDetectorInterface;
 use App\Application\User\UserDuplicateTarget;
 use App\Domain\User\Entities\User;
@@ -18,7 +18,7 @@ use Illuminate\Database\QueryException;
 final class EloquentUserRepository implements UserRepository
 {
     public function __construct(
-        private readonly PasswordHasherInterface $hasher,
+        private readonly PasswordHasher $hasher,
         private readonly UserDuplicateDetectorInterface $duplicateDetector
     ) {}
 

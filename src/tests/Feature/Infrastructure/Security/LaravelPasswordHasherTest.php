@@ -2,19 +2,19 @@
 
 namespace Tests\Feature\Infrastructure\Security;
 
-use App\Application\Security\PasswordHasherInterface;
+use App\Application\Services\Security\PasswordHasher;
 use RuntimeException;
 use Tests\TestCase;
 
 final class LaravelPasswordHasherTest extends TestCase
 {
-    private PasswordHasherInterface $hasher;
+    private PasswordHasher $hasher;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->hasher = $this->app->make(PasswordHasherInterface::class);
+        $this->hasher = $this->app->make(PasswordHasher::class);
     }
 
     public function test_hashes_password(): void
