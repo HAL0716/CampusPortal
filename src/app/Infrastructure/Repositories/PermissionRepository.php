@@ -3,8 +3,8 @@
 namespace App\Infrastructure\Repositories;
 
 use App\Domain\Permission\Entities\Permission;
-use App\Domain\Permission\PermissionId;
 use App\Domain\Permission\PermissionRepositoryInterface;
+use App\Domain\Permission\ValueObjects\PermissionId;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserNotFoundException;
 use App\Models\Permission as PermissionModel;

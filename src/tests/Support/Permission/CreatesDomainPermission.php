@@ -3,8 +3,8 @@
 namespace Tests\Support\Permission;
 
 use App\Domain\Permission\Entities\Permission;
-use App\Domain\Permission\PermissionId;
 use App\Domain\Permission\PermissionType;
+use App\Domain\Permission\ValueObjects\PermissionId;
 
 trait CreatesDomainPermission
 {

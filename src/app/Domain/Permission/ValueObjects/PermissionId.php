@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Permission;
+namespace App\Domain\Permission\ValueObjects;
 
 final readonly class PermissionId
 {
