@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Application\Contexts\CourseOffering\Enrollment;
 
-use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
+use App\Application\Contexts\CourseOffering\CourseOfferingQueryService;
 use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO;
 use App\Application\Contexts\CourseOffering\Enrollment\Queries\ListCourseOfferingsQuery;
 use App\Application\Contexts\CourseOffering\Enrollment\UseCases\ListCourseOfferingsUseCase;
@@ -27,7 +27,7 @@ class ListCourseOfferingsUseCaseTest extends TestCase
 
     private StudentRepository&MockInterface $students;
 
-    private CourseOfferingQueryServiceInterface&MockInterface $queryService;
+    private CourseOfferingQueryService&MockInterface $queryService;
 
     private ListCourseOfferingsUseCase $useCase;
 
@@ -37,7 +37,7 @@ class ListCourseOfferingsUseCaseTest extends TestCase
 
         $this->semesters = Mockery::mock(SemesterRepository::class);
         $this->students = Mockery::mock(StudentRepository::class);
-        $this->queryService = Mockery::mock(CourseOfferingQueryServiceInterface::class);
+        $this->queryService = Mockery::mock(CourseOfferingQueryService::class);
 
         $this->useCase = new ListCourseOfferingsUseCase(
             $this->semesters,

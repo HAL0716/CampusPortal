@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
+use App\Application\Contexts\CourseOffering\CourseOfferingQueryService;
 use App\Application\Services\Authentication\AuthenticationService;
 use App\Application\Services\Authorization\EnrollmentAuthorizationService;
 use App\Application\Services\Authorization\PermissionAuthorizationService;
@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->scoped(AuthenticationService::class, LaravelAuthenticationService::class);
         $this->app->scoped(PermissionAuthorizationService::class, LaravelPermissionAuthorizationService::class);
         $this->app->bind(EnrollmentAuthorizationService::class, LaravelEnrollmentAuthorizationService::class);
-        $this->app->bind(CourseOfferingQueryServiceInterface::class, EloquentCourseOfferingQueryService::class);
+        $this->app->bind(CourseOfferingQueryService::class, EloquentCourseOfferingQueryService::class);
         $this->app->bind(PasswordHasher::class, LaravelPasswordHasher::class);
     }
 

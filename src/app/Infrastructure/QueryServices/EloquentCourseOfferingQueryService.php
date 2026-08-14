@@ -3,7 +3,7 @@
 namespace App\Infrastructure\QueryServices;
 
 use App\Application\Contexts\CourseOffering\Administration\DTOs\CourseOfferingDTO as AdministrationDTO;
-use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
+use App\Application\Contexts\CourseOffering\CourseOfferingQueryService;
 use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO as EnrollmentDTO;
 use App\Application\Contexts\CourseOffering\Management\DTOs\CourseOfferingDTO as ManagementDTO;
 use App\Application\Contexts\CourseOffering\Management\DTOs\EnrollmentDTO as ManagementEnrollmentDTO;
@@ -15,7 +15,7 @@ use App\Models\CourseOffering;
 use App\Models\Enrollment;
 use Illuminate\Database\Eloquent\Builder;
 
-final class EloquentCourseOfferingQueryService implements CourseOfferingQueryServiceInterface
+final class EloquentCourseOfferingQueryService implements CourseOfferingQueryService
 {
     public function findForAdministration(SemesterId $semesterId): array
     {

@@ -3,7 +3,7 @@
 namespace Tests\Feature\Infrastructure\QueryServices;
 
 use App\Application\Contexts\CourseOffering\Administration\DTOs\CourseOfferingDTO as AdministrationDTO;
-use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
+use App\Application\Contexts\CourseOffering\CourseOfferingQueryService;
 use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO as EnrollmentDTO;
 use App\Application\Contexts\CourseOffering\Management\DTOs\CourseOfferingDTO as ManagementDTO;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
@@ -23,13 +23,13 @@ final class EloquentCourseOfferingQueryServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    private CourseOfferingQueryServiceInterface $queryService;
+    private CourseOfferingQueryService $queryService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->queryService = app(CourseOfferingQueryServiceInterface::class);
+        $this->queryService = app(CourseOfferingQueryService::class);
     }
 
     public function test_can_find_for_administration(): void

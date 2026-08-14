@@ -9,7 +9,7 @@ use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Student\ValueObjects\StudentId;
 use App\Domain\Teacher\ValueObjects\TeacherId;
 
-interface CourseOfferingQueryServiceInterface
+interface CourseOfferingQueryService
 {
     /**
      * @return array<AdministrationDTO>

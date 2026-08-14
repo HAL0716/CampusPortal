@@ -2,7 +2,7 @@
 
 namespace App\Application\Contexts\CourseOffering\Enrollment\UseCases;
 
-use App\Application\Contexts\CourseOffering\CourseOfferingQueryServiceInterface;
+use App\Application\Contexts\CourseOffering\CourseOfferingQueryService;
 use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO;
 use App\Application\Contexts\CourseOffering\Enrollment\Queries\ListCourseOfferingsQuery;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
@@ -15,7 +15,7 @@ final class ListCourseOfferingsUseCase
     public function __construct(
         private SemesterRepository $semesters,
         private StudentRepository $students,
-        private CourseOfferingQueryServiceInterface $queryService,
+        private CourseOfferingQueryService $queryService,
     ) {}
 
     /**
