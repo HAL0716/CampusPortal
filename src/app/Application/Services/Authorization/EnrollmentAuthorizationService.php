@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\Authorization;
+namespace App\Application\Services\Authorization;
 
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\User\ValueObjects\UserId;
 
-interface EnrollmentAuthorizationServiceInterface
+interface EnrollmentAuthorizationService
 {
     public function canManage(UserId $userId, EnrollmentId $enrollmentId): bool;
 }

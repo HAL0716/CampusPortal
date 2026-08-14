@@ -2,14 +2,14 @@
 
 namespace App\Infrastructure\Authorization;
 
-use App\Application\Authorization\EnrollmentAuthorizationServiceInterface;
+use App\Application\Services\Authorization\EnrollmentAuthorizationService;
 use App\Domain\CourseOffering\Repositories\CourseOfferingRepository;
 use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\Teacher\Repositories\TeacherRepository;
 use App\Domain\User\ValueObjects\UserId;
 
-final class LaravelEnrollmentAuthorizationService implements EnrollmentAuthorizationServiceInterface
+final class LaravelEnrollmentAuthorizationService implements EnrollmentAuthorizationService
 {
     public function __construct(
         private readonly TeacherRepository $teachers,

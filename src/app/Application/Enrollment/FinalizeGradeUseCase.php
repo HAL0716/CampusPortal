@@ -2,7 +2,7 @@
 
 namespace App\Application\Enrollment;
 
-use App\Application\Authorization\EnrollmentAuthorizationServiceInterface;
+use App\Application\Services\Authorization\EnrollmentAuthorizationService;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
 use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\FinalGrade\Entities\FinalGrade;
@@ -15,7 +15,7 @@ final readonly class FinalizeGradeUseCase
     public function __construct(
         private EnrollmentRepository $enrollments,
         private FinalGradeRepository $finalGrades,
-        private EnrollmentAuthorizationServiceInterface $auth,
+        private EnrollmentAuthorizationService $auth,
     ) {}
 
     public function execute(FinalizeGradeCommand $command): void
