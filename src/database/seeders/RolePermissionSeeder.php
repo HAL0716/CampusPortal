@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Role\RolePermissionMap;
-use App\Domain\Role\RoleType;
+use App\Domain\Role\Enums\RoleType;
+use App\Domain\Role\RolePermissions;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
@@ -19,7 +19,7 @@ class RolePermissionSeeder extends Seeder
                 $roleType
             )->firstOrFail();
 
-            $permissions = collect(RolePermissionMap::permissions($roleType))
+            $permissions = collect(RolePermissions::permissions($roleType))
                 ->map(
                     fn ($permissionType) => Permission::where(
                         'name',

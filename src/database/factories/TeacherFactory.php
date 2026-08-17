@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domain\Teacher\TeacherStatus;
+use App\Domain\Teacher\Enums\TeacherStatus;
 use App\Models\Position;
 use App\Models\Teacher;
 use App\Models\User;

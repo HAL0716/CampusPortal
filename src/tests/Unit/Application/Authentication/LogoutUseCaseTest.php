@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Application\Authentication;
 
-use App\Application\Authentication\AuthenticationServiceInterface;
-use App\Application\Authentication\LogoutUseCase;
+use App\Application\Contexts\Authentication\AuthenticationService;
+use App\Application\Contexts\Authentication\UseCases\LogoutUseCase;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -14,7 +14,7 @@ final class LogoutUseCaseTest extends TestCase
 
     public function test_logout(): void
     {
-        $auth = Mockery::mock(AuthenticationServiceInterface::class);
+        $auth = Mockery::mock(AuthenticationService::class);
 
         $auth->shouldReceive('logout')
             ->once();
@@ -22,7 +22,7 @@ final class LogoutUseCaseTest extends TestCase
         $this->useCase($auth)->execute();
     }
 
-    private function useCase(AuthenticationServiceInterface $auth): LogoutUseCase
+    private function useCase(AuthenticationService $auth): LogoutUseCase
     {
         return new LogoutUseCase($auth);
     }

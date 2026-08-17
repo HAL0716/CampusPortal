@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Unit\Application\Enrollment;
+namespace Tests\Unit\Application\Contexts\Enrollment;
 
-use App\Application\Enrollment\DropCommand;
-use App\Application\Enrollment\DropUseCase;
-use App\Domain\Enrollment\Enrollment;
-use App\Domain\Enrollment\EnrollmentRepositoryInterface;
-use App\Domain\Enrollment\EnrollmentStatus;
+use App\Application\Contexts\Enrollment\Commands\DropCommand;
+use App\Application\Contexts\Enrollment\UseCases\DropUseCase;
+use App\Domain\Enrollment\Entities\Enrollment;
+use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
+use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\Student\Exceptions\StudentNotFoundException;
-use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\Repositories\StudentRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
@@ -25,9 +25,9 @@ class DropUseCaseTest extends TestCase
     use StudentTestHelper;
     use UseMatcher;
 
-    private StudentRepositoryInterface&MockInterface $students;
+    private StudentRepository&MockInterface $students;
 
-    private EnrollmentRepositoryInterface&MockInterface $enrollments;
+    private EnrollmentRepository&MockInterface $enrollments;
 
     private DropUseCase $useCase;
 
@@ -35,8 +35,8 @@ class DropUseCaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->students = Mockery::mock(StudentRepositoryInterface::class);
-        $this->enrollments = Mockery::mock(EnrollmentRepositoryInterface::class);
+        $this->students = Mockery::mock(StudentRepository::class);
+        $this->enrollments = Mockery::mock(EnrollmentRepository::class);
 
         $this->useCase = new DropUseCase(
             $this->students,

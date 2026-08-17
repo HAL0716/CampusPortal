@@ -2,7 +2,7 @@
 
 namespace Tests\Support\Permission;
 
-use App\Domain\Permission\PermissionType;
+use App\Domain\Permission\Enums\PermissionType;
 
 trait PermissionTestData
 {
@@ -13,6 +13,6 @@ trait PermissionTestData
 
     protected function permissionName(): PermissionType
     {
-        return PermissionType::TEST;
+        return PermissionType::DashboardView;
     }
 }

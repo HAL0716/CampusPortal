@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Teacher\TeacherStatus;
+use App\Domain\Teacher\Enums\TeacherStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Application\Authentication\AuthenticationServiceInterface;
-use App\Application\Clock\ClockInterface;
+use App\Application\Contexts\Authentication\AuthenticationService;
+use App\Application\Services\Clock\Clock;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -19,8 +19,8 @@ class HandleInertiaRequests extends Middleware
     protected $rootView = 'app';
 
     public function __construct(
-        private readonly AuthenticationServiceInterface $auth,
-        private readonly ClockInterface $clock,
+        private readonly AuthenticationService $auth,
+        private readonly Clock $clock,
     ) {}
 
     /**

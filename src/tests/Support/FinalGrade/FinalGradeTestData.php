@@ -2,7 +2,7 @@
 
 namespace Tests\Support\FinalGrade;
 
-use App\Domain\FinalGrade\FinalGradeType;
+use App\Domain\FinalGrade\Enums\FinalGradeType;
 
 trait FinalGradeTestData
 {

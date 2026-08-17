@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domain\Academic\Term;
+use App\Domain\Academic\Enums\Term;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

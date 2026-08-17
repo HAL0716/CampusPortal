@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Enrollment;
 
-use App\Application\Enrollment\DropCommand;
-use App\Domain\CourseOffering\CourseOfferingId;
-use App\Domain\User\UserId;
+use App\Application\Contexts\Enrollment\Commands\DropCommand;
+use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
+use App\Domain\User\ValueObjects\UserId;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 

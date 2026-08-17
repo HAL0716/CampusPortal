@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domain\Position\PositionType;
+use App\Domain\Position\Enums\PositionType;
 use App\Models\Position;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

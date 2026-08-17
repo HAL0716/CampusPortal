@@ -2,11 +2,11 @@
 
 namespace App\Infrastructure\Database\Sqlite;
 
-use App\Application\Enrollment\EnrollmentDuplicateDetectorInterface;
-use App\Application\Enrollment\EnrollmentDuplicateTarget;
+use App\Application\Contexts\Enrollment\Duplicate\EnrollmentDuplicateDetector;
+use App\Application\Contexts\Enrollment\Duplicate\EnrollmentDuplicateTarget;
 use UnitEnum;
 
-final class SqliteEnrollmentDuplicateDetector extends AbstractSqliteDuplicateDetector implements EnrollmentDuplicateDetectorInterface
+final class SqliteEnrollmentDuplicateDetector extends AbstractSqliteDuplicateDetector implements EnrollmentDuplicateDetector
 {
     protected function constraint(UnitEnum $target): ?string
     {

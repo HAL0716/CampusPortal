@@ -2,11 +2,11 @@
 
 namespace App\Infrastructure\Database\Mysql;
 
-use App\Application\FinalGrade\FinalGradeDuplicateDetectorInterface;
-use App\Application\FinalGrade\FinalGradeDuplicateTarget;
+use App\Application\Contexts\FinalGrade\Duplicate\FinalGradeDuplicateDetector;
+use App\Application\Contexts\FinalGrade\Duplicate\FinalGradeDuplicateTarget;
 use UnitEnum;
 
-final class MysqlFinalGradeDuplicateDetector extends AbstractMysqlDuplicateDetector implements FinalGradeDuplicateDetectorInterface
+final class MysqlFinalGradeDuplicateDetector extends AbstractMysqlDuplicateDetector implements FinalGradeDuplicateDetector
 {
     protected function constraint(UnitEnum $target): ?string
     {

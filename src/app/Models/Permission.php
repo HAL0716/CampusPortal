@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domain\Permission\PermissionType;
+use App\Domain\Permission\Enums\PermissionType;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

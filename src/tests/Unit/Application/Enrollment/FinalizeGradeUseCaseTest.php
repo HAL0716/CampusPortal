@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\Unit\Application\Enrollment;
+namespace Tests\Unit\Application\Contexts\Enrollment;
 
-use App\Application\Authorization\EnrollmentAuthorizationServiceInterface;
-use App\Application\Enrollment\FinalizeGradeCommand;
-use App\Application\Enrollment\FinalizeGradeUseCase;
-use App\Domain\Enrollment\Enrollment;
-use App\Domain\Enrollment\EnrollmentRepositoryInterface;
-use App\Domain\Enrollment\EnrollmentStatus;
+use App\Application\Contexts\Enrollment\Commands\FinalizeGradeCommand;
+use App\Application\Contexts\Enrollment\UseCases\FinalizeGradeUseCase;
+use App\Application\Services\Authorization\EnrollmentAuthorizationService;
+use App\Domain\Enrollment\Entities\Enrollment;
+use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
-use App\Domain\FinalGrade\FinalGrade;
-use App\Domain\FinalGrade\FinalGradeRepositoryInterface;
-use App\Domain\FinalGrade\FinalGradeType;
+use App\Domain\Enrollment\Repositories\EnrollmentRepository;
+use App\Domain\FinalGrade\Entities\FinalGrade;
+use App\Domain\FinalGrade\Enums\FinalGradeType;
+use App\Domain\FinalGrade\Repositories\FinalGradeRepository;
 use App\Infrastructure\Authorization\Exceptions\UnauthorizedException;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -28,11 +28,11 @@ class FinalizeGradeUseCaseTest extends TestCase
     use MockeryPHPUnitIntegration;
     use UseMatcher;
 
-    private EnrollmentRepositoryInterface&MockInterface $enrollments;
+    private EnrollmentRepository&MockInterface $enrollments;
 
-    private FinalGradeRepositoryInterface&MockInterface $finalGrades;
+    private FinalGradeRepository&MockInterface $finalGrades;
 
-    private EnrollmentAuthorizationServiceInterface&MockInterface $auth;
+    private EnrollmentAuthorizationService&MockInterface $auth;
 
     private FinalizeGradeUseCase $useCase;
 
@@ -40,9 +40,9 @@ class FinalizeGradeUseCaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->enrollments = Mockery::mock(EnrollmentRepositoryInterface::class);
-        $this->finalGrades = Mockery::mock(FinalGradeRepositoryInterface::class);
-        $this->auth = Mockery::mock(EnrollmentAuthorizationServiceInterface::class);
+        $this->enrollments = Mockery::mock(EnrollmentRepository::class);
+        $this->finalGrades = Mockery::mock(FinalGradeRepository::class);
+        $this->auth = Mockery::mock(EnrollmentAuthorizationService::class);
 
         $this->useCase = new FinalizeGradeUseCase(
             $this->enrollments,

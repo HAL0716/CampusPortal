@@ -2,8 +2,8 @@
 
 namespace Tests\Support\Student;
 
-use App\Domain\Student\Student;
-use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\Entities\Student;
+use App\Domain\Student\Repositories\StudentRepository;
 use Mockery\MockInterface;
 use Tests\Support\Id\IdTestHelper;
 use Tests\Support\Matchers\UseMatcher;
@@ -24,7 +24,7 @@ trait StudentTestHelper
     }
 
     private function expectStudent(
-        StudentRepositoryInterface&MockInterface $students,
+        StudentRepository&MockInterface $students,
         ?Student $student,
     ): void {
         $students

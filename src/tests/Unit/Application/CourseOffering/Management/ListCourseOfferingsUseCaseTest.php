@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\Unit\Application\CourseOffering\Management;
+namespace Tests\Unit\Application\Contexts\CourseOffering\Management;
 
-use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
-use App\Application\CourseOffering\Management\CourseOfferingDTO;
-use App\Application\CourseOffering\Management\EnrollmentDTO;
-use App\Application\CourseOffering\Management\ListCourseOfferingsQuery;
-use App\Application\CourseOffering\Management\ListCourseOfferingsUseCase;
-use App\Domain\Enrollment\EnrollmentStatus;
+use App\Application\Contexts\CourseOffering\Management\DTOs\CourseOfferingDTO;
+use App\Application\Contexts\CourseOffering\Management\DTOs\EnrollmentDTO;
+use App\Application\Contexts\CourseOffering\Management\Queries\ListCourseOfferingsQuery;
+use App\Application\Contexts\CourseOffering\Management\UseCases\ListCourseOfferingsUseCase;
+use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
+use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
-use App\Domain\Semester\SemesterRepositoryInterface;
+use App\Domain\Semester\Repositories\SemesterRepository;
 use App\Domain\Teacher\Exceptions\TeacherNotFoundException;
-use App\Domain\Teacher\TeacherRepositoryInterface;
+use App\Domain\Teacher\Repositories\TeacherRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
@@ -25,11 +25,11 @@ class ListCourseOfferingsUseCaseTest extends TestCase
     use SemesterTestHelper;
     use TeacherTestHelper;
 
-    private SemesterRepositoryInterface&MockInterface $semesters;
+    private SemesterRepository&MockInterface $semesters;
 
-    private TeacherRepositoryInterface&MockInterface $teachers;
+    private TeacherRepository&MockInterface $teachers;
 
-    private CourseOfferingQueryServiceInterface&MockInterface $queryService;
+    private CourseOfferingQueryService&MockInterface $queryService;
 
     private ListCourseOfferingsUseCase $useCase;
 
@@ -37,9 +37,9 @@ class ListCourseOfferingsUseCaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->semesters = Mockery::mock(SemesterRepositoryInterface::class);
-        $this->teachers = Mockery::mock(TeacherRepositoryInterface::class);
-        $this->queryService = Mockery::mock(CourseOfferingQueryServiceInterface::class);
+        $this->semesters = Mockery::mock(SemesterRepository::class);
+        $this->teachers = Mockery::mock(TeacherRepository::class);
+        $this->queryService = Mockery::mock(CourseOfferingQueryService::class);
 
         $this->useCase = new ListCourseOfferingsUseCase(
             $this->semesters,

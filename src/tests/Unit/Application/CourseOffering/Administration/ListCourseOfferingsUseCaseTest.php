@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Unit\Application\CourseOffering\Administration;
+namespace Tests\Unit\Application\Contexts\CourseOffering\Administration;
 
-use App\Application\CourseOffering\Administration\CourseOfferingDTO;
-use App\Application\CourseOffering\Administration\ListCourseOfferingsQuery;
-use App\Application\CourseOffering\Administration\ListCourseOfferingsUseCase;
-use App\Application\CourseOffering\CourseOfferingQueryServiceInterface;
+use App\Application\Contexts\CourseOffering\Administration\DTOs\CourseOfferingDTO;
+use App\Application\Contexts\CourseOffering\Administration\Queries\ListCourseOfferingsQuery;
+use App\Application\Contexts\CourseOffering\Administration\UseCases\ListCourseOfferingsUseCase;
+use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
-use App\Domain\Semester\SemesterRepositoryInterface;
+use App\Domain\Semester\Repositories\SemesterRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
@@ -21,9 +21,9 @@ class ListCourseOfferingsUseCaseTest extends TestCase
     use SemesterTestHelper;
     use UseMatcher;
 
-    private SemesterRepositoryInterface&MockInterface $semesters;
+    private SemesterRepository&MockInterface $semesters;
 
-    private CourseOfferingQueryServiceInterface&MockInterface $queryService;
+    private CourseOfferingQueryService&MockInterface $queryService;
 
     private ListCourseOfferingsUseCase $useCase;
 
@@ -31,8 +31,8 @@ class ListCourseOfferingsUseCaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->semesters = Mockery::mock(SemesterRepositoryInterface::class);
-        $this->queryService = Mockery::mock(CourseOfferingQueryServiceInterface::class);
+        $this->semesters = Mockery::mock(SemesterRepository::class);
+        $this->queryService = Mockery::mock(CourseOfferingQueryService::class);
 
         $this->useCase = new ListCourseOfferingsUseCase(
             $this->semesters,

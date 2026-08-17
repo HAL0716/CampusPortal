@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domain\FinalGrade\FinalGradeType;
+use App\Domain\FinalGrade\Enums\FinalGradeType;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

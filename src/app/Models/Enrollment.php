@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domain\Enrollment\EnrollmentStatus;
+use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

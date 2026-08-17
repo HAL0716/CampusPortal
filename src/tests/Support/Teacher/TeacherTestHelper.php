@@ -2,8 +2,8 @@
 
 namespace Tests\Support\Teacher;
 
-use App\Domain\Teacher\Teacher;
-use App\Domain\Teacher\TeacherRepositoryInterface;
+use App\Domain\Teacher\Entities\Teacher;
+use App\Domain\Teacher\Repositories\TeacherRepository;
 use Mockery\MockInterface;
 use Tests\Support\Id\IdTestHelper;
 use Tests\Support\Matchers\UseMatcher;
@@ -24,7 +24,7 @@ trait TeacherTestHelper
     }
 
     private function expectTeacher(
-        TeacherRepositoryInterface&MockInterface $teachers,
+        TeacherRepository&MockInterface $teachers,
         ?Teacher $teacher,
     ): void {
         $teachers

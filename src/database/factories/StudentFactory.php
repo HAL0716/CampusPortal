@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domain\Student\StudentStatus;
+use App\Domain\Student\Enums\StudentStatus;
 use App\Models\Department;
 use App\Models\Student;
 use App\Models\User;

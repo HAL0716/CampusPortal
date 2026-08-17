@@ -2,7 +2,7 @@
 
 namespace Database\Seeders\Data;
 
-use App\Domain\Position\PositionType;
+use App\Domain\Position\Enums\PositionType;
 
 final class TeacherData
 {

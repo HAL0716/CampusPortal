@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domain\Permission\PermissionType;
+use App\Domain\Permission\Enums\PermissionType;
 use App\Models\Permission;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domain\Position\PositionType;
+use App\Domain\Position\Enums\PositionType;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

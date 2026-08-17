@@ -2,11 +2,11 @@
 
 namespace App\Infrastructure\Database\Mysql;
 
-use App\Application\User\UserDuplicateDetectorInterface;
-use App\Application\User\UserDuplicateTarget;
+use App\Application\Contexts\User\Duplicate\UserDuplicateDetector;
+use App\Application\Contexts\User\Duplicate\UserDuplicateTarget;
 use UnitEnum;
 
-final class MysqlUserDuplicateDetector extends AbstractMysqlDuplicateDetector implements UserDuplicateDetectorInterface
+final class MysqlUserDuplicateDetector extends AbstractMysqlDuplicateDetector implements UserDuplicateDetector
 {
     protected function constraint(UnitEnum $target): ?string
     {

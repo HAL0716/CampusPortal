@@ -2,11 +2,11 @@
 
 namespace App\Infrastructure\Database;
 
-use App\Application\Database\DuplicateDetectorInterface;
+use App\Application\Services\Database\DuplicateDetector;
 use Illuminate\Database\QueryException;
 use UnitEnum;
 
-abstract class AbstractDuplicateDetector implements DuplicateDetectorInterface
+abstract class AbstractDuplicateDetector implements DuplicateDetector
 {
     public function isDuplicate(
         QueryException $e,

@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domain\CourseOffering;
 
-use App\Domain\Course\CourseId;
-use App\Domain\CourseOffering\CourseOffering;
-use App\Domain\CourseOffering\CourseOfferingId;
-use App\Domain\Semester\SemesterId;
-use App\Domain\Teacher\TeacherId;
+use App\Domain\Course\ValueObjects\CourseId;
+use App\Domain\CourseOffering\Entities\CourseOffering;
+use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
+use App\Domain\Semester\ValueObjects\SemesterId;
+use App\Domain\Teacher\ValueObjects\TeacherId;
 use Tests\TestCase;
 
 final class CourseOfferingTest extends TestCase

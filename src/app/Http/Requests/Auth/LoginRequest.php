@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Application\Authentication\LoginCommand;
+use App\Application\Contexts\Authentication\Commands\LoginCommand;
 use App\Rules\User\UserEmailRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;

@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Application\Authentication;
 
-use App\Application\Authentication\AuthenticationServiceInterface;
-use App\Application\Authentication\LoginCommand;
-use App\Application\Authentication\LoginUseCase;
-use App\Application\Security\PasswordHasherInterface;
+use App\Application\Contexts\Authentication\AuthenticationService;
+use App\Application\Contexts\Authentication\Commands\LoginCommand;
+use App\Application\Contexts\Authentication\UseCases\LoginUseCase;
+use App\Application\Services\Security\PasswordHasher;
+use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\AuthenticationFailedException;
-use App\Domain\User\User;
-use App\Domain\User\UserEmail;
-use App\Domain\User\UserRepositoryInterface;
+use App\Domain\User\Repositories\UserRepository;
+use App\Domain\User\ValueObjects\UserEmail;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
@@ -21,19 +21,19 @@ final class LoginUseCaseTest extends TestCase
     use CreatesDomainUser;
     use MockeryPHPUnitIntegration;
 
-    private UserRepositoryInterface&MockInterface $users;
+    private UserRepository&MockInterface $users;
 
-    private AuthenticationServiceInterface&MockInterface $auth;
+    private AuthenticationService&MockInterface $auth;
 
-    private PasswordHasherInterface&MockInterface $hasher;
+    private PasswordHasher&MockInterface $hasher;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->users = Mockery::mock(UserRepositoryInterface::class);
-        $this->auth = Mockery::mock(AuthenticationServiceInterface::class);
-        $this->hasher = Mockery::mock(PasswordHasherInterface::class);
+        $this->users = Mockery::mock(UserRepository::class);
+        $this->auth = Mockery::mock(AuthenticationService::class);
+        $this->hasher = Mockery::mock(PasswordHasher::class);
     }
 
     public function test_login(): void

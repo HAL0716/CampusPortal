@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domain\Semester;
 
-use App\Domain\Semester\SemesterId;
+use App\Domain\Semester\ValueObjects\SemesterId;
 use Tests\TestCase;
 
 final class SemesterIdTest extends TestCase

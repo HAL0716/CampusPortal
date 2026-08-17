@@ -2,9 +2,9 @@
 
 namespace Tests\Support\Semester;
 
-use App\Domain\Academic\Term;
-use App\Domain\Semester\Semester;
-use App\Domain\Semester\SemesterRepositoryInterface;
+use App\Domain\Academic\Enums\Term;
+use App\Domain\Semester\Entities\Semester;
+use App\Domain\Semester\Repositories\SemesterRepository;
 use Carbon\CarbonImmutable;
 use Mockery\MockInterface;
 use Tests\Support\Id\IdTestHelper;
@@ -33,7 +33,7 @@ trait SemesterTestHelper
     }
 
     private function expectSemester(
-        SemesterRepositoryInterface&MockInterface $semesters,
+        SemesterRepository&MockInterface $semesters,
         ?Semester $semester,
         ?CarbonImmutable $date = null,
     ): void {

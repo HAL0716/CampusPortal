@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Application\Clock\ClockInterface;
+use App\Application\Services\Clock\Clock;
 use App\Infrastructure\Clock\FixedClock;
 use App\Infrastructure\Clock\SystemClock;
 use Carbon\CarbonImmutable;
@@ -15,7 +15,7 @@ class ClockServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(ClockInterface::class, function () {
+        $this->app->singleton(Clock::class, function () {
             $fixed = config('app.now');
 
             return $fixed === null
