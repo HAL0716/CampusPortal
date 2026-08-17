@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function () {
         ->name('course-offerings.administration')
         ->can(PermissionType::CourseOfferingAdministration->value);
 
+    Route::get('/course-offerings/{id}', [CourseOfferingController::class, 'show'])
+        ->name('course-offerings.show');
+
     Route::post('/course-offerings/{courseOffering}/enroll', [EnrollmentController::class, 'enroll'])
         ->name('course-offerings.enroll')
         ->can(PermissionType::CourseOfferingEnrollment->value);

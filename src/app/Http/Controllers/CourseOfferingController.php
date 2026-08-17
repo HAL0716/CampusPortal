@@ -6,7 +6,10 @@ use App\Application\Contexts\Authentication\AuthenticationService;
 use App\Application\Contexts\CourseOffering\Administration\UseCases\ListCourseOfferingsUseCase as AdministrationUseCase;
 use App\Application\Contexts\CourseOffering\Enrollment\UseCases\ListCourseOfferingsUseCase as EnrollmentUseCase;
 use App\Application\Contexts\CourseOffering\Management\UseCases\ListCourseOfferingsUseCase as ManagementUseCase;
+use App\Application\Contexts\CourseOffering\Show\Queries\GetCourseOfferingQuery;
+use App\Application\Contexts\CourseOffering\Show\UseCases\GetCourseOfferingUseCase;
 use App\Application\Services\Clock\Clock;
+use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Http\Requests\CourseOffering\AdministrationRequest;
 use App\Http\Requests\CourseOffering\EnrollmentRequest;
 use App\Http\Requests\CourseOffering\ManagementRequest;
@@ -49,6 +52,17 @@ class CourseOfferingController extends Controller
             'offerings' => $useCase->execute(
                 $request->toQuery(
                     date: $this->clock->now(),
+                )
+            ),
+        ]);
+    }
+
+    public function show(int $id, GetCourseOfferingUseCase $useCase)
+    {
+        return Inertia::render('CourseOffering/Show', [
+            'offering' => $useCase->execute(
+                new GetCourseOfferingQuery(
+                    courseOfferingId: new CourseOfferingId($id)
                 )
             ),
         ]);

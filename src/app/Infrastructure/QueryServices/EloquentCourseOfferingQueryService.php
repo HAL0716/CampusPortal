@@ -7,6 +7,10 @@ use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO as
 use App\Application\Contexts\CourseOffering\Management\DTOs\CourseOfferingDTO as ManagementDTO;
 use App\Application\Contexts\CourseOffering\Management\DTOs\EnrollmentDTO as ManagementEnrollmentDTO;
 use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
+use App\Application\Contexts\CourseOffering\Show\DTOs\CourseOfferingDTO as DetailDTO;
+use App\Application\Contexts\CourseOffering\Show\DTOs\MaterialDTO;
+use App\Application\Services\Clock\Clock;
+use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Student\ValueObjects\StudentId;
@@ -17,6 +21,10 @@ use Illuminate\Database\Eloquent\Builder;
 
 final class EloquentCourseOfferingQueryService implements CourseOfferingQueryService
 {
+    public function __construct(
+        private readonly Clock $clock,
+    ) {}
+
     public function findForAdministration(SemesterId $semesterId): array
     {
         return $this->baseQuery($semesterId)
@@ -82,6 +90,32 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
                     ->all(),
             ))
             ->all();
+    }
+
+    public function findDetail(CourseOfferingId $id): DetailDTO
+    {
+        $offering = CourseOffering::query()
+            ->with([
+                'course.teachers.user',
+                'materials' => fn ($query) => $query
+                    ->where(fn ($query) => $query
+                        ->where('publish_date', '<=', $this->clock->now())
+                        ->orWhereNull('publish_date')
+                    )
+                    ->orderBy('publish_date'),
+            ])
+            ->findOrFail($id->value());
+
+        return new DetailDTO(
+            id: $offering->id,
+            name: $offering->course->name,
+            description: $offering->course->description,
+            teachers: $offering->course->teachers->map(fn ($teacher) => $teacher->user->name)->all(),
+            materials: $offering->materials->map(fn ($material) => new MaterialDTO(
+                id: $material->id,
+                title: $material->title,
+            ))->all(),
+        );
     }
 
     private function baseQuery(SemesterId $semesterId): Builder
