@@ -27,4 +27,9 @@ class CourseOffering extends Model
     {
         return $this->hasMany(Enrollment::class);
     }
+
+    public function materials(): HasMany
+    {
+        return $this->hasMany(Material::class);
+    }
 }
