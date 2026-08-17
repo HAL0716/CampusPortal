@@ -4,7 +4,7 @@ namespace Tests\Unit\Application\Contexts\Enrollment;
 
 use App\Application\Contexts\Enrollment\Commands\FinalizeGradeCommand;
 use App\Application\Contexts\Enrollment\UseCases\FinalizeGradeUseCase;
-use App\Application\Services\Authorization\EnrollmentAuthorizationService;
+use App\Application\Services\Authorization\CourseOfferingAuthorizationService;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
@@ -32,7 +32,7 @@ class FinalizeGradeUseCaseTest extends TestCase
 
     private FinalGradeRepository&MockInterface $finalGrades;
 
-    private EnrollmentAuthorizationService&MockInterface $auth;
+    private CourseOfferingAuthorizationService&MockInterface $auth;
 
     private FinalizeGradeUseCase $useCase;
 
@@ -42,7 +42,7 @@ class FinalizeGradeUseCaseTest extends TestCase
 
         $this->enrollments = Mockery::mock(EnrollmentRepository::class);
         $this->finalGrades = Mockery::mock(FinalGradeRepository::class);
-        $this->auth = Mockery::mock(EnrollmentAuthorizationService::class);
+        $this->auth = Mockery::mock(CourseOfferingAuthorizationService::class);
 
         $this->useCase = new FinalizeGradeUseCase(
             $this->enrollments,
@@ -60,7 +60,7 @@ class FinalizeGradeUseCaseTest extends TestCase
 
         $this->auth->shouldReceive('canManage')
             ->once()
-            ->withArgs($this->idsMatcher($command->userId, $command->enrollmentId))
+            ->withArgs($this->idsMatcher($command->userId, $enrollment->courseOfferingId()))
             ->andReturnTrue();
 
         $this->enrollments->shouldReceive('save')
@@ -101,7 +101,7 @@ class FinalizeGradeUseCaseTest extends TestCase
 
         $this->auth->shouldReceive('canManage')
             ->once()
-            ->withArgs($this->idsMatcher($this->userId(), $enrollment->requireId()))
+            ->withArgs($this->idsMatcher($this->userId(), $enrollment->courseOfferingId()))
             ->andReturnFalse();
 
         $this->enrollments->shouldNotReceive('save');
