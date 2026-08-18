@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Application\Contexts\Authentication\AuthenticationService;
 use App\Application\Contexts\CourseOffering\Administration\UseCases\ListCourseOfferingsUseCase as AdministrationUseCase;
 use App\Application\Contexts\CourseOffering\Enrollment\UseCases\ListCourseOfferingsUseCase as EnrollmentUseCase;
+use App\Application\Contexts\CourseOffering\Index\UseCases\ListCourseOfferingsUseCase;
 use App\Application\Contexts\CourseOffering\Management\UseCases\ListCourseOfferingsUseCase as ManagementUseCase;
 use App\Application\Contexts\CourseOffering\Show\UseCases\GetCourseOfferingUseCase;
 use App\Application\Services\Clock\Clock;
 use App\Http\Requests\CourseOffering\AdministrationRequest;
 use App\Http\Requests\CourseOffering\EnrollmentRequest;
+use App\Http\Requests\CourseOffering\IndexRequest;
 use App\Http\Requests\CourseOffering\ManagementRequest;
 use App\Http\Requests\CourseOffering\ShowRequest;
 use Inertia\Inertia;
@@ -22,13 +24,13 @@ class CourseOfferingController extends Controller
         private readonly AuthenticationService $auth,
     ) {}
 
-    public function index(): Response
+    public function index(IndexRequest $request, ListCourseOfferingsUseCase $useCase): Response
     {
-        $offerings = [
-            ['id' => 1, 'name' => 'Course Offering 1', 'description' => 'Description for Course Offering 1'],
-            ['id' => 2, 'name' => 'Course Offering 2', 'description' => 'Description for Course Offering 2'],
-            ['id' => 3, 'name' => 'Course Offering 3', 'description' => 'Description for Course Offering 3'],
-        ];
+        $offerings = $useCase->execute(
+            $request->toQuery(
+                date: $this->clock->now(),
+            )
+        );
 
         return Inertia::render('CourseOffering/Index', [
             'offerings' => $offerings,

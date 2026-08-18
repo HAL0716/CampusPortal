@@ -4,6 +4,7 @@ namespace App\Infrastructure\QueryServices;
 
 use App\Application\Contexts\CourseOffering\Administration\DTOs\CourseOfferingDTO as AdministrationDTO;
 use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO as EnrollmentDTO;
+use App\Application\Contexts\CourseOffering\Index\DTOs\CourseOfferingDTO;
 use App\Application\Contexts\CourseOffering\Management\DTOs\CourseOfferingDTO as ManagementDTO;
 use App\Application\Contexts\CourseOffering\Management\DTOs\EnrollmentDTO as ManagementEnrollmentDTO;
 use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
@@ -88,6 +89,24 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
                     ))
                     ->values()
                     ->all(),
+            ))
+            ->all();
+    }
+
+    /**
+     * @return array<CourseOfferingDTO>
+     */
+    public function findBySemester(SemesterId $semesterId): array
+    {
+        return CourseOffering::query()
+            ->join('courses', 'courses.id', '=', 'course_offerings.course_id')
+            ->where('course_offerings.semester_id', $semesterId->value())
+            ->select(['course_offerings.id', 'courses.name', 'courses.description'])
+            ->get()
+            ->map(fn (CourseOffering $courseOffering): CourseOfferingDTO => new CourseOfferingDTO(
+                id: $courseOffering->id,
+                name: $courseOffering->name,
+                description: $courseOffering->description,
             ))
             ->all();
     }
