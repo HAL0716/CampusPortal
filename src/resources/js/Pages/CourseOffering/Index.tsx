@@ -1,11 +1,13 @@
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
+
+import Card from '@/Components/Card';
 
 type PageProps = {
   offerings: {
     id: number;
     name: string;
-    description: string;
+    description?: string | null;
   }[];
 };
 
@@ -26,17 +28,12 @@ export default function Index() {
       {offerings.length > 0 ? (
         <div className="space-y-3">
           {offerings.map((offering) => (
-            <Link
+            <Card
               key={offering.id}
               href={route('course-offerings.show', offering.id)}
-              className="block rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:border-gray-300 hover:shadow-md"
-            >
-              <h2 className="font-semibold text-gray-900">{offering.name}</h2>
-
-              <p className="mt-2 text-sm text-gray-500">
-                {truncate(offering.description ?? '', MAX_DESCRIPTION_LENGTH)}
-              </p>
-            </Link>
+              title={offering.name}
+              description={truncate(offering.description ?? '', MAX_DESCRIPTION_LENGTH)}
+            />
           ))}
         </div>
       ) : (
