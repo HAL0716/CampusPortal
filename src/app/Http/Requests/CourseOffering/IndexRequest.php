@@ -3,6 +3,7 @@
 namespace App\Http\Requests\CourseOffering;
 
 use App\Application\Contexts\CourseOffering\Index\Queries\ListCourseOfferingsQuery;
+use App\Domain\User\ValueObjects\UserId;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -29,10 +30,11 @@ class IndexRequest extends FormRequest
         ];
     }
 
-    public function toQuery(CarbonImmutable $date): ListCourseOfferingsQuery
+    public function toQuery(CarbonImmutable $date, UserId $userId): ListCourseOfferingsQuery
     {
         return new ListCourseOfferingsQuery(
             date: $date,
+            userId: $userId,
         );
     }
 }

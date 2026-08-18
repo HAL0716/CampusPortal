@@ -3,11 +3,14 @@ import { route } from 'ziggy-js';
 
 import Card from '@/Components/Card';
 
+type Status = 'none' | 'enrolled' | 'dropped' | 'completed' | 'failed' | 'teaching';
+
 type PageProps = {
   offerings: {
     id: number;
     name: string;
     description?: string | null;
+    status: Status;
   }[];
 };
 
@@ -15,6 +18,24 @@ const MAX_DESCRIPTION_LENGTH = 50;
 
 const truncate = (text: string, maxLength: number) =>
   text.length > maxLength ? `${text.slice(0, maxLength)}…` : text;
+
+const getCardVariant = (status: Status) => {
+  switch (status) {
+    case 'enrolled':
+      return 'info';
+    case 'dropped':
+      return 'danger';
+    case 'completed':
+      return 'success';
+    case 'failed':
+      return 'warning';
+    case 'teaching':
+      return 'accent';
+    case 'none':
+    default:
+      return 'default';
+  }
+};
 
 export default function Index() {
   const { offerings } = usePage<PageProps>().props;
@@ -33,6 +54,7 @@ export default function Index() {
               href={route('course-offerings.show', offering.id)}
               title={offering.name}
               description={truncate(offering.description ?? '', MAX_DESCRIPTION_LENGTH)}
+              variant={getCardVariant(offering.status)}
             />
           ))}
         </div>

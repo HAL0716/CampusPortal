@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 
-type CardVariant = 'default' | 'danger';
+type CardVariant = 'default' | 'info' | 'danger' | 'success' | 'warning' | 'accent';
 
 type Props = {
   href: string;
@@ -26,11 +26,35 @@ const variants: Record<
     description: 'text-gray-500',
     hover: 'hover:border-gray-400',
   },
+  info: {
+    border: 'border-blue-200',
+    title: 'text-blue-700',
+    description: 'text-blue-500',
+    hover: 'hover:border-blue-400',
+  },
   danger: {
     border: 'border-red-200',
     title: 'text-red-700',
     description: 'text-red-500',
     hover: 'hover:border-red-400',
+  },
+  success: {
+    border: 'border-green-200',
+    title: 'text-green-700',
+    description: 'text-green-500',
+    hover: 'hover:border-green-400',
+  },
+  warning: {
+    border: 'border-orange-200',
+    title: 'text-orange-700',
+    description: 'text-orange-500',
+    hover: 'hover:border-orange-400',
+  },
+  accent: {
+    border: 'border-purple-200',
+    title: 'text-purple-700',
+    description: 'text-purple-500',
+    hover: 'hover:border-purple-400',
   },
 };
 

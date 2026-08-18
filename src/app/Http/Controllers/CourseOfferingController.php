@@ -29,6 +29,7 @@ class CourseOfferingController extends Controller
         $offerings = $useCase->execute(
             $request->toQuery(
                 date: $this->clock->now(),
+                userId: $this->auth->requireUser()->requireId()
             )
         );
 

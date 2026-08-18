@@ -40,7 +40,7 @@ interface CourseOfferingQueryService
     /**
      * @return array<CourseOfferingDTO>
      */
-    public function findBySemester(SemesterId $semesterId): array;
+    public function findBySemester(SemesterId $semesterId, StudentId|TeacherId|null $memberId = null): array;
 
     public function findDetail(CourseOfferingId $id): DetailDTO;
 }

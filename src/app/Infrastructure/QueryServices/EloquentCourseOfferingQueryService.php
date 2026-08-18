@@ -5,6 +5,7 @@ namespace App\Infrastructure\QueryServices;
 use App\Application\Contexts\CourseOffering\Administration\DTOs\CourseOfferingDTO as AdministrationDTO;
 use App\Application\Contexts\CourseOffering\Enrollment\DTOs\CourseOfferingDTO as EnrollmentDTO;
 use App\Application\Contexts\CourseOffering\Index\DTOs\CourseOfferingDTO;
+use App\Application\Contexts\CourseOffering\Index\Enums\CourseOfferingStatus;
 use App\Application\Contexts\CourseOffering\Management\DTOs\CourseOfferingDTO as ManagementDTO;
 use App\Application\Contexts\CourseOffering\Management\DTOs\EnrollmentDTO as ManagementEnrollmentDTO;
 use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
@@ -96,18 +97,54 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
     /**
      * @return array<CourseOfferingDTO>
      */
-    public function findBySemester(SemesterId $semesterId): array
+    public function findBySemester(SemesterId $semesterId, StudentId|TeacherId|null $memberId = null): array
     {
-        return CourseOffering::query()
+        $courseOfferings = CourseOffering::query()
             ->join('courses', 'courses.id', '=', 'course_offerings.course_id')
             ->where('course_offerings.semester_id', $semesterId->value())
             ->select(['course_offerings.id', 'courses.name', 'courses.description'])
-            ->get()
-            ->map(fn (CourseOffering $courseOffering): CourseOfferingDTO => new CourseOfferingDTO(
+            ->get();
+
+        $statuses = match (true) {
+            $memberId instanceof StudentId => $this->findStudentStatuses($semesterId, $memberId),
+            $memberId instanceof TeacherId => $this->findTeacherStatuses($memberId),
+            default => [],
+        };
+
+        return $courseOfferings->map(
+            fn (CourseOffering $courseOffering): CourseOfferingDTO => new CourseOfferingDTO(
                 id: $courseOffering->id,
                 name: $courseOffering->name,
                 description: $courseOffering->description,
-            ))
+                status: $statuses[$courseOffering->id] ?? CourseOfferingStatus::NONE,
+            ),
+        )->all();
+    }
+
+    /**
+     * @return array<int, CourseOfferingStatus>
+     */
+    private function findStudentStatuses(SemesterId $semesterId, StudentId $studentId): array
+    {
+        return Enrollment::query()
+            ->join('course_offerings', 'course_offerings.id', '=', 'enrollments.course_offering_id')
+            ->where('course_offerings.semester_id', $semesterId->value())
+            ->where('enrollments.student_id', $studentId->value())
+            ->pluck('enrollments.status', 'enrollments.course_offering_id')
+            ->map(fn (EnrollmentStatus $status): CourseOfferingStatus => CourseOfferingStatus::from($status->value))
+            ->all();
+    }
+
+    /**
+     * @return array<int, CourseOfferingStatus>
+     */
+    private function findTeacherStatuses(TeacherId $teacherId): array
+    {
+        return CourseOffering::query()
+            ->join('course_teacher', 'course_teacher.course_id', '=', 'course_offerings.course_id')
+            ->where('course_teacher.teacher_id', $teacherId->value())
+            ->pluck('course_offerings.id')
+            ->mapWithKeys(fn (int $courseOfferingId): array => [$courseOfferingId => CourseOfferingStatus::TEACHING])
             ->all();
     }
 
