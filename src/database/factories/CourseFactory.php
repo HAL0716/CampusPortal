@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Domain\Academic\Enums\Term;
 use App\Models\Course;
+use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,5 +24,12 @@ class CourseFactory extends Factory
             'description' => fake()->optional()->sentence(),
             'term' => fake()->randomElement(Term::cases()),
         ];
+    }
+
+    public function forTeacher(Teacher $teacher): static
+    {
+        return $this->afterCreating(function (Course $course) use ($teacher) {
+            $course->teachers()->attach($teacher);
+        });
     }
 }
