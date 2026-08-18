@@ -4,6 +4,7 @@ namespace App\Infrastructure\Storage;
 
 use App\Application\Services\Storage\FileStorage;
 use App\Application\Services\Storage\UploadFile;
+use App\Infrastructure\Storage\Exceptions\FileStorageException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -15,7 +16,9 @@ final class LaravelFileStorage implements FileStorage
     {
         $path = $directory.'/'.Str::uuid().'.'.pathinfo($file->originalName, PATHINFO_EXTENSION);
 
-        Storage::disk(self::PUBLIC_DISK)->put($path, $file->contents);
+        if (! Storage::disk(self::PUBLIC_DISK)->put($path, $file->contents)) {
+            throw new FileStorageException;
+        }
 
         return $path;
     }
