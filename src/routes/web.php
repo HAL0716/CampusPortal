@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseOfferingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\MaterialController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
@@ -37,6 +38,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/course-offerings/{id}', [CourseOfferingController::class, 'show'])
         ->name('course-offerings.show');
+
+    Route::post('/course-offerings/{id}/materials', [MaterialController::class, 'store'])
+        ->name('course-offerings.materials.store');
 
     Route::post('/course-offerings/{courseOffering}/enroll', [EnrollmentController::class, 'enroll'])
         ->name('course-offerings.enroll')
