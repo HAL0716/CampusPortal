@@ -13,6 +13,7 @@ use App\Http\Requests\CourseOffering\EnrollmentRequest;
 use App\Http\Requests\CourseOffering\ManagementRequest;
 use App\Http\Requests\CourseOffering\ShowRequest;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class CourseOfferingController extends Controller
 {
@@ -20,6 +21,19 @@ class CourseOfferingController extends Controller
         private readonly Clock $clock,
         private readonly AuthenticationService $auth,
     ) {}
+
+    public function index(): Response
+    {
+        $offerings = [
+            ['id' => 1, 'name' => 'Course Offering 1', 'description' => 'Description for Course Offering 1'],
+            ['id' => 2, 'name' => 'Course Offering 2', 'description' => 'Description for Course Offering 2'],
+            ['id' => 3, 'name' => 'Course Offering 3', 'description' => 'Description for Course Offering 3'],
+        ];
+
+        return Inertia::render('CourseOffering/Index', [
+            'offerings' => $offerings,
+        ]);
+    }
 
     public function enrollment(EnrollmentRequest $request, EnrollmentUseCase $useCase)
     {
