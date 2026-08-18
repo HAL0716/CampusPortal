@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Domain\CourseOffering\Repositories\CourseOfferingRepository;
 use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\FinalGrade\Repositories\FinalGradeRepository;
+use App\Domain\Material\Repositories\MaterialRepository;
 use App\Domain\Permission\Repositories\PermissionRepository;
 use App\Domain\Semester\Repositories\SemesterRepository;
 use App\Domain\Student\Repositories\StudentRepository;
@@ -13,6 +14,7 @@ use App\Domain\User\Repositories\UserRepository;
 use App\Infrastructure\Repositories\EloquentCourseOfferingRepository;
 use App\Infrastructure\Repositories\EloquentEnrollmentRepository;
 use App\Infrastructure\Repositories\EloquentFinalGradeRepository;
+use App\Infrastructure\Repositories\EloquentMaterialRepository;
 use App\Infrastructure\Repositories\EloquentPermissionRepository;
 use App\Infrastructure\Repositories\EloquentSemesterRepository;
 use App\Infrastructure\Repositories\EloquentStudentRepository;
@@ -29,6 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
         TeacherRepository::class => EloquentTeacherRepository::class,
         SemesterRepository::class => EloquentSemesterRepository::class,
         CourseOfferingRepository::class => EloquentCourseOfferingRepository::class,
+        MaterialRepository::class => EloquentMaterialRepository::class,
         EnrollmentRepository::class => EloquentEnrollmentRepository::class,
         FinalGradeRepository::class => EloquentFinalGradeRepository::class,
     ];

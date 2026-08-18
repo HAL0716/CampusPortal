@@ -3,7 +3,7 @@
 namespace App\Application\Contexts\Enrollment\UseCases;
 
 use App\Application\Contexts\Enrollment\Commands\FinalizeGradeCommand;
-use App\Application\Services\Authorization\EnrollmentAuthorizationService;
+use App\Application\Services\Authorization\CourseOfferingAuthorizationService;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
 use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\FinalGrade\Entities\FinalGrade;
@@ -16,7 +16,7 @@ final readonly class FinalizeGradeUseCase
     public function __construct(
         private EnrollmentRepository $enrollments,
         private FinalGradeRepository $finalGrades,
-        private EnrollmentAuthorizationService $auth,
+        private CourseOfferingAuthorizationService $auth,
     ) {}
 
     public function execute(FinalizeGradeCommand $command): void
@@ -26,7 +26,7 @@ final readonly class FinalizeGradeUseCase
             throw new EnrollmentNotFoundException;
         }
 
-        if (! $this->auth->canManage($command->userId, $command->enrollmentId)) {
+        if (! $this->auth->canManage($command->userId, $enrollment->courseOfferingId())) {
             throw new UnauthorizedException;
         }
 

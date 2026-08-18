@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseOfferingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\MaterialController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
@@ -34,6 +35,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/course-offerings/administration', [CourseOfferingController::class, 'administration'])
         ->name('course-offerings.administration')
         ->can(PermissionType::CourseOfferingAdministration->value);
+
+    Route::get('/course-offerings/{id}', [CourseOfferingController::class, 'show'])
+        ->name('course-offerings.show')
+        ->can(PermissionType::CourseOfferingView->value);
+
+    Route::post('/course-offerings/{id}/materials', [MaterialController::class, 'store'])
+        ->name('course-offerings.materials.store')
+        ->can(PermissionType::CourseOfferingMaterialCreate->value);
 
     Route::post('/course-offerings/{courseOffering}/enroll', [EnrollmentController::class, 'enroll'])
         ->name('course-offerings.enroll')
