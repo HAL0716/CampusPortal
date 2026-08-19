@@ -71,17 +71,9 @@ export default function Management() {
     <>
       <h1 className="mb-4 text-xl font-bold">担当講義一覧</h1>
 
-      {flash.success && (
-        <FlashMessage key={flash.success.id} type="success">
-          {flash.success.message}
-        </FlashMessage>
-      )}
+      <FlashMessage key={flash.success?.id} text={flash.success?.message} type="success" />
 
-      {flash.error && (
-        <FlashMessage key={flash.error.id} type="error">
-          {flash.error.message}
-        </FlashMessage>
-      )}
+      <FlashMessage key={flash.error?.id} text={flash.error?.message} type="danger" />
 
       {offerings.map((offering) => (
         <section key={offering.id} className="mb-6">

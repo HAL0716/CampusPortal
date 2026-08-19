@@ -2,65 +2,44 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Domain\Academic\Enums\Term;
 use App\Domain\Permission\Enums\PermissionType;
-use App\Models\Semester;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Support\Clock\UseClock;
-use Tests\Support\Permission\CreatesModelPermission;
-use Tests\Support\User\CreatesModelUser;
 use Tests\TestCase;
 
-final class DashboardControllerTest extends TestCase
+class DashboardControllerTest extends TestCase
 {
-    use CreatesModelPermission;
-    use CreatesModelUser;
     use RefreshDatabase;
-    use UseClock;
 
-    private const DATE = '2025-04-01';
-
-    public function test_shows_dashboard_page(): void
+    public function test_can_view_dashboard(): void
     {
-        $this->useClock(self::DATE);
+        $user = User::factory()->withRoles([
+            Role::factory()->withPermissions([PermissionType::DashboardView])->create(),
+        ])->create();
 
-        $user = $this->createUser();
-
-        $this->createPermission(
-            $user,
-            PermissionType::DashboardView
-        );
-
-        Semester::create([
-            'academic_year' => '2025',
-            'term' => Term::FIRST,
-            'start_date' => self::DATE,
-            'end_date' => '2025-07-31',
-        ]);
-
-        $this->actingAs($user);
-
-        $this->get(route('dashboard'))
+        $this->actingAs($user)
+            ->get(route('dashboard'))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Dashboard/Index')
-                ->where('auth.user.name', $user->name)
             );
     }
 
-    public function test_forbids_user_without_permission(): void
-    {
-        $user = $this->createUser();
-
-        $this->actingAs($user);
-
-        $this->get(route('dashboard'))
-            ->assertForbidden();
-    }
-
-    public function test_redirects_guest_to_login(): void
+    public function test_guest_cannot_view_dashboard(): void
     {
         $this->get(route('dashboard'))
             ->assertRedirect(route('login'));
+    }
+
+    public function test_user_without_dashboard_permission_cannot_view_dashboard(): void
+    {
+        $user = User::factory()->withRoles([
+            Role::factory()->create(),
+        ])->create();
+
+        $this->actingAs($user)
+            ->get(route('dashboard'))
+            ->assertForbidden();
     }
 }

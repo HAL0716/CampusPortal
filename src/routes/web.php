@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseOfferingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\FinalGradeController;
 use App\Http\Controllers\MaterialController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,19 +27,17 @@ Route::middleware('auth')->group(function () {
         ->name('dashboard')
         ->can(PermissionType::DashboardView->value);
 
-    Route::get('/course-offerings/enrollment', [CourseOfferingController::class, 'enrollment'])
-        ->name('course-offerings.enrollment')
-        ->can(PermissionType::CourseOfferingEnrollment->value);
-    Route::get('/course-offerings/management', [CourseOfferingController::class, 'management'])
-        ->name('course-offerings.management')
-        ->can(PermissionType::CourseOfferingManagement->value);
-    Route::get('/course-offerings/administration', [CourseOfferingController::class, 'administration'])
-        ->name('course-offerings.administration')
-        ->can(PermissionType::CourseOfferingAdministration->value);
+    Route::get('/course-offerings', [CourseOfferingController::class, 'index'])
+        ->name('course-offerings.index')
+        ->can(PermissionType::CourseOfferingView->value);
 
     Route::get('/course-offerings/{id}', [CourseOfferingController::class, 'show'])
         ->name('course-offerings.show')
         ->can(PermissionType::CourseOfferingView->value);
+
+    Route::get('/course-offerings/{id}/materials/create', [MaterialController::class, 'create'])
+        ->name('course-offerings.materials.create')
+        ->can(PermissionType::CourseOfferingMaterialCreate->value);
 
     Route::post('/course-offerings/{id}/materials', [MaterialController::class, 'store'])
         ->name('course-offerings.materials.store')
@@ -52,5 +51,9 @@ Route::middleware('auth')->group(function () {
         ->can(PermissionType::CourseOfferingEnrollment->value);
     Route::post('/enrollments/{enrollment}/complete', [EnrollmentController::class, 'complete'])
         ->name('enrollments.complete')
+        ->can(PermissionType::CourseOfferingManagement->value);
+
+    Route::get('/course-offerings/{id}/final-grades', [FinalGradeController::class, 'index'])
+        ->name('course-offerings.final-grades.index')
         ->can(PermissionType::CourseOfferingManagement->value);
 });

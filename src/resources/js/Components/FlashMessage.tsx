@@ -1,30 +1,35 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-type FlashMessageProps = {
-  type: 'success' | 'error';
-  children: ReactNode;
+import { type Variant, variants } from '@/Components/Styles/Variants';
+
+type Props = {
+  text?: string | null;
+  type?: Variant;
   duration?: number;
 };
 
-export default function FlashMessage({ type, children, duration = 3000 }: FlashMessageProps) {
+export default function FlashMessage({ text, type = 'default', duration = 3000 }: Props) {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
+    if (!text) {
+      return;
+    }
+
     const timer = setTimeout(() => {
       setVisible(false);
     }, duration);
 
     return () => clearTimeout(timer);
-  }, [duration]);
+  }, [text, duration]);
 
-  if (!visible) {
+  if (!text || !visible) {
     return null;
   }
 
-  const styles = {
-    success: 'bg-green-100 text-green-800',
-    error: 'bg-red-100 text-red-800',
-  };
+  const styles = variants[type];
 
-  return <div className={`mb-4 rounded p-4 ${styles[type]}`}>{children}</div>;
+  return (
+    <div className={['mb-4 rounded-lg p-4', styles.background, styles.text].join(' ')}>{text}</div>
+  );
 }

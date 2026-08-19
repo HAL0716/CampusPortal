@@ -2,6 +2,8 @@
 
 namespace App\Application\Contexts\CourseOffering\Show\DTOs;
 
+use App\Application\Contexts\CourseOffering\Index\Enums\CourseOfferingStatus;
+
 final readonly class CourseOfferingDTO
 {
     /**
@@ -11,6 +13,7 @@ final readonly class CourseOfferingDTO
         public int $id,
         public string $name,
         public ?string $description,
+        public CourseOfferingStatus $status,
         public array $teachers,
         public array $materials,
     ) {}

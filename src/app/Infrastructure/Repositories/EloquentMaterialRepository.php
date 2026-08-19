@@ -42,7 +42,7 @@ final class EloquentMaterialRepository implements MaterialRepository
             title: $model->title,
             description: $model->description,
             filePath: $model->file_path,
-            publishDate: $model->publish_date,
+            publishDate: $model->publish_date?->toDateTimeImmutable(),
         );
     }
 }

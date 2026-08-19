@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Material;
 
-use App\Application\Contexts\Material\Commands\CreateMaterialCommand;
+use App\Application\Contexts\Material\Commands\StoreMaterialCommand;
 use App\Application\Services\Storage\UploadFile;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\User\ValueObjects\UserId;
@@ -55,9 +55,9 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    public function toCommand(UserId $userId): CreateMaterialCommand
+    public function toCommand(UserId $userId): StoreMaterialCommand
     {
-        return new CreateMaterialCommand(
+        return new StoreMaterialCommand(
             userId: $userId,
             courseOfferingId: new CourseOfferingId($this->route('id')),
             title: $this->validated('title'),
