@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseOfferingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\FinalGradeController;
 use App\Http\Controllers\MaterialController;
 use Illuminate\Support\Facades\Route;
 
@@ -60,5 +61,9 @@ Route::middleware('auth')->group(function () {
         ->can(PermissionType::CourseOfferingEnrollment->value);
     Route::post('/enrollments/{enrollment}/complete', [EnrollmentController::class, 'complete'])
         ->name('enrollments.complete')
+        ->can(PermissionType::CourseOfferingManagement->value);
+
+    Route::get('/course-offerings/{id}/final-grades', [FinalGradeController::class, 'index'])
+        ->name('course-offerings.final-grades.index')
         ->can(PermissionType::CourseOfferingManagement->value);
 });

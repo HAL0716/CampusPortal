@@ -80,11 +80,19 @@ export default function Show() {
         )}
 
         {offering.status === 'teaching' && (
-          <Card
-            href={route('course-offerings.materials.create', { id: offering.id })}
-            title="講義資料追加"
-            variant="info"
-          />
+          <>
+            <Card
+              href={route('course-offerings.materials.create', { id: offering.id })}
+              title="講義資料追加"
+              variant="info"
+            />
+
+            <Card
+              href={route('course-offerings.final-grades.index', { id: offering.id })}
+              title="最終成績"
+              variant="info"
+            />
+          </>
         )}
       </div>
     </>

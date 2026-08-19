@@ -3,13 +3,16 @@
 namespace App\Providers;
 
 use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
+use App\Application\Contexts\Enrollment\Services\EnrollmentQueryService;
 use App\Infrastructure\QueryServices\EloquentCourseOfferingQueryService;
+use App\Infrastructure\QueryServices\EloquentEnrollmentQueryService;
 use Illuminate\Support\ServiceProvider;
 
 class QueryServiceProvider extends ServiceProvider
 {
     private const QUERY_SERVICES = [
         CourseOfferingQueryService::class => EloquentCourseOfferingQueryService::class,
+        EnrollmentQueryService::class => EloquentEnrollmentQueryService::class,
     ];
 
     /**
