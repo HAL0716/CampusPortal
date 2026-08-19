@@ -50,17 +50,9 @@ export default function Show() {
       <Head title={offering.name} />
 
       <div className="space-y-6">
-        {flash.success && (
-          <FlashMessage key={flash.success.id} type="success">
-            {flash.success.message}
-          </FlashMessage>
-        )}
+        <FlashMessage key={flash.success?.id} text={flash.success?.message} type="success" />
 
-        {flash.error && (
-          <FlashMessage key={flash.error.id} type="error">
-            {flash.error.message}
-          </FlashMessage>
-        )}
+        <FlashMessage key={flash.error?.id} text={flash.error?.message} type="danger" />
 
         <Card title={offering.name} description={offering.description} />
 
