@@ -804,13 +804,14 @@ enrolled（履修中）
 
 ## 9.10 資料管理
 
-| Method | Path                               | Controller                 | Student | Teacher | Admin |
-| ------ | ---------------------------------- | -------------------------- | :-----: | :-----: | :---: |
-| GET    | `/course-offerings/{id}/materials` | MaterialController@index   |    ○    |    ○    |   ○   |
-| POST   | `/course-offerings/{id}/materials` | MaterialController@store   |    ×    |    ○    |   ×   |
-| GET    | `/materials/{id}`                  | MaterialController@show    |    ○    |    ○    |   ○   |
-| PUT    | `/materials/{id}`                  | MaterialController@update  |    ×    |    ○    |   ×   |
-| DELETE | `/materials/{id}`                  | MaterialController@destroy |    ×    |    ○    |   ×   |
+| Method | Path                                      | Controller                 | Student | Teacher | Admin |
+| ------ | ----------------------------------------- | -------------------------- | :-----: | :-----: | :---: |
+| GET    | `/course-offerings/{id}/materials`        | MaterialController@index   |    ○    |    ○    |   ○   |
+| GET    | `/course-offerings/{id}/materials/create` | MaterialController@create  |    ×    |    ○    |   ×   |
+| POST   | `/course-offerings/{id}/materials`        | MaterialController@store   |    ×    |    ○    |   ×   |
+| GET    | `/materials/{id}`                         | MaterialController@show    |    ○    |    ○    |   ○   |
+| PUT    | `/materials/{id}`                         | MaterialController@update  |    ×    |    ○    |   ×   |
+| DELETE | `/materials/{id}`                         | MaterialController@destroy |    ×    |    ○    |   ×   |
 
 ## 9.11 課題管理
 

@@ -6,8 +6,11 @@ use App\Application\Contexts\Authentication\AuthenticationService;
 use App\Application\Contexts\Material\UseCases\CreateMaterialUseCase;
 use App\Exceptions\UserMessageException;
 use App\Http\Controllers\Concerns\HasFlashMessages;
+use App\Http\Requests\Material\CreateRequest;
 use App\Http\Requests\Material\StoreRequest;
 use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
+use Inertia\Response;
 use Throwable;
 
 class MaterialController extends Controller
@@ -18,6 +21,15 @@ class MaterialController extends Controller
         private readonly AuthenticationService $auth,
     ) {}
 
+    public function create(CreateRequest $request): Response
+    {
+        return Inertia::render('Material/Create', [
+            'offering' => [
+                'id' => $request->route('id'),
+            ],
+        ]);
+    }
+
     public function store(StoreRequest $request, CreateMaterialUseCase $useCase): RedirectResponse
     {
         try {
@@ -27,7 +39,8 @@ class MaterialController extends Controller
                 )
             );
 
-            return back()->with($this->withSuccess('資料をアップロードしました'));
+            return redirect()->route('course-offerings.show', ['id' => $request->route('id')])
+                ->with($this->withSuccess('資料をアップロードしました'));
         } catch (UserMessageException $e) {
             return back()->with($this->withError($e->userMessage()));
         } catch (Throwable $e) {

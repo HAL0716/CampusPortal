@@ -44,6 +44,10 @@ Route::middleware('auth')->group(function () {
         ->name('course-offerings.show')
         ->can(PermissionType::CourseOfferingView->value);
 
+    Route::get('/course-offerings/{id}/materials/create', [MaterialController::class, 'create'])
+        ->name('course-offerings.materials.create')
+        ->can(PermissionType::CourseOfferingMaterialCreate->value);
+
     Route::post('/course-offerings/{id}/materials', [MaterialController::class, 'store'])
         ->name('course-offerings.materials.store')
         ->can(PermissionType::CourseOfferingMaterialCreate->value);
