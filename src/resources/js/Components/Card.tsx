@@ -4,8 +4,8 @@ import type { ReactNode } from 'react';
 type CardVariant = 'default' | 'info' | 'danger' | 'success' | 'warning' | 'accent';
 
 type Props = {
-  href: string;
-  title: string;
+  href?: string;
+  title?: string;
   description?: string | null;
   variant?: CardVariant;
   children?: ReactNode;
@@ -61,16 +61,32 @@ const variants: Record<
 export default function Card({ href, title, description, variant = 'default', children }: Props) {
   const styles = variants[variant];
 
-  return (
-    <Link
-      href={href}
-      className={`block rounded-lg border bg-white p-5 shadow-sm transition hover:shadow-md ${styles.border} ${styles.hover}`}
-    >
-      <h2 className={`font-semibold ${styles.title}`}>{title}</h2>
+  const className = [
+    'rounded-lg border bg-white p-5 shadow-sm',
+    styles.border,
+    href && 'transition hover:shadow-md',
+    href && styles.hover,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const content = (
+    <>
+      {title && <h2 className={`font-semibold ${styles.title}`}>{title}</h2>}
 
       {description && <p className={`mt-2 text-sm ${styles.description}`}>{description}</p>}
 
       {children}
-    </Link>
+    </>
   );
+
+  if (href) {
+    return (
+      <Link href={href} className={`block ${className}`}>
+        {content}
+      </Link>
+    );
+  }
+
+  return <div className={className}>{content}</div>;
 }

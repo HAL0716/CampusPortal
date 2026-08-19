@@ -1,6 +1,7 @@
 import { Head, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
+import Button from '@/Components/Button';
 import Card from '@/Components/Card';
 import { SharedProps } from '@/Types/SharedProps';
 
@@ -22,7 +23,7 @@ export default function Index() {
           description="開講科目の一覧を表示します。"
         />
 
-        <Card href={route('logout')} title="ログアウト" variant="danger" />
+        <Button href={route('logout')} label="ログアウト" variant="danger" />
       </nav>
     </>
   );
