@@ -4,12 +4,9 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Domain\Academic\Enums\Term;
 use App\Domain\Permission\Enums\PermissionType;
-use App\Models\CourseOffering;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Semester;
-use App\Models\Student;
-use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -35,44 +32,6 @@ final class CourseOfferingControllerTest extends TestCase
             'start_date' => self::DATE,
             'end_date' => '2025-07-31',
         ]);
-    }
-
-    public function test_can_render_enrollment_page(): void
-    {
-        $user = $this->userWithPermission(PermissionType::CourseOfferingEnrollment);
-        Student::factory()->for($user)->create();
-        CourseOffering::factory()->create();
-
-        $this->assertInertiaPage(
-            $user,
-            'course-offerings.enrollment',
-            'CourseOffering/Enrollment'
-        );
-    }
-
-    public function test_can_render_management_page(): void
-    {
-        $user = $this->userWithPermission(PermissionType::CourseOfferingManagement);
-        Teacher::factory()->for($user)->create();
-        CourseOffering::factory()->create();
-
-        $this->assertInertiaPage(
-            $user,
-            'course-offerings.management',
-            'CourseOffering/Management'
-        );
-    }
-
-    public function test_can_render_administration_page(): void
-    {
-        $user = $this->userWithPermission(PermissionType::CourseOfferingAdministration);
-        CourseOffering::factory()->create();
-
-        $this->assertInertiaPage(
-            $user,
-            'course-offerings.administration',
-            'CourseOffering/Administration'
-        );
     }
 
     private function userWithPermission(PermissionType $permission): User

@@ -27,16 +27,6 @@ Route::middleware('auth')->group(function () {
         ->name('dashboard')
         ->can(PermissionType::DashboardView->value);
 
-    Route::get('/course-offerings/enrollment', [CourseOfferingController::class, 'enrollment'])
-        ->name('course-offerings.enrollment')
-        ->can(PermissionType::CourseOfferingEnrollment->value);
-    Route::get('/course-offerings/management', [CourseOfferingController::class, 'management'])
-        ->name('course-offerings.management')
-        ->can(PermissionType::CourseOfferingManagement->value);
-    Route::get('/course-offerings/administration', [CourseOfferingController::class, 'administration'])
-        ->name('course-offerings.administration')
-        ->can(PermissionType::CourseOfferingAdministration->value);
-
     Route::get('/course-offerings', [CourseOfferingController::class, 'index'])
         ->name('course-offerings.index')
         ->can(PermissionType::CourseOfferingView->value);

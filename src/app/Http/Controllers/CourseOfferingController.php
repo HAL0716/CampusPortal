@@ -3,16 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Application\Contexts\Authentication\AuthenticationService;
-use App\Application\Contexts\CourseOffering\Administration\UseCases\ListCourseOfferingsUseCase as AdministrationUseCase;
-use App\Application\Contexts\CourseOffering\Enrollment\UseCases\ListCourseOfferingsUseCase as EnrollmentUseCase;
 use App\Application\Contexts\CourseOffering\Index\UseCases\ListCourseOfferingsUseCase;
-use App\Application\Contexts\CourseOffering\Management\UseCases\ListCourseOfferingsUseCase as ManagementUseCase;
 use App\Application\Contexts\CourseOffering\Show\UseCases\GetCourseOfferingUseCase;
 use App\Application\Services\Clock\Clock;
-use App\Http\Requests\CourseOffering\AdministrationRequest;
-use App\Http\Requests\CourseOffering\EnrollmentRequest;
 use App\Http\Requests\CourseOffering\IndexRequest;
-use App\Http\Requests\CourseOffering\ManagementRequest;
 use App\Http\Requests\CourseOffering\ShowRequest;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -35,41 +29,6 @@ class CourseOfferingController extends Controller
 
         return Inertia::render('CourseOffering/Index', [
             'offerings' => $offerings,
-        ]);
-    }
-
-    public function enrollment(EnrollmentRequest $request, EnrollmentUseCase $useCase)
-    {
-        return Inertia::render('CourseOffering/Enrollment', [
-            'offerings' => $useCase->execute(
-                $request->toQuery(
-                    date: $this->clock->now(),
-                    userId: $this->auth->requireUser()->requireId()
-                )
-            ),
-        ]);
-    }
-
-    public function management(ManagementRequest $request, ManagementUseCase $useCase)
-    {
-        return Inertia::render('CourseOffering/Management', [
-            'offerings' => $useCase->execute(
-                $request->toQuery(
-                    date: $this->clock->now(),
-                    userId: $this->auth->requireUser()->requireId()
-                )
-            ),
-        ]);
-    }
-
-    public function administration(AdministrationRequest $request, AdministrationUseCase $useCase)
-    {
-        return Inertia::render('CourseOffering/Administration', [
-            'offerings' => $useCase->execute(
-                $request->toQuery(
-                    date: $this->clock->now(),
-                )
-            ),
         ]);
     }
 
