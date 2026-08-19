@@ -42,5 +42,5 @@ interface CourseOfferingQueryService
      */
     public function findBySemester(SemesterId $semesterId, StudentId|TeacherId|null $memberId = null): array;
 
-    public function findDetail(CourseOfferingId $id): DetailDTO;
+    public function findDetail(CourseOfferingId $id, StudentId|TeacherId|null $memberId = null): DetailDTO;
 }

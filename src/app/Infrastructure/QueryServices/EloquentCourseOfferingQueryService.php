@@ -148,7 +148,7 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
             ->all();
     }
 
-    public function findDetail(CourseOfferingId $id): DetailDTO
+    public function findDetail(CourseOfferingId $id, StudentId|TeacherId|null $memberId = null): DetailDTO
     {
         $offering = CourseOffering::query()
             ->with([
@@ -162,16 +162,43 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
             ])
             ->findOrFail($id->value());
 
+        $status = match (true) {
+            $memberId instanceof StudentId => $this->findStudentStatus($id, $memberId),
+            $memberId instanceof TeacherId => $this->findTeacherStatus($id, $memberId),
+            default => CourseOfferingStatus::NONE,
+        };
+
         return new DetailDTO(
             id: $offering->id,
             name: $offering->course->name,
             description: $offering->course->description,
+            status: $status,
             teachers: $offering->course->teachers->map(fn ($teacher) => $teacher->user->name)->all(),
             materials: $offering->materials->map(fn ($material) => new MaterialDTO(
                 id: $material->id,
                 title: $material->title,
             ))->all(),
         );
+    }
+
+    private function findStudentStatus(CourseOfferingId $courseOfferingId, StudentId $studentId): CourseOfferingStatus
+    {
+        $status = Enrollment::query()
+            ->where('course_offering_id', $courseOfferingId->value())
+            ->where('student_id', $studentId->value())
+            ->value('status');
+
+        return $status instanceof EnrollmentStatus ? CourseOfferingStatus::from($status->value) : CourseOfferingStatus::NONE;
+    }
+
+    private function findTeacherStatus(CourseOfferingId $courseOfferingId, TeacherId $teacherId): CourseOfferingStatus
+    {
+        $exists = CourseOffering::query()
+            ->whereKey($courseOfferingId->value())
+            ->whereHas('course.teachers', fn ($query) => $query->whereKey($teacherId->value()))
+            ->exists();
+
+        return $exists ? CourseOfferingStatus::TEACHING : CourseOfferingStatus::NONE;
     }
 
     private function baseQuery(SemesterId $semesterId): Builder

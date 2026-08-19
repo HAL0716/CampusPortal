@@ -77,7 +77,9 @@ class CourseOfferingController extends Controller
     {
         return Inertia::render('CourseOffering/Show', [
             'offering' => $useCase->execute(
-                $request->toQuery()
+                $request->toQuery(
+                    userId: $this->auth->requireUser()->requireId()
+                )
             ),
         ]);
     }
