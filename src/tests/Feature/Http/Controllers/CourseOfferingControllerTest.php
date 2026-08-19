@@ -4,7 +4,7 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Domain\Academic\Enums\Term;
 use App\Domain\Permission\Enums\PermissionType;
-use App\Models\Permission;
+use App\Models\CourseOffering;
 use App\Models\Role;
 use App\Models\Semester;
 use App\Models\User;
@@ -34,31 +34,35 @@ final class CourseOfferingControllerTest extends TestCase
         ]);
     }
 
-    private function userWithPermission(PermissionType $permission): User
+    public function test_can_view_course_offerings(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withRoles([
+            Role::factory()->withPermissions([PermissionType::CourseOfferingView])->create(),
+        ])->create();
 
-        $permission = Permission::factory()->create([
-            'name' => $permission->value,
-        ]);
-
-        $role = Role::factory()->create();
-        $role->permissions()->attach($permission);
-
-        $user->roles()->attach($role);
-
-        return $user;
+        $this->actingAs($user)
+            ->get(route('course-offerings.index'))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('CourseOffering/Index')
+                ->has('offerings')
+            );
     }
 
-    private function assertInertiaPage(User $user, string $route, string $component): void
+    public function test_can_view_course_offering_detail(): void
     {
-        $response = $this->actingAs($user)->get(route($route));
+        $user = User::factory()->withRoles([
+            Role::factory()->withPermissions([PermissionType::CourseOfferingView])->create(),
+        ])->create();
 
-        $response->assertStatus(200);
-        $response->assertInertia(
-            fn (Assert $page) => $page
-                ->component($component)
-                ->has('offerings')
-        );
+        $offering = CourseOffering::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('course-offerings.show', ['id' => $offering->id]))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('CourseOffering/Show')
+                ->has('offering')
+            );
     }
 }
