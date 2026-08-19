@@ -6,7 +6,14 @@ import Card from '@/Components/Card';
 import FlashMessage from '@/Components/FlashMessage';
 import { SharedProps } from '@/Types/SharedProps';
 
-type Status = 'none' | 'enrolled' | 'dropped' | 'completed' | 'failed' | 'teaching';
+type Status =
+  | 'none'
+  | 'enrolled'
+  | 'dropped'
+  | 'completed'
+  | 'failed'
+  | 'teaching'
+  | 'not_teaching';
 
 type Material = {
   id: number;
@@ -26,8 +33,61 @@ type PageProps = {
   offering: CourseOffering;
 };
 
+type Action = {
+  title: string;
+  href: string;
+  variant: 'default' | 'info' | 'danger' | 'success' | 'warning' | 'accent';
+};
+
 export default function Show() {
   const { flash, offering } = usePage<SharedProps & PageProps>().props;
+
+  const actionsByStatus: Record<Status, Action[]> = {
+    none: [
+      {
+        title: '履修登録',
+        href: route('course-offerings.enroll', { id: offering.id }),
+        variant: 'info',
+      },
+    ],
+
+    enrolled: [
+      {
+        title: '履修取消',
+        href: route('course-offerings.drop', { id: offering.id }),
+        variant: 'danger',
+      },
+    ],
+
+    dropped: [
+      {
+        title: '履修再登録',
+        href: route('course-offerings.enroll', { id: offering.id }),
+        variant: 'info',
+      },
+    ],
+
+    completed: [],
+
+    failed: [],
+
+    teaching: [
+      {
+        title: '講義資料追加',
+        href: route('course-offerings.materials.create', { id: offering.id }),
+        variant: 'info',
+      },
+      {
+        title: '最終成績',
+        href: route('course-offerings.final-grades.index', { id: offering.id }),
+        variant: 'info',
+      },
+    ],
+
+    not_teaching: [],
+  };
+
+  const actions = actionsByStatus[offering.status];
 
   return (
     <>
@@ -42,7 +102,6 @@ export default function Show() {
 
         <Card title="担当教員" description={offering.teachers.join(', ')} />
 
-        {/* 講義資料 */}
         <Card title="講義資料">
           {offering.materials.length > 0 ? (
             <div className="mt-4 space-y-3">
@@ -55,45 +114,14 @@ export default function Show() {
           )}
         </Card>
 
-        {offering.status === 'none' && (
+        {actions.map((action) => (
           <Button
-            href={route('course-offerings.enroll', { id: offering.id })}
-            label="履修登録"
-            variant="info"
+            key={action.title}
+            href={action.href}
+            label={action.title}
+            variant={action.variant}
           />
-        )}
-
-        {offering.status === 'enrolled' && (
-          <Button
-            href={route('course-offerings.drop', { id: offering.id })}
-            label="履修取消"
-            variant="danger"
-          />
-        )}
-
-        {offering.status === 'dropped' && (
-          <Button
-            href={route('course-offerings.enroll', { id: offering.id })}
-            label="履修再登録"
-            variant="info"
-          />
-        )}
-
-        {offering.status === 'teaching' && (
-          <>
-            <Card
-              href={route('course-offerings.materials.create', { id: offering.id })}
-              title="講義資料追加"
-              variant="info"
-            />
-
-            <Card
-              href={route('course-offerings.final-grades.index', { id: offering.id })}
-              title="最終成績"
-              variant="info"
-            />
-          </>
-        )}
+        ))}
       </div>
     </>
   );
