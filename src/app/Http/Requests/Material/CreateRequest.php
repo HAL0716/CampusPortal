@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests\Material;
 
+use App\Application\Contexts\Material\Commands\CreateMaterialCommand;
+use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
+use App\Domain\User\ValueObjects\UserId;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,5 +28,13 @@ class CreateRequest extends FormRequest
         return [
             //
         ];
+    }
+
+    public function toCommand(UserId $userId): CreateMaterialCommand
+    {
+        return new CreateMaterialCommand(
+            new CourseOfferingId($this->route('id')),
+            $userId,
+        );
     }
 }

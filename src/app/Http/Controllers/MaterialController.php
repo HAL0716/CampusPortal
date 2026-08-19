@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Application\Contexts\Authentication\AuthenticationService;
+use App\Application\Contexts\Material\UseCases\CreateMaterialUseCase;
 use App\Application\Contexts\Material\UseCases\StoreMaterialUseCase;
 use App\Exceptions\UserMessageException;
 use App\Http\Controllers\Concerns\HasFlashMessages;
@@ -21,11 +22,17 @@ class MaterialController extends Controller
         private readonly AuthenticationService $auth,
     ) {}
 
-    public function create(CreateRequest $request): Response
+    public function create(CreateRequest $request, CreateMaterialUseCase $useCase): Response
     {
+        $useCase->execute(
+            $request->toCommand(
+                $this->auth->requireUser()->requireId()
+            )
+        );
+
         return Inertia::render('Material/Create', [
             'offering' => [
-                'id' => $request->route('id'),
+                'id' => (int) $request->route('id'),
             ],
         ]);
     }
