@@ -15,4 +15,5 @@ enum CourseOfferingStatus: string
 
     // For Teacher
     case TEACHING = 'teaching';
+    case NOT_TEACHING = 'not_teaching';
 }

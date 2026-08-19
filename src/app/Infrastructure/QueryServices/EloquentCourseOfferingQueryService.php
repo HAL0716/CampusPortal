@@ -107,7 +107,7 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
 
         $statuses = match (true) {
             $memberId instanceof StudentId => $this->findStudentStatuses($semesterId, $memberId),
-            $memberId instanceof TeacherId => $this->findTeacherStatuses($memberId),
+            $memberId instanceof TeacherId => $this->findTeacherStatuses($memberId, $courseOfferings->pluck('id')->all()),
             default => [],
         };
 
@@ -127,25 +127,33 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
     private function findStudentStatuses(SemesterId $semesterId, StudentId $studentId): array
     {
         return Enrollment::query()
-            ->join('course_offerings', 'course_offerings.id', '=', 'enrollments.course_offering_id')
-            ->where('course_offerings.semester_id', $semesterId->value())
-            ->where('enrollments.student_id', $studentId->value())
-            ->pluck('enrollments.status', 'enrollments.course_offering_id')
+            ->whereHas('courseOffering', fn ($query) => $query->where('semester_id', $semesterId->value()))
+            ->where('student_id', $studentId->value())
+            ->pluck('status', 'course_offering_id')
             ->map(fn (EnrollmentStatus $status): CourseOfferingStatus => CourseOfferingStatus::from($status->value))
             ->all();
     }
 
     /**
+     * @param  array<int, int>  $courseOfferingIds
      * @return array<int, CourseOfferingStatus>
      */
-    private function findTeacherStatuses(TeacherId $teacherId): array
+    private function findTeacherStatuses(TeacherId $teacherId, array $courseOfferingIds): array
     {
-        return CourseOffering::query()
+        $statuses = array_fill_keys($courseOfferingIds, CourseOfferingStatus::NOT_TEACHING);
+
+        $teachingCourseOfferingIds = CourseOffering::query()
             ->join('course_teacher', 'course_teacher.course_id', '=', 'course_offerings.course_id')
+            ->whereIn('course_offerings.id', $courseOfferingIds)
             ->where('course_teacher.teacher_id', $teacherId->value())
             ->pluck('course_offerings.id')
-            ->mapWithKeys(fn (int $courseOfferingId): array => [$courseOfferingId => CourseOfferingStatus::TEACHING])
             ->all();
+
+        foreach ($teachingCourseOfferingIds as $courseOfferingId) {
+            $statuses[$courseOfferingId] = CourseOfferingStatus::TEACHING;
+        }
+
+        return $statuses;
     }
 
     public function findDetail(CourseOfferingId $id, StudentId|TeacherId|null $memberId = null): DetailDTO
@@ -198,7 +206,7 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
             ->whereHas('course.teachers', fn ($query) => $query->whereKey($teacherId->value()))
             ->exists();
 
-        return $exists ? CourseOfferingStatus::TEACHING : CourseOfferingStatus::NONE;
+        return $exists ? CourseOfferingStatus::TEACHING : CourseOfferingStatus::NOT_TEACHING;
     }
 
     private function baseQuery(SemesterId $semesterId): Builder
