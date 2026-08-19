@@ -3,11 +3,11 @@
 namespace App\Application\Contexts\Material\UseCases;
 
 use App\Application\Contexts\Material\Commands\StoreMaterialCommand;
+use App\Application\Exceptions\ForbiddenException;
 use App\Application\Services\Authorization\CourseOfferingAuthorizationService;
 use App\Application\Services\Storage\FileStorage;
 use App\Domain\Material\Entities\Material;
 use App\Domain\Material\Repositories\MaterialRepository;
-use App\Infrastructure\Authorization\Exceptions\UnauthorizedException;
 use Throwable;
 
 final class StoreMaterialUseCase
@@ -21,7 +21,7 @@ final class StoreMaterialUseCase
     public function execute(StoreMaterialCommand $command): void
     {
         if (! $this->authorizationService->canManage($command->userId, $command->courseOfferingId)) {
-            throw new UnauthorizedException;
+            throw new ForbiddenException;
         }
 
         $filePath = null;

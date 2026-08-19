@@ -4,6 +4,7 @@ namespace Tests\Unit\Application\Contexts\Enrollment;
 
 use App\Application\Contexts\Enrollment\Commands\FinalizeGradeCommand;
 use App\Application\Contexts\Enrollment\UseCases\FinalizeGradeUseCase;
+use App\Application\Exceptions\ForbiddenException;
 use App\Application\Services\Authorization\CourseOfferingAuthorizationService;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
@@ -12,7 +13,6 @@ use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\FinalGrade\Entities\FinalGrade;
 use App\Domain\FinalGrade\Enums\FinalGradeType;
 use App\Domain\FinalGrade\Repositories\FinalGradeRepository;
-use App\Infrastructure\Authorization\Exceptions\UnauthorizedException;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
@@ -107,7 +107,7 @@ class FinalizeGradeUseCaseTest extends TestCase
         $this->enrollments->shouldNotReceive('save');
         $this->finalGrades->shouldNotReceive('save');
 
-        $this->expectException(UnauthorizedException::class);
+        $this->expectException(ForbiddenException::class);
         $this->useCase->execute($command);
     }
 

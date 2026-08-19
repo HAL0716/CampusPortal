@@ -4,11 +4,11 @@ namespace Tests\Unit\Application\Material;
 
 use App\Application\Contexts\Material\Commands\StoreMaterialCommand;
 use App\Application\Contexts\Material\UseCases\StoreMaterialUseCase;
+use App\Application\Exceptions\ForbiddenException;
 use App\Application\Services\Authorization\CourseOfferingAuthorizationService;
 use App\Application\Services\Storage\FileStorage;
 use App\Application\Services\Storage\UploadFile;
 use App\Domain\Material\Repositories\MaterialRepository;
-use App\Infrastructure\Authorization\Exceptions\UnauthorizedException;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
@@ -97,7 +97,7 @@ class StoreMaterialUseCaseTest extends TestCase
         $this->fileStorage->shouldNotReceive('delete');
         $this->materials->shouldNotReceive('save');
 
-        $this->expectException(UnauthorizedException::class);
+        $this->expectException(ForbiddenException::class);
 
         $this->useCase->execute($command);
     }
