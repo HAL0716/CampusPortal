@@ -1,7 +1,7 @@
 import { Head, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
-import ActionButton from '@/Components/Button';
+import Button from '@/Components/Button';
 import Card from '@/Components/Card';
 import FlashMessage from '@/Components/FlashMessage';
 import { SharedProps } from '@/Types/SharedProps';
@@ -56,7 +56,7 @@ export default function Show() {
         </Card>
 
         {offering.status === 'none' && (
-          <ActionButton
+          <Button
             href={route('course-offerings.enroll', { id: offering.id })}
             label="履修登録"
             variant="info"
@@ -64,7 +64,7 @@ export default function Show() {
         )}
 
         {offering.status === 'enrolled' && (
-          <ActionButton
+          <Button
             href={route('course-offerings.drop', { id: offering.id })}
             label="履修取消"
             variant="danger"
@@ -72,7 +72,7 @@ export default function Show() {
         )}
 
         {offering.status === 'dropped' && (
-          <ActionButton
+          <Button
             href={route('course-offerings.enroll', { id: offering.id })}
             label="履修再登録"
             variant="info"
@@ -80,7 +80,11 @@ export default function Show() {
         )}
 
         {offering.status === 'teaching' && (
-          <Card href={route('course-offerings.materials.create', { id: offering.id })} title="講義資料追加" variant="info" />
+          <Card
+            href={route('course-offerings.materials.create', { id: offering.id })}
+            title="講義資料追加"
+            variant="info"
+          />
         )}
       </div>
     </>
