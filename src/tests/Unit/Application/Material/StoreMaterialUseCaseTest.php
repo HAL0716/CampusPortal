@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Application\Material;
 
-use App\Application\Contexts\Material\Commands\CreateMaterialCommand;
-use App\Application\Contexts\Material\UseCases\CreateMaterialUseCase;
+use App\Application\Contexts\Material\Commands\StoreMaterialCommand;
+use App\Application\Contexts\Material\UseCases\StoreMaterialUseCase;
 use App\Application\Services\Authorization\CourseOfferingAuthorizationService;
 use App\Application\Services\Storage\FileStorage;
 use App\Application\Services\Storage\UploadFile;
@@ -17,7 +17,7 @@ use Tests\Support\Id\IdTestHelper;
 use Tests\Support\Matchers\UseMatcher;
 use Tests\TestCase;
 
-class CreateMaterialUseCaseTest extends TestCase
+class StoreMaterialUseCaseTest extends TestCase
 {
     use IdTestHelper;
     use MockeryPHPUnitIntegration;
@@ -29,7 +29,7 @@ class CreateMaterialUseCaseTest extends TestCase
 
     private FileStorage&MockInterface $fileStorage;
 
-    private CreateMaterialUseCase $useCase;
+    private StoreMaterialUseCase $useCase;
 
     protected function setUp(): void
     {
@@ -39,7 +39,7 @@ class CreateMaterialUseCaseTest extends TestCase
         $this->auth = Mockery::mock(CourseOfferingAuthorizationService::class);
         $this->fileStorage = Mockery::mock(FileStorage::class);
 
-        $this->useCase = new CreateMaterialUseCase(
+        $this->useCase = new StoreMaterialUseCase(
             $this->materials,
             $this->auth,
             $this->fileStorage,
@@ -160,9 +160,9 @@ class CreateMaterialUseCaseTest extends TestCase
         $this->useCase->execute($command);
     }
 
-    private function command(): CreateMaterialCommand
+    private function command(): StoreMaterialCommand
     {
-        return new CreateMaterialCommand(
+        return new StoreMaterialCommand(
             userId: $this->userId(),
             courseOfferingId: $this->courseOfferingId(),
             title: 'Webプログラミング 第1回資料',

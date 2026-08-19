@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Application\Contexts\Authentication\AuthenticationService;
-use App\Application\Contexts\Material\UseCases\CreateMaterialUseCase;
+use App\Application\Contexts\Material\UseCases\StoreMaterialUseCase;
 use App\Exceptions\UserMessageException;
 use App\Http\Controllers\Concerns\HasFlashMessages;
 use App\Http\Requests\Material\CreateRequest;
@@ -30,7 +30,7 @@ class MaterialController extends Controller
         ]);
     }
 
-    public function store(StoreRequest $request, CreateMaterialUseCase $useCase): RedirectResponse
+    public function store(StoreRequest $request, StoreMaterialUseCase $useCase): RedirectResponse
     {
         try {
             $useCase->execute(

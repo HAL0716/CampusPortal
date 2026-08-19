@@ -7,7 +7,7 @@ use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\User\ValueObjects\UserId;
 use DateTimeImmutable;
 
-final readonly class CreateMaterialCommand
+final readonly class StoreMaterialCommand
 {
     public function __construct(
         public CourseOfferingId $courseOfferingId,

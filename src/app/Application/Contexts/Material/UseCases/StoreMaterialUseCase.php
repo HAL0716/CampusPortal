@@ -2,7 +2,7 @@
 
 namespace App\Application\Contexts\Material\UseCases;
 
-use App\Application\Contexts\Material\Commands\CreateMaterialCommand;
+use App\Application\Contexts\Material\Commands\StoreMaterialCommand;
 use App\Application\Services\Authorization\CourseOfferingAuthorizationService;
 use App\Application\Services\Storage\FileStorage;
 use App\Domain\Material\Entities\Material;
@@ -10,7 +10,7 @@ use App\Domain\Material\Repositories\MaterialRepository;
 use App\Infrastructure\Authorization\Exceptions\UnauthorizedException;
 use Throwable;
 
-final class CreateMaterialUseCase
+final class StoreMaterialUseCase
 {
     public function __construct(
         private MaterialRepository $materials,
@@ -18,7 +18,7 @@ final class CreateMaterialUseCase
         private FileStorage $fileStorage,
     ) {}
 
-    public function execute(CreateMaterialCommand $command): void
+    public function execute(StoreMaterialCommand $command): void
     {
         if (! $this->authorizationService->canManage($command->userId, $command->courseOfferingId)) {
             throw new UnauthorizedException;
