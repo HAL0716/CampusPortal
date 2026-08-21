@@ -56,6 +56,17 @@ final class EloquentEnrollmentRepository implements EnrollmentRepository
         return $model ? $this->toEntity($model) : null;
     }
 
+    public function getById(EnrollmentId $id): Enrollment
+    {
+        $enrollment = $this->findById($id);
+
+        if ($enrollment === null) {
+            throw new EnrollmentNotFoundException;
+        }
+
+        return $enrollment;
+    }
+
     public function findByStudentAndCourseOffering(StudentId $studentId, CourseOfferingId $courseOfferingId): ?Enrollment
     {
         $model = EnrollmentModel::query()

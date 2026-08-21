@@ -105,6 +105,23 @@ final class EloquentEnrollmentRepositoryTest extends TestCase
         self::assertNull($result);
     }
 
+    public function test_can_get_enrollment_by_id(): void
+    {
+        $model = EnrollmentModel::factory()->create();
+
+        $result = $this->repository->getById(new EnrollmentId($model->id));
+
+        self::assertInstanceOf(Enrollment::class, $result);
+        self::assertSame($model->id, $result->id()->value());
+    }
+
+    public function test_throws_exception_when_enrollment_not_found_by_id(): void
+    {
+        self::expectException(EnrollmentNotFoundException::class);
+
+        $this->repository->getById(new EnrollmentId(999999));
+    }
+
     public function test_can_find_enrollment_by_student_and_course_offering(): void
     {
         $model = EnrollmentModel::factory()->create();
