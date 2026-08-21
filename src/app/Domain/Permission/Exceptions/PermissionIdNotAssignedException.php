@@ -2,9 +2,9 @@
 
 namespace App\Domain\Permission\Exceptions;
 
-use LogicException;
+use App\Domain\Exceptions\DomainException;
 
-final class PermissionIdNotAssignedException extends LogicException
+final class PermissionIdNotAssignedException extends DomainException
 {
     public function __construct()
     {

@@ -1,11 +1,14 @@
 <?php
 
 use App\Domain\Authentication\Exceptions\AuthenticationFailedException;
+use App\Domain\Exceptions\DomainException;
+use App\Http\Flash\Flash;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -26,5 +29,16 @@ return Application::configure(basePath: dirname(__DIR__))
             return back()
                 ->withErrors(['email' => $e->getMessage()])
                 ->onlyInput('email');
+        });
+        $exceptions->render(function (DomainException $e, Request $request) {
+            report($e);
+
+            if ($request->isMethod('GET')) {
+                return Inertia::render('Error/Index', ['message' => $e->userMessage()])
+                    ->toResponse($request)
+                    ->setStatusCode($e->statusCode());
+            }
+
+            return back()->with(Flash::error($e->userMessage()));
         });
     })->create();
