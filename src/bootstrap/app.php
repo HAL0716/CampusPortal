@@ -1,5 +1,6 @@
 <?php
 
+use App\Application\Exceptions\AuthorizationException;
 use App\Domain\Authentication\Exceptions\AuthenticationException;
 use App\Domain\Exceptions\DomainException;
 use App\Http\Flash\Flash;
@@ -31,6 +32,11 @@ return Application::configure(basePath: dirname(__DIR__))
             return back()
                 ->withErrors(['email' => $e->userMessage()])
                 ->onlyInput('email');
+        });
+        $exceptions->render(function (AuthorizationException $e) {
+            report($e);
+
+            return back()->with(Flash::error($e->userMessage()));
         });
         $exceptions->render(function (DomainException $e, Request $request) {
             report($e);
