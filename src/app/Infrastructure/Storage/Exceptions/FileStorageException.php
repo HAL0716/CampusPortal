@@ -2,18 +2,14 @@
 
 namespace App\Infrastructure\Storage\Exceptions;
 
-use App\Exceptions\UserMessageException;
-use RuntimeException;
+use App\Infrastructure\Exceptions\InfrastructureException;
 
-final class FileStorageException extends RuntimeException implements UserMessageException
+final class FileStorageException extends InfrastructureException
 {
+    protected const DEFAULT_USER_MESSAGE = 'ファイルの保存に失敗しました。';
+
     public function __construct()
     {
         parent::__construct('File storage error');
-    }
-
-    public function userMessage(): string
-    {
-        return 'ストレージへの保存に失敗しました。';
     }
 }

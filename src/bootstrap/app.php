@@ -5,6 +5,7 @@ use App\Domain\Authentication\Exceptions\AuthenticationException;
 use App\Domain\Exceptions\DomainException;
 use App\Http\Flash\Flash;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Infrastructure\Exceptions\InfrastructureException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -46,6 +47,11 @@ return Application::configure(basePath: dirname(__DIR__))
                     ->toResponse($request)
                     ->setStatusCode($e->statusCode());
             }
+
+            return back()->with(Flash::error($e->userMessage()));
+        });
+        $exceptions->render(function (InfrastructureException $e) {
+            report($e);
 
             return back()->with(Flash::error($e->userMessage()));
         });
