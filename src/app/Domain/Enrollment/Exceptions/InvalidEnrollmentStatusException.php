@@ -2,9 +2,9 @@
 
 namespace App\Domain\Enrollment\Exceptions;
 
-use LogicException;
+use App\Domain\Exceptions\InvalidStatusException;
 
-final class InvalidEnrollmentStatusException extends LogicException
+final class InvalidEnrollmentStatusException extends InvalidStatusException
 {
     public function __construct()
     {
