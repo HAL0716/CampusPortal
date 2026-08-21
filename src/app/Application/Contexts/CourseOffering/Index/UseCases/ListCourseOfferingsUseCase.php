@@ -5,7 +5,6 @@ namespace App\Application\Contexts\CourseOffering\Index\UseCases;
 use App\Application\Contexts\CourseOffering\Index\DTOs\CourseOfferingDTO;
 use App\Application\Contexts\CourseOffering\Index\Queries\ListCourseOfferingsQuery;
 use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
-use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\Repositories\SemesterRepository;
 use App\Domain\Student\Repositories\StudentRepository;
 use App\Domain\Teacher\Repositories\TeacherRepository;
@@ -24,10 +23,7 @@ final class ListCourseOfferingsUseCase
      */
     public function execute(ListCourseOfferingsQuery $query): array
     {
-        $semester = $this->semesters->findByDate($query->date);
-        if ($semester === null) {
-            throw new SemesterNotFoundException;
-        }
+        $semester = $this->semesters->getByDate($query->date);
 
         $student = $this->students->findByUserId($query->userId);
         if ($student !== null) {

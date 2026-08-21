@@ -3,6 +3,7 @@
 namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\Semester\Entities\Semester;
+use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Infrastructure\Repositories\EloquentSemesterRepository;
 use App\Models\Semester as SemesterModel;
 use Carbon\CarbonImmutable;
@@ -31,18 +32,17 @@ final class EloquentSemesterRepositoryTest extends TestCase
 
         $date = new CarbonImmutable('2024-03-15');
 
-        $found = $this->repository->findByDate($date);
+        $found = $this->repository->getByDate($date);
 
         self::assertInstanceOf(Semester::class, $found);
         self::assertSame($semester->id, $found->id()->value());
     }
 
-    public function test_returns_null_when_no_semester_found_by_date(): void
+    public function test_throws_exception_when_no_semester_found_by_date(): void
     {
         $date = new CarbonImmutable('2024-03-15');
 
-        $found = $this->repository->findByDate($date);
-
-        self::assertNull($found);
+        $this->expectException(SemesterNotFoundException::class);
+        $this->repository->getByDate($date);
     }
 }

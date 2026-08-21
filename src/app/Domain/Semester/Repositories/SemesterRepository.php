@@ -7,5 +7,5 @@ use Carbon\CarbonImmutable;
 
 interface SemesterRepository
 {
-    public function findByDate(CarbonImmutable $date): ?Semester;
+    public function getByDate(CarbonImmutable $date): Semester;
 }
