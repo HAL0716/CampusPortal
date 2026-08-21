@@ -1,16 +1,14 @@
 <?php
 
-use App\Application\Exceptions\AuthorizationException;
-use App\Domain\Authentication\Exceptions\AuthenticationException;
-use App\Domain\Exceptions\DomainException;
-use App\Http\Flash\Flash;
+use App\Application\Exceptions\Renderers\AuthenticationExceptionRenderer;
+use App\Application\Exceptions\Renderers\AuthorizationExceptionRenderer;
+use App\Application\Exceptions\Renderers\DomainExceptionRenderer;
+use App\Application\Exceptions\Renderers\InfrastructureExceptionRenderer;
 use App\Http\Middleware\HandleInertiaRequests;
-use App\Infrastructure\Exceptions\InfrastructureException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -27,32 +25,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
-        $exceptions->render(function (AuthenticationException $e) {
-            report($e);
 
-            return back()
-                ->withErrors(['email' => $e->userMessage()])
-                ->onlyInput('email');
-        });
-        $exceptions->render(function (AuthorizationException $e) {
-            report($e);
-
-            return back()->with(Flash::error($e->userMessage()));
-        });
-        $exceptions->render(function (DomainException $e, Request $request) {
-            report($e);
-
-            if ($request->isMethod('GET')) {
-                return Inertia::render('Error/Index', ['message' => $e->userMessage()])
-                    ->toResponse($request)
-                    ->setStatusCode($e->statusCode());
-            }
-
-            return back()->with(Flash::error($e->userMessage()));
-        });
-        $exceptions->render(function (InfrastructureException $e) {
-            report($e);
-
-            return back()->with(Flash::error($e->userMessage()));
-        });
+        foreach ([
+            AuthenticationExceptionRenderer::class,
+            AuthorizationExceptionRenderer::class,
+            DomainExceptionRenderer::class,
+            InfrastructureExceptionRenderer::class,
+        ] as $renderer) {
+            $exceptions->render(app($renderer));
+        }
     })->create();
