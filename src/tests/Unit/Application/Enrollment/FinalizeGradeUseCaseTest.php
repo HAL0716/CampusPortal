@@ -8,7 +8,6 @@ use App\Application\Exceptions\ForbiddenException;
 use App\Application\Services\Authorization\CourseOfferingAuthorizationService;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
-use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
 use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\FinalGrade\Entities\FinalGrade;
 use App\Domain\FinalGrade\Enums\FinalGradeType;
@@ -16,17 +15,13 @@ use App\Domain\FinalGrade\Repositories\FinalGradeRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
-use Tests\Support\Enrollment\EnrollmentTestHelper;
 use Tests\Support\Id\IdTestHelper;
-use Tests\Support\Matchers\UseMatcher;
 use Tests\TestCase;
 
-class FinalizeGradeUseCaseTest extends TestCase
+final class FinalizeGradeUseCaseTest extends TestCase
 {
-    use EnrollmentTestHelper;
     use IdTestHelper;
     use MockeryPHPUnitIntegration;
-    use UseMatcher;
 
     private EnrollmentRepository&MockInterface $enrollments;
 
@@ -45,78 +40,165 @@ class FinalizeGradeUseCaseTest extends TestCase
         $this->auth = Mockery::mock(CourseOfferingAuthorizationService::class);
 
         $this->useCase = new FinalizeGradeUseCase(
-            $this->enrollments,
-            $this->finalGrades,
-            $this->auth,
+            enrollments: $this->enrollments,
+            finalGrades: $this->finalGrades,
+            auth: $this->auth,
         );
     }
 
-    public function test_completes_and_saves_enrollment_and_final_grade_when_authorized(): void
+    public function test_completes_enrollment_when_grade_is_not_f(): void
     {
-        $enrollment = $this->enrollment();
-        $command = $this->command();
+        $userId = $this->userId();
+        $enrollmentId = $this->enrollmentId();
+        $studentId = $this->studentId();
+        $courseOfferingId = $this->courseOfferingId();
+        $grade = FinalGradeType::A;
 
-        $this->expectEnrollmentById($this->enrollments, $enrollment);
+        $enrollment = Enrollment::reconstruct(
+            id: $enrollmentId,
+            studentId: $studentId,
+            courseOfferingId: $courseOfferingId,
+            status: EnrollmentStatus::ENROLLED,
+        );
 
-        $this->auth->shouldReceive('canManage')
+        $this->enrollments
+            ->shouldReceive('getById')
             ->once()
-            ->withArgs($this->idsMatcher($command->userId, $enrollment->courseOfferingId()))
+            ->with($enrollmentId)
+            ->andReturn($enrollment);
+
+        $this->auth
+            ->shouldReceive('canManage')
+            ->once()
+            ->with($userId, $courseOfferingId)
             ->andReturnTrue();
 
-        $this->enrollments->shouldReceive('save')
+        $this->finalGrades
+            ->shouldReceive('save')
             ->once()
-            ->withArgs(fn (Enrollment $enrollment) => $enrollment->status() === EnrollmentStatus::COMPLETED)
-            ->andReturnUsing(fn (Enrollment $enrollment) => $enrollment);
+            ->withArgs(function (FinalGrade $finalGrade) use ($enrollmentId, $grade): bool {
+                return $finalGrade->enrollmentId() === $enrollmentId
+                    && $finalGrade->grade() === $grade;
+            })
+            ->andReturnUsing(
+                fn (FinalGrade $finalGrade): FinalGrade => $finalGrade,
+            );
 
-        $this->finalGrades->shouldReceive('save')
+        $this->enrollments
+            ->shouldReceive('save')
             ->once()
-            ->withArgs(
-                fn (FinalGrade $finalGrade) => $finalGrade->enrollmentId() === $command->enrollmentId
-                    && $finalGrade->grade() === $command->grade
-            )
-            ->andReturnUsing(fn (FinalGrade $finalGrade) => $finalGrade);
+            ->withArgs(function (Enrollment $saved) use ($enrollmentId): bool {
+                return $saved->id() === $enrollmentId
+                    && $saved->status() === EnrollmentStatus::COMPLETED;
+            })
+            ->andReturnUsing(
+                fn (Enrollment $enrollment): Enrollment => $enrollment,
+            );
 
-        $this->useCase->execute($command);
+        $this->useCase->execute(
+            new FinalizeGradeCommand(
+                userId: $userId,
+                enrollmentId: $enrollmentId,
+                grade: $grade,
+            ),
+        );
     }
 
-    public function test_throws_exception_when_enrollment_does_not_exist(): void
+    public function test_fails_enrollment_when_grade_is_f(): void
     {
-        $command = $this->command();
+        $userId = $this->userId();
+        $enrollmentId = $this->enrollmentId();
+        $studentId = $this->studentId();
+        $courseOfferingId = $this->courseOfferingId();
+        $grade = FinalGradeType::F;
 
-        $this->expectEnrollmentById($this->enrollments, null);
-        $this->auth->shouldNotReceive('canManage');
-        $this->enrollments->shouldNotReceive('save');
-        $this->finalGrades->shouldNotReceive('save');
+        $enrollment = Enrollment::reconstruct(
+            id: $enrollmentId,
+            studentId: $studentId,
+            courseOfferingId: $courseOfferingId,
+            status: EnrollmentStatus::ENROLLED,
+        );
 
-        $this->expectException(EnrollmentNotFoundException::class);
-        $this->useCase->execute($command);
+        $this->enrollments
+            ->shouldReceive('getById')
+            ->once()
+            ->with($enrollmentId)
+            ->andReturn($enrollment);
+
+        $this->auth
+            ->shouldReceive('canManage')
+            ->once()
+            ->with($userId, $courseOfferingId)
+            ->andReturnTrue();
+
+        $this->finalGrades
+            ->shouldReceive('save')
+            ->once()
+            ->withArgs(function (FinalGrade $finalGrade) use ($enrollmentId, $grade): bool {
+                return $finalGrade->enrollmentId() === $enrollmentId
+                    && $finalGrade->grade() === $grade;
+            })
+            ->andReturnUsing(
+                fn (FinalGrade $finalGrade): FinalGrade => $finalGrade,
+            );
+
+        $this->enrollments
+            ->shouldReceive('save')
+            ->once()
+            ->with(Mockery::type(Enrollment::class))
+            ->andReturnUsing(
+                fn (Enrollment $enrollment): Enrollment => $enrollment,
+            );
+
+        $this->useCase->execute(
+            new FinalizeGradeCommand(
+                userId: $userId,
+                enrollmentId: $enrollmentId,
+                grade: $grade,
+            ),
+        );
     }
 
-    public function test_throws_exception_when_user_is_not_authorized(): void
+    public function test_throws_forbidden_exception_when_user_cannot_manage(): void
     {
-        $enrollment = $this->enrollment();
-        $command = $this->command();
+        $userId = $this->userId();
+        $enrollmentId = $this->enrollmentId();
+        $studentId = $this->studentId();
+        $courseOfferingId = $this->courseOfferingId();
 
-        $this->expectEnrollmentById($this->enrollments, $enrollment);
+        $enrollment = Enrollment::reconstruct(
+            id: $enrollmentId,
+            studentId: $studentId,
+            courseOfferingId: $courseOfferingId,
+            status: EnrollmentStatus::ENROLLED,
+        );
 
-        $this->auth->shouldReceive('canManage')
+        $this->enrollments
+            ->shouldReceive('getById')
             ->once()
-            ->withArgs($this->idsMatcher($this->userId(), $enrollment->courseOfferingId()))
+            ->with($enrollmentId)
+            ->andReturn($enrollment);
+
+        $this->auth
+            ->shouldReceive('canManage')
+            ->once()
+            ->with($userId, $courseOfferingId)
             ->andReturnFalse();
 
-        $this->enrollments->shouldNotReceive('save');
-        $this->finalGrades->shouldNotReceive('save');
+        $this->finalGrades
+            ->shouldNotReceive('save');
+
+        $this->enrollments
+            ->shouldNotReceive('save');
 
         $this->expectException(ForbiddenException::class);
-        $this->useCase->execute($command);
-    }
 
-    private function command(): FinalizeGradeCommand
-    {
-        return new FinalizeGradeCommand(
-            userId: $this->userId(),
-            enrollmentId: $this->enrollment()->requireId(),
-            grade: FinalGradeType::A,
+        $this->useCase->execute(
+            new FinalizeGradeCommand(
+                userId: $userId,
+                enrollmentId: $enrollmentId,
+                grade: FinalGradeType::A,
+            ),
         );
     }
 }
