@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Authentication\Exceptions\AuthenticationFailedException;
+use App\Domain\Authentication\Exceptions\AuthenticationException;
 use App\Domain\Exceptions\DomainException;
 use App\Http\Flash\Flash;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -25,9 +25,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
-        $exceptions->render(function (AuthenticationFailedException $e) {
+        $exceptions->render(function (AuthenticationException $e) {
+            report($e);
+
             return back()
-                ->withErrors(['email' => $e->getMessage()])
+                ->withErrors(['email' => $e->userMessage()])
                 ->onlyInput('email');
         });
         $exceptions->render(function (DomainException $e, Request $request) {

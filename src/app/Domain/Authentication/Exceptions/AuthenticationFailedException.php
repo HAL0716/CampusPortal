@@ -2,12 +2,12 @@
 
 namespace App\Domain\Authentication\Exceptions;
 
-use RuntimeException;
-
-final class AuthenticationFailedException extends RuntimeException
+final class AuthenticationFailedException extends AuthenticationException
 {
+    protected const DEFAULT_USER_MESSAGE = 'メールアドレスまたはパスワードが違います。';
+
     public function __construct()
     {
-        parent::__construct('メールアドレスまたはパスワードが違います。');
+        parent::__construct('Authentication failed.');
     }
 }
