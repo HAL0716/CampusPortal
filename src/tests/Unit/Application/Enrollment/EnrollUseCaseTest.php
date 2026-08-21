@@ -56,7 +56,7 @@ final class EnrollUseCaseTest extends TestCase
             ->andReturn($student);
 
         $this->enrollments
-            ->shouldReceive('find')
+            ->shouldReceive('findByStudentAndCourseOffering')
             ->once()
             ->with($studentId, $courseOfferingId)
             ->andReturnNull();
@@ -102,7 +102,7 @@ final class EnrollUseCaseTest extends TestCase
             ->andReturn($student);
 
         $this->enrollments
-            ->shouldReceive('find')
+            ->shouldReceive('findByStudentAndCourseOffering')
             ->once()
             ->with($studentId, $courseOfferingId)
             ->andReturn($enrollment);

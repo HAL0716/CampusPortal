@@ -19,7 +19,7 @@ final class EnrollUseCase
         $student = $this->students->getByUserId($command->userId);
 
         // 再履修 or 新規作成
-        $enrollment = $this->enrollments->find(
+        $enrollment = $this->enrollments->findByStudentAndCourseOffering(
             $student->requireId(),
             $command->courseOfferingId,
         ) ?? Enrollment::create(

@@ -6,6 +6,7 @@ use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentAlreadyExistsException;
+use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\Student\ValueObjects\StudentId;
 use App\Infrastructure\Repositories\EloquentEnrollmentRepository;
@@ -108,7 +109,7 @@ final class EloquentEnrollmentRepositoryTest extends TestCase
     {
         $model = EnrollmentModel::factory()->create();
 
-        $result = $this->repository->find(
+        $result = $this->repository->findByStudentAndCourseOffering(
             new StudentId($model->student_id),
             new CourseOfferingId($model->course_offering_id),
         );
@@ -119,11 +120,34 @@ final class EloquentEnrollmentRepositoryTest extends TestCase
 
     public function test_returns_null_when_enrollment_not_found_by_student_and_course_offering(): void
     {
-        $result = $this->repository->find(
+        $result = $this->repository->findByStudentAndCourseOffering(
             new StudentId(999999),
             new CourseOfferingId(999999),
         );
 
         self::assertNull($result);
+    }
+
+    public function test_can_get_enrollment_by_student_and_course_offering(): void
+    {
+        $model = EnrollmentModel::factory()->create();
+
+        $result = $this->repository->getByStudentAndCourseOffering(
+            new StudentId($model->student_id),
+            new CourseOfferingId($model->course_offering_id),
+        );
+
+        self::assertInstanceOf(Enrollment::class, $result);
+        self::assertSame($model->id, $result->id()->value());
+    }
+
+    public function test_throws_exception_when_enrollment_not_found_by_student_and_course_offering(): void
+    {
+        self::expectException(EnrollmentNotFoundException::class);
+
+        $this->repository->getByStudentAndCourseOffering(
+            new StudentId(999999),
+            new CourseOfferingId(999999),
+        );
     }
 }

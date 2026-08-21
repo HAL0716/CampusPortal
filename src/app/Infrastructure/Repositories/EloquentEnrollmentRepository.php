@@ -56,7 +56,7 @@ final class EloquentEnrollmentRepository implements EnrollmentRepository
         return $model ? $this->toEntity($model) : null;
     }
 
-    public function find(StudentId $studentId, CourseOfferingId $courseOfferingId): ?Enrollment
+    public function findByStudentAndCourseOffering(StudentId $studentId, CourseOfferingId $courseOfferingId): ?Enrollment
     {
         $model = EnrollmentModel::query()
             ->where('student_id', $studentId->value())
@@ -64,6 +64,17 @@ final class EloquentEnrollmentRepository implements EnrollmentRepository
             ->first();
 
         return $model ? $this->toEntity($model) : null;
+    }
+
+    public function getByStudentAndCourseOffering(StudentId $studentId, CourseOfferingId $courseOfferingId): Enrollment
+    {
+        $enrollment = $this->findByStudentAndCourseOffering($studentId, $courseOfferingId);
+
+        if ($enrollment === null) {
+            throw new EnrollmentNotFoundException;
+        }
+
+        return $enrollment;
     }
 
     private function toEntity(EnrollmentModel $model): Enrollment
