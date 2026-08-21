@@ -1,5 +1,6 @@
 <?php
 
+use App\Domain\Authentication\Exceptions\AuthenticationFailedException;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -21,4 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
+        $exceptions->render(function (AuthenticationFailedException $e) {
+            return back()
+                ->withErrors(['email' => $e->getMessage()])
+                ->onlyInput('email');
+        });
     })->create();
