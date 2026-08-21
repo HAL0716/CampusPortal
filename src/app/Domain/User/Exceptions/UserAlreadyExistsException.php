@@ -2,18 +2,14 @@
 
 namespace App\Domain\User\Exceptions;
 
-use App\Exceptions\UserMessageException;
-use RuntimeException;
+use App\Domain\Exceptions\AlreadyExistsException;
 
-final class UserAlreadyExistsException extends RuntimeException implements UserMessageException
+final class UserAlreadyExistsException extends AlreadyExistsException
 {
+    protected const DEFAULT_USER_MESSAGE = 'ユーザーは既に存在します。';
+
     public function __construct()
     {
         parent::__construct('User already exists.');
-    }
-
-    public function userMessage(): string
-    {
-        return 'ユーザーは既に存在します。';
     }
 }
