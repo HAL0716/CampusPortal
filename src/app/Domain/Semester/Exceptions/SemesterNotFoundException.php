@@ -2,18 +2,14 @@
 
 namespace App\Domain\Semester\Exceptions;
 
-use App\Exceptions\UserMessageException;
-use RuntimeException;
+use App\Domain\Exceptions\NotFoundException;
 
-final class SemesterNotFoundException extends RuntimeException implements UserMessageException
+final class SemesterNotFoundException extends NotFoundException
 {
+    protected const DEFAULT_USER_MESSAGE = '学期情報が見つかりません。';
+
     public function __construct()
     {
         parent::__construct('Semester not found.');
-    }
-
-    public function userMessage(): string
-    {
-        return '学期情報がありません。';
     }
 }
