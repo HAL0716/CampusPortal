@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Application\Contexts\Authentication\UseCases\LoginUseCase;
 use App\Application\Contexts\Authentication\UseCases\LogoutUseCase;
-use App\Domain\User\Exceptions\AuthenticationFailedException;
+use App\Domain\Authentication\Exceptions\AuthenticationFailedException;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
