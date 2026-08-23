@@ -51,7 +51,7 @@ final class MaterialControllerTest extends TestCase
 
     public function test_can_upload_material(): void
     {
-        Storage::fake('public');
+        Storage::fake(config('filesystems.default'));
 
         [$user, $offering] = $this->teacherOffering();
 
@@ -71,12 +71,12 @@ final class MaterialControllerTest extends TestCase
 
         $material = $offering->materials()->first();
 
-        $this->assertTrue(Storage::disk('public')->exists($material->file_path));
+        $this->assertTrue(Storage::disk(config('filesystems.default'))->exists($material->file_path));
     }
 
     public function test_returns_error_when_unauthorized(): void
     {
-        Storage::fake('public');
+        Storage::fake(config('filesystems.default'));
 
         $user = $this->userWithPermission(
             PermissionType::CourseOfferingMaterialCreate
