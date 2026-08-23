@@ -15,6 +15,7 @@ final class RolePermissions
                 PermissionType::DashboardView,
                 PermissionType::CourseOfferingView,
                 PermissionType::CourseOfferingEnrollment,
+                PermissionType::MaterialView,
             ],
 
             RoleType::TEACHER => [
@@ -22,12 +23,15 @@ final class RolePermissions
                 PermissionType::CourseOfferingView,
                 PermissionType::CourseOfferingManagement,
                 PermissionType::CourseOfferingMaterialCreate,
+                PermissionType::MaterialView,
             ],
 
             RoleType::ADMIN => [
                 PermissionType::DashboardView,
                 PermissionType::CourseOfferingView,
                 PermissionType::CourseOfferingAdministration,
+                PermissionType::MaterialView,
+
             ],
 
             default => [],

@@ -11,4 +11,6 @@ enum PermissionType: string
     case CourseOfferingManagement = 'course_offering.management';
     case CourseOfferingAdministration = 'course_offering.administration';
     case CourseOfferingMaterialCreate = 'course_offering.material.create';
+
+    case MaterialView = 'material.view';
 }
