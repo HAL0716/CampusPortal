@@ -4,6 +4,7 @@ namespace Tests\Support\Id;
 
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
+use App\Domain\Material\ValueObjects\MaterialId;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Student\ValueObjects\StudentId;
 use App\Domain\Teacher\ValueObjects\TeacherId;
@@ -39,5 +40,10 @@ trait IdTestHelper
     private function enrollmentId(?int $id = null): EnrollmentId
     {
         return new EnrollmentId($id ?? 1);
+    }
+
+    private function materialId(?int $id = null): MaterialId
+    {
+        return new MaterialId($id ?? 1);
     }
 }
