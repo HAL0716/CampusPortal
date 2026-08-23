@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
 use App\Application\Contexts\Enrollment\Services\EnrollmentQueryService;
+use App\Application\Contexts\Material\Services\MaterialQueryService;
 use App\Infrastructure\QueryServices\EloquentCourseOfferingQueryService;
 use App\Infrastructure\QueryServices\EloquentEnrollmentQueryService;
+use App\Infrastructure\QueryServices\EloquentMaterialQueryService;
 use Illuminate\Support\ServiceProvider;
 
 class QueryServiceProvider extends ServiceProvider
@@ -13,6 +15,7 @@ class QueryServiceProvider extends ServiceProvider
     private const QUERY_SERVICES = [
         CourseOfferingQueryService::class => EloquentCourseOfferingQueryService::class,
         EnrollmentQueryService::class => EloquentEnrollmentQueryService::class,
+        MaterialQueryService::class => EloquentMaterialQueryService::class,
     ];
 
     /**
