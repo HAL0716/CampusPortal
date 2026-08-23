@@ -56,4 +56,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/course-offerings/{id}/final-grades', [FinalGradeController::class, 'index'])
         ->name('course-offerings.final-grades.index')
         ->can(PermissionType::CourseOfferingManagement->value);
+
+    Route::prefix('materials')
+        ->name('materials.')
+        ->group(function () {
+            Route::get('/{material}', [MaterialController::class, 'show'])
+                ->name('show')
+                ->can(PermissionType::MaterialView->value);
+        });
 });

@@ -106,7 +106,11 @@ export default function Show() {
           {offering.materials.length > 0 ? (
             <div className="mt-4 space-y-3">
               {offering.materials.map((material) => (
-                <Card key={material.id} href={`/materials/${material.id}`} title={material.title} />
+                <Card
+                  key={material.id}
+                  href={route('materials.show', { material: material.id })}
+                  title={material.title}
+                />
               ))}
             </div>
           ) : (
