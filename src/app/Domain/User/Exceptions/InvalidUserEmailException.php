@@ -2,10 +2,12 @@
 
 namespace App\Domain\User\Exceptions;
 
-use InvalidArgumentException;
+use DomainException;
 
-class InvalidUserEmailException extends InvalidArgumentException
+class InvalidUserEmailException extends DomainException
 {
+    protected const DEFAULT_USER_MESSAGE = 'メールアドレスが不正な形式です。';
+
     public function __construct()
     {
         parent::__construct('Invalid email address.');

@@ -2,9 +2,9 @@
 
 namespace App\Domain\User\Exceptions;
 
-use LogicException;
+use App\Domain\Exceptions\DomainException;
 
-final class UserIdNotAssignedException extends LogicException
+final class UserIdNotAssignedException extends DomainException
 {
     public function __construct()
     {

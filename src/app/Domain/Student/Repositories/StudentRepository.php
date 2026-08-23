@@ -8,4 +8,6 @@ use App\Domain\User\ValueObjects\UserId;
 interface StudentRepository
 {
     public function findByUserId(UserId $userId): ?Student;
+
+    public function getByUserId(UserId $userId): Student;
 }

@@ -64,7 +64,7 @@ final class EloquentCourseOfferingQueryServiceTest extends TestCase
             'publish_date' => null,
         ]);
 
-        $result = $this->queryService->findDetail(
+        $result = $this->queryService->getDetail(
             new CourseOfferingId($offering->id),
         );
 

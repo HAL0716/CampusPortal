@@ -2,9 +2,9 @@
 
 namespace App\Domain\FinalGrade\Exceptions;
 
-use LogicException;
+use App\Domain\Exceptions\DomainException;
 
-final class FinalGradeIdNotAssignedException extends LogicException
+final class FinalGradeIdNotAssignedException extends DomainException
 {
     public function __construct()
     {

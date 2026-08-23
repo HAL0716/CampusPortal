@@ -3,8 +3,8 @@
 namespace App\Infrastructure\Authentication;
 
 use App\Application\Contexts\Authentication\AuthenticationService;
+use App\Domain\Authentication\Exceptions\AuthenticationFailedException;
 use App\Domain\User\Entities\User;
-use App\Domain\User\Exceptions\AuthenticationFailedException;
 use App\Domain\User\Repositories\UserRepository;
 use App\Domain\User\ValueObjects\UserId;
 use Illuminate\Support\Facades\Auth;

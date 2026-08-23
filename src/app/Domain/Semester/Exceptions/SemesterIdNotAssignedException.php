@@ -2,9 +2,9 @@
 
 namespace App\Domain\Semester\Exceptions;
 
-use LogicException;
+use App\Domain\Exceptions\DomainException;
 
-final class SemesterIdNotAssignedException extends LogicException
+final class SemesterIdNotAssignedException extends DomainException
 {
     public function __construct()
     {

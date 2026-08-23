@@ -2,9 +2,9 @@
 
 namespace App\Domain\Material\Exceptions;
 
-use LogicException;
+use App\Domain\Exceptions\DomainException;
 
-final class MaterialIdNotAssignedException extends LogicException
+final class MaterialIdNotAssignedException extends DomainException
 {
     public function __construct()
     {

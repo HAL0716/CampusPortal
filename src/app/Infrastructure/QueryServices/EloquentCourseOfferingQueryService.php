@@ -8,6 +8,7 @@ use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
 use App\Application\Contexts\CourseOffering\Show\DTOs\CourseOfferingDTO as DetailDTO;
 use App\Application\Contexts\CourseOffering\Show\DTOs\MaterialDTO;
 use App\Application\Services\Clock\Clock;
+use App\Domain\CourseOffering\Exceptions\CourseOfferingNotFoundException;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Semester\ValueObjects\SemesterId;
@@ -85,7 +86,7 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
         return $statuses;
     }
 
-    public function findDetail(CourseOfferingId $id, StudentId|TeacherId|null $memberId = null): DetailDTO
+    public function getDetail(CourseOfferingId $id, StudentId|TeacherId|null $memberId = null): DetailDTO
     {
         $offering = CourseOffering::query()
             ->with([
@@ -97,7 +98,11 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
                     )
                     ->orderBy('publish_date'),
             ])
-            ->findOrFail($id->value());
+            ->find($id->value());
+
+        if ($offering === null) {
+            throw new CourseOfferingNotFoundException;
+        }
 
         $status = match (true) {
             $memberId instanceof StudentId => $this->findStudentStatus($id, $memberId),

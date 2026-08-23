@@ -2,9 +2,9 @@
 
 namespace App\Domain\Enrollment\Exceptions;
 
-use LogicException;
+use App\Domain\Exceptions\DomainException;
 
-final class EnrollmentIdNotAssignedException extends LogicException
+final class EnrollmentIdNotAssignedException extends DomainException
 {
     public function __construct()
     {

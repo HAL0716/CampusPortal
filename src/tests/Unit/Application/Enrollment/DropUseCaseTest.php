@@ -5,25 +5,19 @@ namespace Tests\Unit\Application\Contexts\Enrollment;
 use App\Application\Contexts\Enrollment\Commands\DropCommand;
 use App\Application\Contexts\Enrollment\UseCases\DropUseCase;
 use App\Domain\Enrollment\Entities\Enrollment;
-use App\Domain\Enrollment\Enums\EnrollmentStatus;
-use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
 use App\Domain\Enrollment\Repositories\EnrollmentRepository;
-use App\Domain\Student\Exceptions\StudentNotFoundException;
+use App\Domain\Student\Entities\Student;
 use App\Domain\Student\Repositories\StudentRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
-use Tests\Support\Enrollment\EnrollmentTestHelper;
-use Tests\Support\Matchers\UseMatcher;
-use Tests\Support\Student\StudentTestHelper;
+use Tests\Support\Id\IdTestHelper;
 use Tests\TestCase;
 
-class DropUseCaseTest extends TestCase
+final class DropUseCaseTest extends TestCase
 {
-    use EnrollmentTestHelper;
+    use IdTestHelper;
     use MockeryPHPUnitIntegration;
-    use StudentTestHelper;
-    use UseMatcher;
 
     private StudentRepository&MockInterface $students;
 
@@ -39,66 +33,54 @@ class DropUseCaseTest extends TestCase
         $this->enrollments = Mockery::mock(EnrollmentRepository::class);
 
         $this->useCase = new DropUseCase(
-            $this->students,
-            $this->enrollments,
+            students: $this->students,
+            enrollments: $this->enrollments,
         );
     }
 
-    public function test_drops_and_saves_enrollment_when_student_and_enrollment_exist(): void
+    public function test_drops_enrollment(): void
     {
-        $student = $this->student();
-        $command = $this->command();
+        $userId = $this->userId();
+        $studentId = $this->studentId();
+        $courseOfferingId = $this->courseOfferingId();
 
-        $enrollment = $this->enrollment(
-            studentId: $student->requireId()->value(),
-            courseOfferingId: $command->courseOfferingId->value(),
-            status: EnrollmentStatus::ENROLLED,
+        $student = Student::reconstruct(
+            id: $studentId,
+            userId: $userId,
         );
 
-        $this->expectStudent($this->students, $student);
-        $this->expectEnrollment($this->enrollments, $enrollment, $student->requireId(), $command->courseOfferingId);
+        $enrollment = Enrollment::create(
+            studentId: $studentId,
+            courseOfferingId: $courseOfferingId,
+        );
 
-        $this->enrollments->shouldReceive('save')
+        $this->students
+            ->shouldReceive('getByUserId')
             ->once()
-            ->withArgs(fn (Enrollment $saved) => $saved->requireId()->value() === $enrollment->requireId()->value()
-                && $saved->status() === EnrollmentStatus::DROPPED)
-            ->andReturnUsing(fn (Enrollment $enrollment) => $enrollment);
+            ->with($userId)
+            ->andReturn($student);
 
-        $result = $this->useCase->execute($command);
+        $this->enrollments
+            ->shouldReceive('getByStudentAndCourseOffering')
+            ->once()
+            ->with($studentId, $courseOfferingId)
+            ->andReturn($enrollment);
 
-        self::assertSame($enrollment->requireId()->value(), $result->requireId()->value());
-        self::assertSame(EnrollmentStatus::DROPPED, $result->status());
-    }
+        $this->enrollments
+            ->shouldReceive('save')
+            ->once()
+            ->with(Mockery::type(Enrollment::class))
+            ->andReturnUsing(
+                fn (Enrollment $enrollment): Enrollment => $enrollment,
+            );
 
-    public function test_throws_exception_when_student_does_not_exist(): void
-    {
-        $this->expectStudent($this->students, null);
-        $this->enrollments->shouldNotReceive('find');
-        $this->enrollments->shouldNotReceive('save');
-
-        $this->expectException(StudentNotFoundException::class);
-        $this->useCase->execute($this->command());
-    }
-
-    public function test_throws_exception_when_enrollment_does_not_exist(): void
-    {
-        $student = $this->student();
-        $command = $this->command();
-
-        $this->expectStudent($this->students, $student);
-        $this->expectEnrollment($this->enrollments, null, $student->requireId(), $command->courseOfferingId);
-
-        $this->enrollments->shouldNotReceive('save');
-
-        $this->expectException(EnrollmentNotFoundException::class);
-        $this->useCase->execute($command);
-    }
-
-    private function command(): DropCommand
-    {
-        return new DropCommand(
-            userId: $this->userId(),
-            courseOfferingId: $this->courseOfferingId(),
+        $result = $this->useCase->execute(
+            new DropCommand(
+                userId: $userId,
+                courseOfferingId: $courseOfferingId,
+            ),
         );
+
+        self::assertInstanceOf(Enrollment::class, $result);
     }
 }

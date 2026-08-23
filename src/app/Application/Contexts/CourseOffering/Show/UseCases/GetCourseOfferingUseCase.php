@@ -20,14 +20,14 @@ final readonly class GetCourseOfferingUseCase
     {
         $student = $this->students->findByUserId($query->userId);
         if ($student !== null) {
-            return $this->queryService->findDetail($query->courseOfferingId, $student->requireId());
+            return $this->queryService->getDetail($query->courseOfferingId, $student->requireId());
         }
 
         $teacher = $this->teachers->findByUserId($query->userId);
         if ($teacher !== null) {
-            return $this->queryService->findDetail($query->courseOfferingId, $teacher->requireId());
+            return $this->queryService->getDetail($query->courseOfferingId, $teacher->requireId());
         }
 
-        return $this->queryService->findDetail($query->courseOfferingId);
+        return $this->queryService->getDetail($query->courseOfferingId);
     }
 }

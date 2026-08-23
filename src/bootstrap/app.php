@@ -1,5 +1,9 @@
 <?php
 
+use App\Application\Exceptions\Renderers\AuthenticationExceptionRenderer;
+use App\Application\Exceptions\Renderers\AuthorizationExceptionRenderer;
+use App\Application\Exceptions\Renderers\DomainExceptionRenderer;
+use App\Application\Exceptions\Renderers\InfrastructureExceptionRenderer;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -21,4 +25,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
+
+        foreach ([
+            AuthenticationExceptionRenderer::class,
+            AuthorizationExceptionRenderer::class,
+            DomainExceptionRenderer::class,
+            InfrastructureExceptionRenderer::class,
+        ] as $renderer) {
+            $exceptions->render(app($renderer));
+        }
     })->create();

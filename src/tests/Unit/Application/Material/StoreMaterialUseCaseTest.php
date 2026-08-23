@@ -9,10 +9,10 @@ use App\Application\Services\Authorization\CourseOfferingAuthorizationService;
 use App\Application\Services\Storage\FileStorage;
 use App\Application\Services\Storage\UploadFile;
 use App\Domain\Material\Repositories\MaterialRepository;
+use App\Infrastructure\Storage\Exceptions\FileStorageException;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
-use RuntimeException;
 use Tests\Support\Id\IdTestHelper;
 use Tests\Support\Matchers\UseMatcher;
 use Tests\TestCase;
@@ -106,7 +106,7 @@ class StoreMaterialUseCaseTest extends TestCase
     {
         $command = $this->command();
         $filePath = 'materials/test.pdf';
-        $exception = new RuntimeException('save failed');
+        $exception = new FileStorageException;
 
         $this->auth->shouldReceive('canManage')
             ->once()
@@ -137,7 +137,7 @@ class StoreMaterialUseCaseTest extends TestCase
     public function test_does_not_delete_file_when_file_storage_fails(): void
     {
         $command = $this->command();
-        $exception = new RuntimeException('upload failed');
+        $exception = new FileStorageException;
 
         $this->auth->shouldReceive('canManage')
             ->once()
