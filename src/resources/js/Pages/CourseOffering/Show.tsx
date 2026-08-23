@@ -1,7 +1,6 @@
 import { Head, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
-import Button from '@/Components/Button';
 import Card from '@/Components/Card';
 import FlashMessage from '@/Components/FlashMessage';
 import { SharedProps } from '@/Types/SharedProps';
@@ -119,10 +118,10 @@ export default function Show() {
         </Card>
 
         {actions.map((action) => (
-          <Button
+          <Card
             key={action.title}
             href={action.href}
-            label={action.title}
+            title={action.title}
             variant={action.variant}
           />
         ))}
