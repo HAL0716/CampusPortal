@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Domain\Permission\Enums\PermissionType;
 use App\Models\CourseOffering;
+use App\Models\Material;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Teacher;
@@ -16,6 +17,37 @@ use Tests\TestCase;
 final class MaterialControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_can_view_material(): void
+    {
+        $user = User::factory()->withRoles([
+            Role::factory()->withPermissions([
+                PermissionType::MaterialView,
+            ])->create(),
+        ])->create();
+
+        $material = Material::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('materials.show', $material))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('Material/Show')
+                ->has('material')
+                ->where('material.id', $material->id),
+            );
+    }
+
+    public function test_cannot_view_material_without_permission(): void
+    {
+        $user = User::factory()->create();
+
+        $material = Material::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('materials.show', $material))
+            ->assertForbidden();
+    }
 
     public function test_can_upload_material(): void
     {
