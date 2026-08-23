@@ -78,6 +78,23 @@ final class EloquentMaterialRepositoryTest extends TestCase
         ));
     }
 
+    public function test_can_get_material_by_id(): void
+    {
+        $model = MaterialModel::factory()->create();
+
+        $material = $this->repository->getById(new MaterialId($model->id));
+
+        self::assertSame($model->id, $material->requireId()->value());
+        self::assertSame($model->title, $material->title());
+    }
+
+    public function test_throws_exception_when_getting_nonexistent_material(): void
+    {
+        self::expectException(MaterialNotFoundException::class);
+
+        $this->repository->getById(new MaterialId(999999));
+    }
+
     private function material(CourseOfferingId $courseOfferingId): Material
     {
         return Material::create(
