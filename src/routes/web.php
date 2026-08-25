@@ -43,10 +43,6 @@ Route::middleware('auth')->group(function () {
                     Route::prefix('materials')
                         ->name('materials.')
                         ->group(function () {
-                            Route::get('/create', [MaterialController::class, 'create'])
-                                ->name('create')
-                                ->can(PermissionType::MaterialCreate->value);
-
                             Route::post('/', [MaterialController::class, 'store'])
                                 ->name('store')
                                 ->can(PermissionType::MaterialCreate->value);

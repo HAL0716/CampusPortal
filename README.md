@@ -806,8 +806,6 @@ enrolled（履修中）
 
 | Method | Path                                      | Controller                 | Student | Teacher | Admin |
 | ------ | ----------------------------------------- | -------------------------- | :-----: | :-----: | :---: |
-| GET    | `/course-offerings/{id}/materials`        | MaterialController@index   |    ○    |    ○    |   ○   |
-| GET    | `/course-offerings/{id}/materials/create` | MaterialController@create  |    ×    |    ○    |   ×   |
 | POST   | `/course-offerings/{id}/materials`        | MaterialController@store   |    ×    |    ○    |   ×   |
 | GET    | `/materials/{id}`                         | MaterialController@show    |    ○    |    ○    |   ○   |
 | PUT    | `/materials/{id}`                         | MaterialController@update  |    ×    |    ○    |   ×   |

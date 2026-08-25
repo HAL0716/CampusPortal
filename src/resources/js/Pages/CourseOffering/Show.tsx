@@ -4,6 +4,7 @@ import { route } from 'ziggy-js';
 import Button from '@/Components/Button';
 import Card from '@/Components/Card';
 import FlashMessage from '@/Components/FlashMessage';
+import CreateForm from '@/Components/Material/CreateForm';
 import { SharedProps } from '@/Types/SharedProps';
 
 type Status =
@@ -78,12 +79,6 @@ export default function Show() {
     teaching: [
       {
         type: 'card',
-        title: '講義資料追加',
-        href: route('course-offerings.materials.create', offering.id),
-        variant: 'info',
-      },
-      {
-        type: 'card',
         title: '最終成績',
         href: route('course-offerings.final-grades.index', offering.id),
         variant: 'info',
@@ -124,6 +119,12 @@ export default function Show() {
           )}
         </Card>
 
+        {offering.status === 'teaching' && (
+          <Card title="講義資料の追加">
+            <CreateForm offeringId={offering.id} />
+          </Card>
+        )}
+
         {actions.map((action) =>
           action.type === 'button' ? (
             <Button
@@ -131,7 +132,7 @@ export default function Show() {
               href={action.href}
               label={action.title}
               variant={action.variant}
-            ></Button>
+            />
           ) : (
             <Card
               key={action.title}

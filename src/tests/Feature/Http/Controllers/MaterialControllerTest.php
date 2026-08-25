@@ -45,38 +45,6 @@ final class MaterialControllerTest extends TestCase
             ->assertForbidden();
     }
 
-    public function test_can_view_create_form(): void
-    {
-        $user = User::factory()->withRoles([
-            Role::factory()->withPermissions([PermissionType::MaterialCreate])->create(),
-        ])->create();
-
-        $offering = CourseOffering::factory()
-            ->forTeacher(Teacher::factory()->for($user)->create())
-            ->create();
-
-        $this->actingAs($user)
-            ->get(route('course-offerings.materials.create', $offering))
-            ->assertOk()
-            ->assertInertia(fn ($page) => $page
-                ->component('Material/Create')
-                ->where('offering.id', $offering->id),
-            );
-    }
-
-    public function test_cannot_view_create_form_without_permission(): void
-    {
-        $user = User::factory()->create();
-
-        $offering = CourseOffering::factory()
-            ->forTeacher(Teacher::factory()->for($user)->create())
-            ->create();
-
-        $this->actingAs($user)
-            ->get(route('course-offerings.materials.create', $offering))
-            ->assertForbidden();
-    }
-
     public function test_can_store_material(): void
     {
         Storage::fake(config('filesystems.default'));

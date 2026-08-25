@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Application\Contexts\Authentication\AuthenticationService;
-use App\Application\Contexts\Material\UseCases\CreateMaterialUseCase;
 use App\Application\Contexts\Material\UseCases\DownloadMaterialUseCase;
 use App\Application\Contexts\Material\UseCases\GetMaterialDetailUseCase;
 use App\Application\Contexts\Material\UseCases\StoreMaterialUseCase;
 use App\Http\Flash\Flash;
-use App\Http\Requests\Material\CreateRequest;
 use App\Http\Requests\Material\DownloadRequest;
 use App\Http\Requests\Material\ShowRequest;
 use App\Http\Requests\Material\StoreRequest;
@@ -29,19 +27,6 @@ class MaterialController extends Controller
 
         return Inertia::render('Material/Show', [
             'material' => $material,
-        ]);
-    }
-
-    public function create(CreateRequest $request, CreateMaterialUseCase $useCase): Response
-    {
-        $useCase->execute(
-            $request->toCommand($this->auth->requireUser()->requireId())
-        );
-
-        return Inertia::render('Material/Create', [
-            'offering' => [
-                'id' => (int) $request->route('courseOffering'),
-            ],
         ]);
     }
 
