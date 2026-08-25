@@ -16,7 +16,6 @@ use App\Domain\Student\ValueObjects\StudentId;
 use App\Domain\Teacher\ValueObjects\TeacherId;
 use App\Models\CourseOffering;
 use App\Models\Enrollment;
-use Illuminate\Database\Eloquent\Builder;
 
 final class EloquentCourseOfferingQueryService implements CourseOfferingQueryService
 {
@@ -141,11 +140,5 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
             ->exists();
 
         return $exists ? CourseOfferingStatus::TEACHING : CourseOfferingStatus::NOT_TEACHING;
-    }
-
-    private function baseQuery(SemesterId $semesterId): Builder
-    {
-        return CourseOffering::query()
-            ->where('course_offerings.semester_id', $semesterId->value());
     }
 }
