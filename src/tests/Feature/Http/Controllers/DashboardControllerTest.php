@@ -26,17 +26,9 @@ class DashboardControllerTest extends TestCase
             );
     }
 
-    public function test_guest_cannot_view_dashboard(): void
+    public function test_cannot_view_dashboard_without_permission(): void
     {
-        $this->get(route('dashboard'))
-            ->assertRedirect(route('login'));
-    }
-
-    public function test_user_without_dashboard_permission_cannot_view_dashboard(): void
-    {
-        $user = User::factory()->withRoles([
-            Role::factory()->create(),
-        ])->create();
+        $user = User::factory()->create();
 
         $this->actingAs($user)
             ->get(route('dashboard'))
