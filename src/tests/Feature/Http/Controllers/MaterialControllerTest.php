@@ -108,6 +108,43 @@ final class MaterialControllerTest extends TestCase
         $response->assertSessionHasErrors(['title']);
     }
 
+    public function test_can_download_material(): void
+    {
+        $user = User::factory()->withRoles([
+            Role::factory()->withPermissions([
+                PermissionType::MaterialView,
+            ])->create(),
+        ])->create();
+
+        $material = Material::factory()->create([
+            'file_path' => 'materials/test.pdf',
+        ]);
+
+        Storage::fake(config('filesystems.default'));
+        Storage::put($material->file_path, 'test');
+
+        $this->actingAs($user)
+            ->get(route('materials.download', $material))
+            ->assertOk()
+            ->assertDownload();
+    }
+
+    public function test_cannot_download_material_without_permission(): void
+    {
+        $user = User::factory()->create();
+
+        $material = Material::factory()->create([
+            'file_path' => 'materials/test.pdf',
+        ]);
+
+        Storage::fake(config('filesystems.default'));
+        Storage::put($material->file_path, 'test');
+
+        $this->actingAs($user)
+            ->get(route('materials.download', $material))
+            ->assertForbidden();
+    }
+
     private function userWithPermission(PermissionType $permissionType): User
     {
         $user = User::factory()->create();
