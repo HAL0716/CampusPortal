@@ -2,132 +2,171 @@
 
 namespace Tests\Unit\Domain\Enrollment;
 
-use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
-use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentIdNotAssignedException;
 use App\Domain\Enrollment\Exceptions\InvalidEnrollmentStatusException;
-use App\Domain\Enrollment\ValueObjects\EnrollmentId;
-use App\Domain\Student\ValueObjects\StudentId;
 use PHPUnit\Framework\TestCase;
+use Tests\Support\TestHelpers\EnrollmentTestHelper;
 
 final class EnrollmentTest extends TestCase
 {
-    public function test_can_create_enrollment(): void
-    {
-        $enrollment = Enrollment::create(new StudentId(1), new CourseOfferingId(10));
+    use EnrollmentTestHelper;
 
-        self::assertNull($enrollment->id());
-        self::assertSame(1, $enrollment->studentId()->value());
-        self::assertSame(10, $enrollment->courseOfferingId()->value());
-        $this->assertStatus(EnrollmentStatus::ENROLLED, $enrollment);
+    public function test_create_returns_enrolled_enrollment_without_id(): void
+    {
+        $enrollment = $this->createEnrollment();
+
+        $this->assertNull($enrollment->id());
+        $this->assertSame($this->studentId()->value(), $enrollment->studentId()->value());
+        $this->assertSame($this->courseOfferingId()->value(), $enrollment->courseOfferingId()->value());
+        $this->assertSame(EnrollmentStatus::ENROLLED, $enrollment->status());
     }
 
-    public function test_can_reconstruct_enrollment(): void
+    public function test_reconstruct_restores_enrollment_with_id_and_status(): void
     {
-        $enrollment = $this->enrollment(status: EnrollmentStatus::COMPLETED);
+        $enrollment = $this->reconstructEnrollment(status: EnrollmentStatus::DROPPED);
 
-        self::assertSame(1, $enrollment->id()->value());
-        $this->assertStatus(EnrollmentStatus::COMPLETED, $enrollment);
+        $this->assertSame($this->enrollmentId()->value(), $enrollment->id()->value());
+        $this->assertSame($this->studentId()->value(), $enrollment->studentId()->value());
+        $this->assertSame($this->courseOfferingId()->value(), $enrollment->courseOfferingId()->value());
+        $this->assertSame(EnrollmentStatus::DROPPED, $enrollment->status());
     }
 
-    public function test_can_enroll_when_status_is_enrolled(): void
+    public function test_require_id_returns_assigned_id(): void
     {
-        $this->assertStatus(
-            EnrollmentStatus::ENROLLED,
-            $this->enrollment()->enroll()
-        );
+        $enrollment = $this->reconstructEnrollment();
+
+        $this->assertSame($this->enrollmentId()->value(), $enrollment->requireId()->value());
     }
 
-    public function test_can_enroll_when_status_is_dropped(): void
-    {
-        $this->assertStatus(
-            EnrollmentStatus::ENROLLED,
-            $this->enrollment(status: EnrollmentStatus::DROPPED)->enroll()
-        );
-    }
-
-    public function test_can_not_enroll_when_status_is_completed(): void
-    {
-        $this->expectException(InvalidEnrollmentStatusException::class);
-
-        $this->enrollment(status: EnrollmentStatus::COMPLETED)->enroll();
-    }
-
-    public function test_can_drop_when_status_is_enrolled(): void
-    {
-        $this->assertStatus(
-            EnrollmentStatus::DROPPED,
-            $this->enrollment(status: EnrollmentStatus::ENROLLED)->drop()
-        );
-    }
-
-    public function test_can_drop_when_status_is_dropped(): void
-    {
-        $this->assertStatus(
-            EnrollmentStatus::DROPPED,
-            $this->enrollment(status: EnrollmentStatus::DROPPED)->drop()
-        );
-    }
-
-    public function test_can_not_drop_when_status_is_completed(): void
-    {
-        $this->expectException(InvalidEnrollmentStatusException::class);
-
-        $this->enrollment(status: EnrollmentStatus::COMPLETED)->drop();
-    }
-
-    public function test_can_complete_when_status_is_enrolled(): void
-    {
-        $this->assertStatus(
-            EnrollmentStatus::COMPLETED,
-            $this->enrollment(status: EnrollmentStatus::ENROLLED)->complete()
-        );
-    }
-
-    public function test_can_not_complete_when_status_is_dropped(): void
-    {
-        $this->expectException(InvalidEnrollmentStatusException::class);
-
-        $this->enrollment(status: EnrollmentStatus::DROPPED)->complete();
-    }
-
-    public function test_can_complete_when_status_is_completed(): void
-    {
-        $this->assertStatus(
-            EnrollmentStatus::COMPLETED,
-            $this->enrollment(status: EnrollmentStatus::COMPLETED)->complete()
-        );
-    }
-
-    public function test_require_id_throws_exception_when_id_is_null(): void
+    public function test_require_id_throws_exception_when_id_is_not_assigned(): void
     {
         $this->expectException(EnrollmentIdNotAssignedException::class);
 
-        Enrollment::create(new StudentId(1), new CourseOfferingId(10))->requireId();
+        $this->createEnrollment()->requireId();
     }
 
-    public function test_can_get_id(): void
+    public function test_enroll_returns_same_instance_when_already_enrolled(): void
     {
-        self::assertSame(1, $this->enrollment()->requireId()->value());
+        $enrollment = $this->createEnrollment();
+
+        $this->assertSame($enrollment, $enrollment->enroll());
     }
 
-    private function enrollment(
-        int $id = 1,
-        int $studentId = 1,
-        int $courseOfferingId = 10,
-        EnrollmentStatus $status = EnrollmentStatus::ENROLLED
-    ): Enrollment {
-        return Enrollment::reconstruct(
-            id: new EnrollmentId($id),
-            studentId: new StudentId($studentId),
-            courseOfferingId: new CourseOfferingId($courseOfferingId),
-            status: $status
-        );
-    }
-
-    private function assertStatus(EnrollmentStatus $status, Enrollment $enrollment): void
+    public function test_enroll_changes_dropped_status_to_enrolled(): void
     {
-        self::assertSame($status, $enrollment->status());
+        $enrollment = $this->reconstructEnrollment(status: EnrollmentStatus::DROPPED);
+
+        $enrolled = $enrollment->enroll();
+
+        $this->assertNotSame($enrollment, $enrolled);
+        $this->assertSame(EnrollmentStatus::ENROLLED, $enrolled->status());
+    }
+
+    public function test_enroll_throws_exception_for_completed_status(): void
+    {
+        $this->expectException(InvalidEnrollmentStatusException::class);
+
+        $this->reconstructEnrollment(status: EnrollmentStatus::COMPLETED)->enroll();
+    }
+
+    public function test_enroll_throws_exception_for_failed_status(): void
+    {
+        $this->expectException(InvalidEnrollmentStatusException::class);
+
+        $this->reconstructEnrollment(status: EnrollmentStatus::FAILED)->enroll();
+    }
+
+    public function test_drop_changes_enrolled_status_to_dropped(): void
+    {
+        $enrollment = $this->createEnrollment();
+
+        $dropped = $enrollment->drop();
+
+        $this->assertNotSame($enrollment, $dropped);
+        $this->assertSame(EnrollmentStatus::DROPPED, $dropped->status());
+    }
+
+    public function test_drop_returns_same_instance_when_already_dropped(): void
+    {
+        $enrollment = $this->reconstructEnrollment(status: EnrollmentStatus::DROPPED);
+
+        $this->assertSame($enrollment, $enrollment->drop());
+    }
+
+    public function test_drop_throws_exception_for_completed_status(): void
+    {
+        $this->expectException(InvalidEnrollmentStatusException::class);
+
+        $this->reconstructEnrollment(status: EnrollmentStatus::COMPLETED)->drop();
+    }
+
+    public function test_drop_throws_exception_for_failed_status(): void
+    {
+        $this->expectException(InvalidEnrollmentStatusException::class);
+
+        $this->reconstructEnrollment(status: EnrollmentStatus::FAILED)->drop();
+    }
+
+    public function test_complete_changes_enrolled_status_to_completed(): void
+    {
+        $enrollment = $this->createEnrollment();
+
+        $completed = $enrollment->complete();
+
+        $this->assertNotSame($enrollment, $completed);
+        $this->assertSame(EnrollmentStatus::COMPLETED, $completed->status());
+    }
+
+    public function test_complete_returns_same_instance_when_already_completed(): void
+    {
+        $enrollment = $this->reconstructEnrollment(status: EnrollmentStatus::COMPLETED);
+
+        $this->assertSame($enrollment, $enrollment->complete());
+    }
+
+    public function test_complete_throws_exception_for_dropped_status(): void
+    {
+        $this->expectException(InvalidEnrollmentStatusException::class);
+
+        $this->reconstructEnrollment(status: EnrollmentStatus::DROPPED)->complete();
+    }
+
+    public function test_complete_throws_exception_for_failed_status(): void
+    {
+        $this->expectException(InvalidEnrollmentStatusException::class);
+
+        $this->reconstructEnrollment(status: EnrollmentStatus::FAILED)->complete();
+    }
+
+    public function test_fail_changes_enrolled_status_to_failed(): void
+    {
+        $enrollment = $this->createEnrollment();
+
+        $failed = $enrollment->fail();
+
+        $this->assertNotSame($enrollment, $failed);
+        $this->assertSame(EnrollmentStatus::FAILED, $failed->status());
+    }
+
+    public function test_fail_returns_same_instance_when_already_failed(): void
+    {
+        $enrollment = $this->reconstructEnrollment(status: EnrollmentStatus::FAILED);
+
+        $this->assertSame($enrollment, $enrollment->fail());
+    }
+
+    public function test_fail_throws_exception_for_dropped_status(): void
+    {
+        $this->expectException(InvalidEnrollmentStatusException::class);
+
+        $this->reconstructEnrollment(status: EnrollmentStatus::DROPPED)->fail();
+    }
+
+    public function test_fail_throws_exception_for_completed_status(): void
+    {
+        $this->expectException(InvalidEnrollmentStatusException::class);
+
+        $this->reconstructEnrollment(status: EnrollmentStatus::COMPLETED)->fail();
     }
 }

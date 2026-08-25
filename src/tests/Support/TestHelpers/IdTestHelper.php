@@ -5,6 +5,7 @@ namespace Tests\Support\TestHelpers;
 use App\Domain\Course\ValueObjects\CourseId;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
+use App\Domain\FinalGrade\ValueObjects\FinalGradeId;
 use App\Domain\Material\ValueObjects\MaterialId;
 use App\Domain\Permission\ValueObjects\PermissionId;
 use App\Domain\Semester\ValueObjects\SemesterId;
@@ -49,13 +50,18 @@ trait IdTestHelper
         return new CourseOfferingId($id ?? 1);
     }
 
+    private function materialId(?int $id = null): MaterialId
+    {
+        return new MaterialId($id ?? 1);
+    }
+
     private function enrollmentId(?int $id = null): EnrollmentId
     {
         return new EnrollmentId($id ?? 1);
     }
 
-    private function materialId(?int $id = null): MaterialId
+    private function finalGradeId(?int $id = null): FinalGradeId
     {
-        return new MaterialId($id ?? 1);
+        return new FinalGradeId($id ?? 1);
     }
 }

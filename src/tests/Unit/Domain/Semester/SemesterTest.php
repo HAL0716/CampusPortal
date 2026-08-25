@@ -3,47 +3,43 @@
 namespace Tests\Unit\Domain\Semester;
 
 use App\Domain\Academic\Enums\Term;
-use App\Domain\Semester\Entities\Semester;
 use App\Domain\Semester\Exceptions\SemesterIdNotAssignedException;
-use App\Domain\Semester\ValueObjects\SemesterId;
 use PHPUnit\Framework\TestCase;
+use Tests\Support\TestHelpers\SemesterTestHelper;
 
 final class SemesterTest extends TestCase
 {
-    public function test_create_returns_unassigned_semester(): void
-    {
-        $semester = Semester::create('2025', Term::FIRST);
+    use SemesterTestHelper;
 
-        self::assertNull($semester->id());
-        self::assertSame('2025', $semester->academicYear());
-        self::assertSame(Term::FIRST, $semester->term());
+    public function test_create_returns_semester_without_id(): void
+    {
+        $semester = $this->createSemester();
+
+        $this->assertNull($semester->id());
+        $this->assertSame('2026', $semester->academicYear());
+        $this->assertSame(Term::FIRST, $semester->term());
     }
 
-    public function test_reconstruct_restores_semester_state(): void
+    public function test_reconstruct_restores_semester_with_id(): void
     {
-        $semester = $this->semester();
+        $semester = $this->reconstructSemester();
 
-        self::assertSame(1, $semester->requireId()->value());
-        self::assertSame('2025', $semester->academicYear());
-        self::assertSame(Term::FIRST, $semester->term());
+        $this->assertSame($this->semesterId()->value(), $semester->id()->value());
+        $this->assertSame('2026', $semester->academicYear());
+        $this->assertSame(Term::FIRST, $semester->term());
     }
 
-    public function test_require_id_fails_when_semester_is_not_persisted(): void
+    public function test_require_id_returns_assigned_id(): void
+    {
+        $semester = $this->reconstructSemester();
+
+        $this->assertSame($this->semesterId()->value(), $semester->requireId()->value());
+    }
+
+    public function test_require_id_throws_exception_when_id_is_not_assigned(): void
     {
         $this->expectException(SemesterIdNotAssignedException::class);
 
-        Semester::create('2025', Term::FIRST)->requireId();
-    }
-
-    private function semester(
-        int $id = 1,
-        string $academicYear = '2025',
-        Term $term = Term::FIRST,
-    ): Semester {
-        return Semester::reconstruct(
-            id: new SemesterId($id),
-            academicYear: $academicYear,
-            term: $term,
-        );
+        $this->createSemester()->requireId();
     }
 }

@@ -5,15 +5,16 @@ namespace Tests\Feature\Infrastructure\Repositories;
 use App\Domain\Permission\Entities\Permission;
 use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\Permission\Repositories\PermissionRepository;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Support\Permission\CreatesModelPermission;
+use Tests\Support\TestHelpers\PermissionTestHelper;
 use Tests\Support\TestHelpers\UserTestHelper;
 use Tests\TestCase;
 
 final class EloquentPermissionRepositoryTest extends TestCase
 {
-    use CreatesModelPermission;
+    use PermissionTestHelper;
     use RefreshDatabase;
     use UserTestHelper;
 
@@ -28,20 +29,21 @@ final class EloquentPermissionRepositoryTest extends TestCase
 
     public function test_finds_permissions_by_user(): void
     {
-        $model = User::factory()->create();
-
-        $this->createPermission($model, PermissionType::DashboardView);
+        $model = User::factory()->withRoles([
+            Role::factory()->withPermissions([PermissionType::DashboardView])->create(),
+        ])->create();
 
         $user = $this->reconstructUser(
             id: $model->id,
             name: $model->name,
             email: $model->email,
-            password: $model->password
+            password: $model->password,
         );
 
         $permissions = $this->permissions->findByUser($user);
 
         $this->assertCount(1, $permissions);
+        $this->assertInstanceOf(Permission::class, $permissions[0]);
         $this->assertSame(PermissionType::DashboardView, $permissions[0]->name());
     }
 
@@ -53,29 +55,11 @@ final class EloquentPermissionRepositoryTest extends TestCase
             id: $model->id,
             name: $model->name,
             email: $model->email,
-            password: $model->password
+            password: $model->password,
         );
 
         $permissions = $this->permissions->findByUser($user);
 
-        $this->assertEmpty($permissions);
-    }
-
-    public function test_returns_domain_permission_entities(): void
-    {
-        $model = User::factory()->create();
-
-        $this->createPermission($model, PermissionType::DashboardView);
-
-        $user = $this->reconstructUser(
-            id: $model->id,
-            name: $model->name,
-            email: $model->email,
-            password: $model->password
-        );
-
-        $permissions = $this->permissions->findByUser($user);
-
-        $this->assertInstanceOf(Permission::class, $permissions[0]);
+        $this->assertCount(0, $permissions);
     }
 }
