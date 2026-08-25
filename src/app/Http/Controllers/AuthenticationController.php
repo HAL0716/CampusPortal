@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Application\Contexts\Authentication\UseCases\LoginUseCase;
 use App\Application\Contexts\Authentication\UseCases\LogoutUseCase;
-use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Authentication\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class AuthController extends Controller
+class AuthenticationController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Auth/Login');
+        return Inertia::render('Authentication/Login');
     }
 
     public function login(LoginRequest $request, LoginUseCase $useCase): RedirectResponse
@@ -23,7 +23,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('dashboard');
+        return to_route('dashboard');
     }
 
     public function logout(Request $request, LogoutUseCase $useCase): RedirectResponse
@@ -34,6 +34,6 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return to_route('login');
     }
 }

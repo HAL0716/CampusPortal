@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Authentication;
 
 use App\Application\Contexts\Authentication\Commands\LoginCommand;
 use App\Rules\User\UserEmailRule;

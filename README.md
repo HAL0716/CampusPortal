@@ -714,11 +714,11 @@ enrolled（履修中）
 
 ## 9.1 認証
 
-| Method | Path      | Controller            | Student | Teacher | Admin |
-| ------ | --------- | --------------------- | :-----: | :-----: | :---: |
-| GET    | `/login`  | AuthController@index  |    ○    |    ○    |   ○   |
-| POST   | `/login`  | AuthController@login  |    ○    |    ○    |   ○   |
-| POST   | `/logout` | AuthController@logout |    ○    |    ○    |   ○   |
+| Method | Path      | Controller                      | Student | Teacher | Admin |
+| ------ | --------- | ------------------------------- | :-----: | :-----: | :---: |
+| GET    | `/login`  | AuthenticationController@index  |    ○    |    ○    |   ○   |
+| POST   | `/login`  | AuthenticationController@login  |    ○    |    ○    |   ○   |
+| POST   | `/logout` | AuthenticationController@logout |    ○    |    ○    |   ○   |
 
 ## 9.2 ダッシュボード
 
