@@ -1,6 +1,7 @@
 import { Head, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
+import Button from '@/Components/Button';
 import Card from '@/Components/Card';
 import FlashMessage from '@/Components/FlashMessage';
 import { SharedProps } from '@/Types/SharedProps';
@@ -33,6 +34,7 @@ type PageProps = {
 };
 
 type Action = {
+  type: 'button' | 'card';
   title: string;
   href: string;
   variant: 'default' | 'info' | 'danger' | 'success' | 'warning' | 'accent';
@@ -44,6 +46,7 @@ export default function Show() {
   const actionsByStatus: Record<Status, Action[]> = {
     none: [
       {
+        type: 'button',
         title: '履修登録',
         href: route('course-offerings.enroll', { id: offering.id }),
         variant: 'info',
@@ -52,6 +55,7 @@ export default function Show() {
 
     enrolled: [
       {
+        type: 'button',
         title: '履修取消',
         href: route('course-offerings.drop', { id: offering.id }),
         variant: 'danger',
@@ -60,6 +64,7 @@ export default function Show() {
 
     dropped: [
       {
+        type: 'button',
         title: '履修再登録',
         href: route('course-offerings.enroll', { id: offering.id }),
         variant: 'info',
@@ -72,11 +77,13 @@ export default function Show() {
 
     teaching: [
       {
+        type: 'card',
         title: '講義資料追加',
         href: route('course-offerings.materials.create', { id: offering.id }),
         variant: 'info',
       },
       {
+        type: 'card',
         title: '最終成績',
         href: route('course-offerings.final-grades.index', { id: offering.id }),
         variant: 'info',
@@ -117,14 +124,23 @@ export default function Show() {
           )}
         </Card>
 
-        {actions.map((action) => (
-          <Card
-            key={action.title}
-            href={action.href}
-            title={action.title}
-            variant={action.variant}
-          />
-        ))}
+        {actions.map((action) =>
+          action.type === 'button' ? (
+            <Button
+              key={action.title}
+              href={action.href}
+              label={action.title}
+              variant={action.variant}
+            ></Button>
+          ) : (
+            <Card
+              key={action.title}
+              href={action.href}
+              title={action.title}
+              variant={action.variant}
+            />
+          ),
+        )}
       </div>
     </>
   );
