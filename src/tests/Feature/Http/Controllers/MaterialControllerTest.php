@@ -51,7 +51,7 @@ final class MaterialControllerTest extends TestCase
 
     public function test_can_upload_material(): void
     {
-        Storage::fake('public');
+        Storage::fake(config('filesystems.default'));
 
         [$user, $offering] = $this->teacherOffering();
 
@@ -71,12 +71,12 @@ final class MaterialControllerTest extends TestCase
 
         $material = $offering->materials()->first();
 
-        $this->assertTrue(Storage::disk('public')->exists($material->file_path));
+        $this->assertTrue(Storage::disk(config('filesystems.default'))->exists($material->file_path));
     }
 
     public function test_returns_error_when_unauthorized(): void
     {
-        Storage::fake('public');
+        Storage::fake(config('filesystems.default'));
 
         $user = $this->userWithPermission(
             PermissionType::CourseOfferingMaterialCreate
@@ -106,6 +106,43 @@ final class MaterialControllerTest extends TestCase
         );
 
         $response->assertSessionHasErrors(['title']);
+    }
+
+    public function test_can_download_material(): void
+    {
+        $user = User::factory()->withRoles([
+            Role::factory()->withPermissions([
+                PermissionType::MaterialView,
+            ])->create(),
+        ])->create();
+
+        $material = Material::factory()->create([
+            'file_path' => 'materials/test.pdf',
+        ]);
+
+        Storage::fake(config('filesystems.default'));
+        Storage::put($material->file_path, 'test');
+
+        $this->actingAs($user)
+            ->get(route('materials.download', $material))
+            ->assertOk()
+            ->assertDownload();
+    }
+
+    public function test_cannot_download_material_without_permission(): void
+    {
+        $user = User::factory()->create();
+
+        $material = Material::factory()->create([
+            'file_path' => 'materials/test.pdf',
+        ]);
+
+        Storage::fake(config('filesystems.default'));
+        Storage::put($material->file_path, 'test');
+
+        $this->actingAs($user)
+            ->get(route('materials.download', $material))
+            ->assertForbidden();
     }
 
     private function userWithPermission(PermissionType $permissionType): User

@@ -3,6 +3,7 @@
 namespace App\Domain\Material\Entities;
 
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
+use App\Domain\Material\Exceptions\MaterialFileNotAvailableException;
 use App\Domain\Material\Exceptions\MaterialIdNotAssignedException;
 use App\Domain\Material\ValueObjects\MaterialId;
 use DateTimeImmutable;
@@ -70,6 +71,15 @@ final readonly class Material
 
     public function filePath(): ?string
     {
+        return $this->filePath;
+    }
+
+    public function requireFilePath(): string
+    {
+        if ($this->filePath === null) {
+            throw new MaterialFileNotAvailableException;
+        }
+
         return $this->filePath;
     }
 

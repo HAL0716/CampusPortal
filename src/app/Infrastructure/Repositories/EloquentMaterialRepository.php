@@ -34,6 +34,17 @@ final class EloquentMaterialRepository implements MaterialRepository
         return $this->toEntity($model);
     }
 
+    public function getById(MaterialId $materialId): Material
+    {
+        $model = MaterialModel::find($materialId->value());
+
+        if ($model === null) {
+            throw new MaterialNotFoundException;
+        }
+
+        return $this->toEntity($model);
+    }
+
     private function toEntity(MaterialModel $model): Material
     {
         return Material::reconstruct(

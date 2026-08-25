@@ -63,5 +63,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/{material}', [MaterialController::class, 'show'])
                 ->name('show')
                 ->can(PermissionType::MaterialView->value);
+
+            Route::get('/{material}/download', [MaterialController::class, 'download'])
+                ->name('download')
+                ->can(PermissionType::MaterialView->value);
         });
 });
