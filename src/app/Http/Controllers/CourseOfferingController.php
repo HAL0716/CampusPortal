@@ -32,14 +32,16 @@ class CourseOfferingController extends Controller
         ]);
     }
 
-    public function show(ShowRequest $request, GetCourseOfferingUseCase $useCase)
+    public function show(ShowRequest $request, GetCourseOfferingUseCase $useCase): Response
     {
+        $offering = $useCase->execute(
+            $request->toQuery(
+                userId: $this->auth->requireUser()->requireId()
+            )
+        );
+
         return Inertia::render('CourseOffering/Show', [
-            'offering' => $useCase->execute(
-                $request->toQuery(
-                    userId: $this->auth->requireUser()->requireId()
-                )
-            ),
+            'offering' => $offering,
         ]);
     }
 }
