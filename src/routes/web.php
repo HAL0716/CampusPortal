@@ -45,24 +45,24 @@ Route::middleware('auth')->group(function () {
                         ->group(function () {
                             Route::get('/create', [MaterialController::class, 'create'])
                                 ->name('create')
-                                ->can(PermissionType::CourseOfferingMaterialCreate->value);
+                                ->can(PermissionType::MaterialCreate->value);
 
                             Route::post('/', [MaterialController::class, 'store'])
                                 ->name('store')
-                                ->can(PermissionType::CourseOfferingMaterialCreate->value);
+                                ->can(PermissionType::MaterialCreate->value);
                         });
 
                     Route::post('/enroll', [EnrollmentController::class, 'enroll'])
                         ->name('enroll')
-                        ->can(PermissionType::CourseOfferingEnrollment->value);
+                        ->can(PermissionType::EnrollmentManage->value);
 
                     Route::post('/drop', [EnrollmentController::class, 'drop'])
                         ->name('drop')
-                        ->can(PermissionType::CourseOfferingEnrollment->value);
+                        ->can(PermissionType::EnrollmentManage->value);
 
                     Route::get('/final-grades', [FinalGradeController::class, 'index'])
                         ->name('final-grades.index')
-                        ->can(PermissionType::CourseOfferingManagement->value);
+                        ->can(PermissionType::FinalGradeCreate->value);
                 });
         });
 
@@ -71,7 +71,7 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::post('{enrollment}/complete', [EnrollmentController::class, 'complete'])
                 ->name('complete')
-                ->can(PermissionType::CourseOfferingManagement->value);
+                ->can(PermissionType::FinalGradeCreate->value);
         });
 
     Route::prefix('materials')
