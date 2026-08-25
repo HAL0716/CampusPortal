@@ -6,6 +6,7 @@ use App\Domain\Course\ValueObjects\CourseId;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\Material\ValueObjects\MaterialId;
+use App\Domain\Permission\ValueObjects\PermissionId;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Student\ValueObjects\StudentId;
 use App\Domain\Teacher\ValueObjects\TeacherId;
@@ -16,6 +17,11 @@ trait IdTestHelper
     private function userId(?int $id = null): UserId
     {
         return new UserId($id ?? 1);
+    }
+
+    private function permissionId(?int $id = null): PermissionId
+    {
+        return new PermissionId($id ?? 1);
     }
 
     private function studentId(?int $id = null): StudentId
