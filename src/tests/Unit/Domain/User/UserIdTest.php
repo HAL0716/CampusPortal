@@ -2,17 +2,15 @@
 
 namespace Tests\Unit\Domain\User;
 
+use App\Domain\User\ValueObjects\UserId;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\User\CreatesDomainUser;
 
 final class UserIdTest extends TestCase
 {
-    use CreatesDomainUser;
-
     public function test_creates_valid_user_id(): void
     {
-        $id = $this->userIdValueObject();
+        $id = new UserId(1);
 
-        $this->assertSame($this->userId(), $id->value());
+        $this->assertSame(1, $id->value());
     }
 }

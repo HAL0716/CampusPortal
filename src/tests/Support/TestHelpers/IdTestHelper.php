@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Support\Id;
+namespace Tests\Support\TestHelpers;
 
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;

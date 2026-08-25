@@ -8,8 +8,8 @@ use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\Student\ValueObjects\StudentId;
 use Mockery\MockInterface;
-use Tests\Support\Id\IdTestHelper;
 use Tests\Support\Matchers\UseMatcher;
+use Tests\Support\TestHelpers\IdTestHelper;
 
 trait EnrollmentTestHelper
 {

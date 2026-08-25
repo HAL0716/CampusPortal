@@ -11,7 +11,7 @@ use App\Domain\Student\Repositories\StudentRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
-use Tests\Support\Id\IdTestHelper;
+use Tests\Support\TestHelpers\IdTestHelper;
 use Tests\TestCase;
 
 final class DropUseCaseTest extends TestCase

@@ -8,13 +8,13 @@ use App\Domain\User\Repositories\UserRepository;
 use App\Models\User as UserModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Tests\Support\User\CreatesDomainUser;
+use Tests\Support\TestHelpers\UserTestHelper;
 use Tests\TestCase;
 
 final class EloquentUserRepositoryTest extends TestCase
 {
-    use CreatesDomainUser;
     use RefreshDatabase;
+    use UserTestHelper;
 
     private UserRepository $users;
 
@@ -39,25 +39,21 @@ final class EloquentUserRepositoryTest extends TestCase
 
     public function test_hashes_plain_password_when_saving_user(): void
     {
-        $user = $this->users->save($this->createUser());
+        $user = $this->users->save($this->createUser(hashed: false));
 
         $model = UserModel::find($user->id()->value());
 
-        $this->assertNotSame($this->userPassword(), $model->password);
-        $this->assertTrue(Hash::check($this->userPassword(), $model->password));
+        $this->assertNotSame($this->userPassword()->value(), $model->password);
+        $this->assertTrue(Hash::check($this->userPassword()->value(), $model->password));
     }
 
     public function test_preserves_hashed_password_when_saving_user(): void
     {
-        $user = $this->users->save(
-            $this->createUser(
-                hashed: true
-            )
-        );
+        $user = $this->users->save($this->createUser(hashed: true));
 
         $model = UserModel::find($user->id()->value());
 
-        $this->assertSame($this->hashedUserPassword(), $model->password);
+        $this->assertSame($this->hashedUserPassword()->value(), $model->password);
     }
 
     public function test_updates_existing_user(): void
@@ -116,7 +112,7 @@ final class EloquentUserRepositoryTest extends TestCase
         $expected = $this->users->save($this->createUser());
 
         $actual = $this->users->findByEmail(
-            $this->userEmailValueObject()
+            $this->userEmail()
         );
 
         $this->assertNotNull($actual);
@@ -128,7 +124,7 @@ final class EloquentUserRepositoryTest extends TestCase
     {
         $this->assertNull(
             $this->users->findById(
-                $this->userIdValueObject()
+                $this->userId()
             )
         );
     }
@@ -137,7 +133,7 @@ final class EloquentUserRepositoryTest extends TestCase
     {
         $this->assertNull(
             $this->users->findByEmail(
-                $this->userEmailValueObject()
+                $this->userEmail()
             )
         );
     }

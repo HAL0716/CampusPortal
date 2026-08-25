@@ -5,8 +5,8 @@ namespace Tests\Support\Student;
 use App\Domain\Student\Entities\Student;
 use App\Domain\Student\Repositories\StudentRepository;
 use Mockery\MockInterface;
-use Tests\Support\Id\IdTestHelper;
 use Tests\Support\Matchers\UseMatcher;
+use Tests\Support\TestHelpers\IdTestHelper;
 
 trait StudentTestHelper
 {

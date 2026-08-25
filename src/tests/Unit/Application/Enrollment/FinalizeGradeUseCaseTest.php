@@ -15,7 +15,7 @@ use App\Domain\FinalGrade\Repositories\FinalGradeRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
-use Tests\Support\Id\IdTestHelper;
+use Tests\Support\TestHelpers\IdTestHelper;
 use Tests\TestCase;
 
 final class FinalizeGradeUseCaseTest extends TestCase

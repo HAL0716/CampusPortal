@@ -6,13 +6,12 @@ use App\Application\Contexts\Authentication\AuthenticationService;
 use App\Domain\Authentication\Exceptions\AuthenticationFailedException;
 use App\Domain\User\Repositories\UserRepository;
 use App\Domain\User\ValueObjects\UserId;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Support\User\CreatesModelUser;
 use Tests\TestCase;
 
 final class LaravelAuthenticationServiceTest extends TestCase
 {
-    use CreatesModelUser;
     use RefreshDatabase;
 
     private AuthenticationService $auth;
@@ -29,7 +28,7 @@ final class LaravelAuthenticationServiceTest extends TestCase
 
     public function test_login_user(): void
     {
-        $model = $this->createUser();
+        $model = User::factory()->create();
 
         $user = $this->users->findById(new UserId($model->id));
 
@@ -42,7 +41,7 @@ final class LaravelAuthenticationServiceTest extends TestCase
 
     public function test_logout_user(): void
     {
-        $this->actingAs($this->createUser());
+        $this->actingAs(User::factory()->create());
 
         $this->auth->logout();
 
@@ -51,7 +50,7 @@ final class LaravelAuthenticationServiceTest extends TestCase
 
     public function test_returns_authenticated_user(): void
     {
-        $model = $this->createUser();
+        $model = User::factory()->create();
 
         $this->actingAs($model);
 
@@ -65,7 +64,7 @@ final class LaravelAuthenticationServiceTest extends TestCase
 
     public function test_require_user_returns_authenticated_user(): void
     {
-        $model = $this->createUser();
+        $model = User::factory()->create();
 
         $this->actingAs($model);
 
@@ -85,7 +84,7 @@ final class LaravelAuthenticationServiceTest extends TestCase
 
     public function test_returns_null_and_logs_out_when_authenticated_user_no_longer_exists(): void
     {
-        $model = $this->createUser();
+        $model = User::factory()->create();
 
         $this->actingAs($model);
 
@@ -97,7 +96,7 @@ final class LaravelAuthenticationServiceTest extends TestCase
 
     public function test_user_returns_same_instance(): void
     {
-        $model = $this->createUser();
+        $model = User::factory()->create();
 
         $this->actingAs($model);
 

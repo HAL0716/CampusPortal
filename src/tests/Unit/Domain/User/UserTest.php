@@ -3,19 +3,19 @@
 namespace Tests\Unit\Domain\User;
 
 use PHPUnit\Framework\TestCase;
-use Tests\Support\User\CreatesDomainUser;
+use Tests\Support\TestHelpers\UserTestHelper;
 
 final class UserTest extends TestCase
 {
-    use CreatesDomainUser;
+    use UserTestHelper;
 
     public function test_creates_valid_user(): void
     {
         $user = $this->createUser();
 
         $this->assertNull($user->id());
-        $this->assertSame($this->userEmail(), $user->email()->value());
-        $this->assertSame($this->userPassword(), $user->password()->value());
+        $this->assertSame($this->userEmail()->value(), $user->email()->value());
+        $this->assertSame($this->userPassword()->value(), $user->password()->value());
         $this->assertSame($this->userName(), $user->name());
     }
 
@@ -23,9 +23,9 @@ final class UserTest extends TestCase
     {
         $user = $this->reconstructUser();
 
-        $this->assertSame($this->userId(), $user->id()->value());
-        $this->assertSame($this->userEmail(), $user->email()->value());
-        $this->assertSame($this->hashedUserPassword(), $user->password()->value());
+        $this->assertSame($this->userId()->value(), $user->id()->value());
+        $this->assertSame($this->userEmail()->value(), $user->email()->value());
+        $this->assertSame($this->hashedUserPassword()->value(), $user->password()->value());
         $this->assertSame($this->userName(), $user->name());
     }
 }

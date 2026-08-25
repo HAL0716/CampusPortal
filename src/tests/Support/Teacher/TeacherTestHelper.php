@@ -5,8 +5,8 @@ namespace Tests\Support\Teacher;
 use App\Domain\Teacher\Entities\Teacher;
 use App\Domain\Teacher\Repositories\TeacherRepository;
 use Mockery\MockInterface;
-use Tests\Support\Id\IdTestHelper;
 use Tests\Support\Matchers\UseMatcher;
+use Tests\Support\TestHelpers\IdTestHelper;
 
 trait TeacherTestHelper
 {

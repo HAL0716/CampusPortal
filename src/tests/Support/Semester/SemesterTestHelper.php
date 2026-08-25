@@ -7,8 +7,8 @@ use App\Domain\Semester\Entities\Semester;
 use App\Domain\Semester\Repositories\SemesterRepository;
 use Carbon\CarbonImmutable;
 use Mockery\MockInterface;
-use Tests\Support\Id\IdTestHelper;
 use Tests\Support\Matchers\UseMatcher;
+use Tests\Support\TestHelpers\IdTestHelper;
 
 trait SemesterTestHelper
 {
