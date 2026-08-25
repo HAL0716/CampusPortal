@@ -32,19 +32,10 @@ class MaterialController extends Controller
         ]);
     }
 
-    public function download(DownloadRequest $request, DownloadMaterialUseCase $useCase): BinaryFileResponse
-    {
-        $file = $useCase->execute($request->toCommand());
-
-        return response()->download($file->path, $file->fileName);
-    }
-
     public function create(CreateRequest $request, CreateMaterialUseCase $useCase): Response
     {
         $useCase->execute(
-            $request->toCommand(
-                $this->auth->requireUser()->requireId()
-            )
+            $request->toCommand($this->auth->requireUser()->requireId())
         );
 
         return Inertia::render('Material/Create', [
@@ -57,12 +48,17 @@ class MaterialController extends Controller
     public function store(StoreRequest $request, StoreMaterialUseCase $useCase): RedirectResponse
     {
         $useCase->execute(
-            $request->toCommand(
-                $this->auth->requireUser()->requireId()
-            )
+            $request->toCommand($this->auth->requireUser()->requireId())
         );
 
-        return redirect()->route('course-offerings.show', $request->route('courseOffering'))
+        return to_route('course-offerings.show', $request->route('courseOffering'))
             ->with(Flash::success('資料をアップロードしました'));
+    }
+
+    public function download(DownloadRequest $request, DownloadMaterialUseCase $useCase): BinaryFileResponse
+    {
+        $file = $useCase->execute($request->toCommand());
+
+        return response()->download($file->path, $file->fileName);
     }
 }
