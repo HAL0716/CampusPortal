@@ -34,7 +34,7 @@ class DropRequest extends FormRequest
     {
         return new DropCommand(
             userId: $userId,
-            courseOfferingId: new CourseOfferingId($this->route('courseOffering')),
+            courseOfferingId: new CourseOfferingId((int) $this->route('courseOffering')),
         );
     }
 }

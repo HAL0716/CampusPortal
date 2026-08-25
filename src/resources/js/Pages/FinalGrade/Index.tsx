@@ -39,11 +39,7 @@ function GradeForm({ enrollment }: { enrollment: PageProps['enrollments'][number
           return;
         }
 
-        post(
-          route('enrollments.complete', {
-            enrollment: enrollment.enrollmentId,
-          }),
-        );
+        post(route('enrollments.complete', enrollment.enrollmentId));
       }}
       className="flex items-center gap-3"
     >

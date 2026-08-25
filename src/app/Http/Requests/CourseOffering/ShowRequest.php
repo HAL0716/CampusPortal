@@ -33,7 +33,7 @@ class ShowRequest extends FormRequest
     public function toQuery(UserId $userId): GetCourseOfferingQuery
     {
         return new GetCourseOfferingQuery(
-            courseOfferingId: new CourseOfferingId($this->route('id')),
+            courseOfferingId: new CourseOfferingId((int) $this->route('courseOffering')),
             userId: $userId,
         );
     }

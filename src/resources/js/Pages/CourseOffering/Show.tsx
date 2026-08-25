@@ -48,7 +48,7 @@ export default function Show() {
       {
         type: 'button',
         title: '履修登録',
-        href: route('course-offerings.enroll', { id: offering.id }),
+        href: route('course-offerings.enroll', offering.id),
         variant: 'info',
       },
     ],
@@ -57,7 +57,7 @@ export default function Show() {
       {
         type: 'button',
         title: '履修取消',
-        href: route('course-offerings.drop', { id: offering.id }),
+        href: route('course-offerings.drop', offering.id),
         variant: 'danger',
       },
     ],
@@ -66,7 +66,7 @@ export default function Show() {
       {
         type: 'button',
         title: '履修再登録',
-        href: route('course-offerings.enroll', { id: offering.id }),
+        href: route('course-offerings.enroll', offering.id),
         variant: 'info',
       },
     ],
@@ -79,13 +79,13 @@ export default function Show() {
       {
         type: 'card',
         title: '講義資料追加',
-        href: route('course-offerings.materials.create', { id: offering.id }),
+        href: route('course-offerings.materials.create', offering.id),
         variant: 'info',
       },
       {
         type: 'card',
         title: '最終成績',
-        href: route('course-offerings.final-grades.index', { id: offering.id }),
+        href: route('course-offerings.final-grades.index', offering.id),
         variant: 'info',
       },
     ],
@@ -114,7 +114,7 @@ export default function Show() {
               {offering.materials.map((material) => (
                 <Card
                   key={material.id}
-                  href={route('materials.show', { material: material.id })}
+                  href={route('materials.show', material.id)}
                   title={material.title}
                 />
               ))}

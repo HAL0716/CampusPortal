@@ -34,7 +34,7 @@ class EnrollRequest extends FormRequest
     {
         return new EnrollCommand(
             userId: $userId,
-            courseOfferingId: new CourseOfferingId($this->route('courseOffering')),
+            courseOfferingId: new CourseOfferingId((int) $this->route('courseOffering')),
         );
     }
 }

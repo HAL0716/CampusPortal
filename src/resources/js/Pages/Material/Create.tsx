@@ -2,10 +2,12 @@ import { Head, useForm, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
 import Button from '@/Components/Button';
+import FlashMessage from '@/Components/FlashMessage';
 import DateInput from '@/Components/Form/DateInput';
 import FileInput from '@/Components/Form/FileInput';
 import Input from '@/Components/Form/Input';
 import Textarea from '@/Components/Form/Textarea';
+import { SharedProps } from '@/Types/SharedProps';
 
 type PageProps = {
   offering: {
@@ -14,7 +16,7 @@ type PageProps = {
 };
 
 export default function Create() {
-  const { offering } = usePage<PageProps>().props;
+  const { flash, offering } = usePage<SharedProps & PageProps>().props;
 
   const { data, setData, post, errors, reset } = useForm({
     title: '',
@@ -26,7 +28,7 @@ export default function Create() {
   const submit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    post(route('course-offerings.materials.store', { id: offering.id }), {
+    post(route('course-offerings.materials.store', offering.id), {
       forceFormData: true,
       onSuccess: () => reset(),
     });
@@ -37,6 +39,10 @@ export default function Create() {
       <Head title="資料追加" />
 
       <h1 className="mb-4 text-xl font-bold">資料追加</h1>
+
+      <FlashMessage key={flash.success?.id} text={flash.success?.message} type="success" />
+
+      <FlashMessage key={flash.error?.id} text={flash.error?.message} type="danger" />
 
       <form onSubmit={submit} className="mt-6 space-y-5">
         <Input

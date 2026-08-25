@@ -33,7 +33,7 @@ class CreateRequest extends FormRequest
     public function toCommand(UserId $userId): CreateMaterialCommand
     {
         return new CreateMaterialCommand(
-            new CourseOfferingId($this->route('id')),
+            new CourseOfferingId((int) $this->route('courseOffering')),
             $userId,
         );
     }

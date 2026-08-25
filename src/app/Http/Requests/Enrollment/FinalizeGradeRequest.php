@@ -36,7 +36,7 @@ class FinalizeGradeRequest extends FormRequest
     {
         return new FinalizeGradeCommand(
             userId: $userId,
-            enrollmentId: new EnrollmentId($this->route('enrollment')),
+            enrollmentId: new EnrollmentId((int) $this->route('enrollment')),
             grade: FinalGradeType::from($this->validated('grade')),
         );
     }

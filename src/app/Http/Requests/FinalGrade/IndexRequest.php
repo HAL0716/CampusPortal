@@ -34,7 +34,7 @@ class IndexRequest extends FormRequest
     {
         return new ListEnrollmentsQuery(
             userId: $userId,
-            courseOfferingId: new CourseOfferingId((int) $this->route('id')),
+            courseOfferingId: new CourseOfferingId((int) $this->route('courseOffering')),
         );
     }
 }

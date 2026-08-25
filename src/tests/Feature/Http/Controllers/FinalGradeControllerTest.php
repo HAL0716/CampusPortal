@@ -25,7 +25,7 @@ final class FinalGradeControllerTest extends TestCase
         )->create();
 
         $this->actingAs($user)
-            ->get(route('course-offerings.final-grades.index', ['id' => $offering->id]))
+            ->get(route('course-offerings.final-grades.index', $offering->id))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('FinalGrade/Index')

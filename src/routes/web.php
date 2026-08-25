@@ -27,35 +27,52 @@ Route::middleware('auth')->group(function () {
         ->name('dashboard')
         ->can(PermissionType::DashboardView->value);
 
-    Route::get('/course-offerings', [CourseOfferingController::class, 'index'])
-        ->name('course-offerings.index')
-        ->can(PermissionType::CourseOfferingView->value);
+    Route::prefix('course-offerings')
+        ->name('course-offerings.')
+        ->group(function () {
+            Route::get('/', [CourseOfferingController::class, 'index'])
+                ->name('index')
+                ->can(PermissionType::CourseOfferingView->value);
 
-    Route::get('/course-offerings/{id}', [CourseOfferingController::class, 'show'])
-        ->name('course-offerings.show')
-        ->can(PermissionType::CourseOfferingView->value);
+            Route::prefix('/{courseOffering}')
+                ->group(function () {
+                    Route::get('/', [CourseOfferingController::class, 'show'])
+                        ->name('show')
+                        ->can(PermissionType::CourseOfferingView->value);
 
-    Route::get('/course-offerings/{id}/materials/create', [MaterialController::class, 'create'])
-        ->name('course-offerings.materials.create')
-        ->can(PermissionType::CourseOfferingMaterialCreate->value);
+                    Route::prefix('materials')
+                        ->name('materials.')
+                        ->group(function () {
+                            Route::get('/create', [MaterialController::class, 'create'])
+                                ->name('create')
+                                ->can(PermissionType::CourseOfferingMaterialCreate->value);
 
-    Route::post('/course-offerings/{id}/materials', [MaterialController::class, 'store'])
-        ->name('course-offerings.materials.store')
-        ->can(PermissionType::CourseOfferingMaterialCreate->value);
+                            Route::post('/', [MaterialController::class, 'store'])
+                                ->name('store')
+                                ->can(PermissionType::CourseOfferingMaterialCreate->value);
+                        });
 
-    Route::post('/course-offerings/{courseOffering}/enroll', [EnrollmentController::class, 'enroll'])
-        ->name('course-offerings.enroll')
-        ->can(PermissionType::CourseOfferingEnrollment->value);
-    Route::post('/course-offerings/{courseOffering}/drop', [EnrollmentController::class, 'drop'])
-        ->name('course-offerings.drop')
-        ->can(PermissionType::CourseOfferingEnrollment->value);
-    Route::post('/enrollments/{enrollment}/complete', [EnrollmentController::class, 'complete'])
-        ->name('enrollments.complete')
-        ->can(PermissionType::CourseOfferingManagement->value);
+                    Route::post('/enroll', [EnrollmentController::class, 'enroll'])
+                        ->name('enroll')
+                        ->can(PermissionType::CourseOfferingEnrollment->value);
 
-    Route::get('/course-offerings/{id}/final-grades', [FinalGradeController::class, 'index'])
-        ->name('course-offerings.final-grades.index')
-        ->can(PermissionType::CourseOfferingManagement->value);
+                    Route::post('/drop', [EnrollmentController::class, 'drop'])
+                        ->name('drop')
+                        ->can(PermissionType::CourseOfferingEnrollment->value);
+
+                    Route::get('/final-grades', [FinalGradeController::class, 'index'])
+                        ->name('final-grades.index')
+                        ->can(PermissionType::CourseOfferingManagement->value);
+                });
+        });
+
+    Route::prefix('enrollments')
+        ->name('enrollments.')
+        ->group(function () {
+            Route::post('{enrollment}/complete', [EnrollmentController::class, 'complete'])
+                ->name('complete')
+                ->can(PermissionType::CourseOfferingManagement->value);
+        });
 
     Route::prefix('materials')
         ->name('materials.')
