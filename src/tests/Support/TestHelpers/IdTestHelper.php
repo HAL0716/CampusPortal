@@ -2,6 +2,7 @@
 
 namespace Tests\Support\TestHelpers;
 
+use App\Domain\Course\ValueObjects\CourseId;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\Material\ValueObjects\MaterialId;
@@ -30,6 +31,11 @@ trait IdTestHelper
     private function semesterId(?int $id = null): SemesterId
     {
         return new SemesterId($id ?? 1);
+    }
+
+    private function courseId(?int $id = null): CourseId
+    {
+        return new CourseId($id ?? 1);
     }
 
     private function courseOfferingId(?int $id = null): CourseOfferingId

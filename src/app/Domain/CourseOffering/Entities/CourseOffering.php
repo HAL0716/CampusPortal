@@ -16,14 +16,14 @@ final readonly class CourseOffering
         private CourseOfferingId $id,
         private CourseId $courseId,
         private SemesterId $semesterId,
-        private ?array $teacherIds,
+        private array $teacherIds,
     ) {}
 
     public static function reconstruct(
         CourseOfferingId $id,
         SemesterId $semesterId,
         CourseId $courseId,
-        ?array $teacherIds,
+        array $teacherIds = [],
     ): self {
         return new self($id, $courseId, $semesterId, $teacherIds);
     }
@@ -50,9 +50,9 @@ final readonly class CourseOffering
     }
 
     /**
-     * @return TeacherId[]|null
+     * @return array<TeacherId>
      */
-    public function teacherIds(): ?array
+    public function teacherIds(): array
     {
         return $this->teacherIds;
     }
