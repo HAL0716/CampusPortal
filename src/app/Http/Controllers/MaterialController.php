@@ -62,7 +62,7 @@ class MaterialController extends Controller
             )
         );
 
-        return redirect()->route('course-offerings.show', ['courseOffering' => $request->route('courseOffering')])
+        return redirect()->route('course-offerings.show', $request->route('courseOffering'))
             ->with(Flash::success('資料をアップロードしました'));
     }
 }
