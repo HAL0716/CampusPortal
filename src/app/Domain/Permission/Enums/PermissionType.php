@@ -7,10 +7,12 @@ enum PermissionType: string
     case DashboardView = 'dashboard.view';
 
     case CourseOfferingView = 'course_offering.view';
-    case CourseOfferingEnrollment = 'course_offering.enrollment';
-    case CourseOfferingManagement = 'course_offering.management';
-    case CourseOfferingAdministration = 'course_offering.administration';
-    case CourseOfferingMaterialCreate = 'course_offering.material.create';
+    case CourseOfferingManage = 'course_offering.manage';
+
+    case EnrollmentManage = 'enrollment.manage';
+
+    case FinalGradeCreate = 'final_grade.create';
 
     case MaterialView = 'material.view';
+    case MaterialCreate = 'material.create';
 }

@@ -14,22 +14,23 @@ final class RolePermissions
             RoleType::STUDENT => [
                 PermissionType::DashboardView,
                 PermissionType::CourseOfferingView,
-                PermissionType::CourseOfferingEnrollment,
+                PermissionType::EnrollmentManage,
                 PermissionType::MaterialView,
             ],
 
             RoleType::TEACHER => [
                 PermissionType::DashboardView,
                 PermissionType::CourseOfferingView,
-                PermissionType::CourseOfferingManagement,
-                PermissionType::CourseOfferingMaterialCreate,
+                PermissionType::CourseOfferingManage,
+                PermissionType::FinalGradeCreate,
                 PermissionType::MaterialView,
+                PermissionType::MaterialCreate,
             ],
 
             RoleType::ADMIN => [
                 PermissionType::DashboardView,
                 PermissionType::CourseOfferingView,
-                PermissionType::CourseOfferingAdministration,
+                PermissionType::CourseOfferingManage,
                 PermissionType::MaterialView,
 
             ],

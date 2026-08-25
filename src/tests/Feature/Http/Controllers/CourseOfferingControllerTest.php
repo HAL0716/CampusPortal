@@ -58,7 +58,7 @@ final class CourseOfferingControllerTest extends TestCase
         $offering = CourseOffering::factory()->create();
 
         $this->actingAs($user)
-            ->get(route('course-offerings.show', ['id' => $offering->id]))
+            ->get(route('course-offerings.show', $offering->id))
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->component('CourseOffering/Show')

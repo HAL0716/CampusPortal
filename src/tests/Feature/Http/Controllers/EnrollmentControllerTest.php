@@ -22,7 +22,7 @@ final class EnrollmentControllerTest extends TestCase
 
     public function test_can_enroll_course(): void
     {
-        $user = $this->userWithPermission(PermissionType::CourseOfferingEnrollment);
+        $user = $this->userWithPermission(PermissionType::EnrollmentManage);
         Student::factory()->for($user)->create();
         $courseOffering = CourseOffering::factory()->create();
 
@@ -41,7 +41,7 @@ final class EnrollmentControllerTest extends TestCase
 
     public function test_can_drop_course(): void
     {
-        $user = $this->userWithPermission(PermissionType::CourseOfferingEnrollment);
+        $user = $this->userWithPermission(PermissionType::EnrollmentManage);
         $student = Student::factory()->for($user)->create();
         $courseOffering = CourseOffering::factory()->create();
 
@@ -64,7 +64,7 @@ final class EnrollmentControllerTest extends TestCase
 
     public function test_can_complete_enrollment(): void
     {
-        $user = $this->userWithPermission(PermissionType::CourseOfferingManagement);
+        $user = $this->userWithPermission(PermissionType::FinalGradeCreate);
         $teacher = Teacher::factory()->for($user)->create();
 
         $course = Course::factory()->create();

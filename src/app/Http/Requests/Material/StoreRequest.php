@@ -59,7 +59,7 @@ class StoreRequest extends FormRequest
     {
         return new StoreMaterialCommand(
             userId: $userId,
-            courseOfferingId: new CourseOfferingId($this->route('id')),
+            courseOfferingId: new CourseOfferingId((int) $this->route('courseOffering')),
             title: $this->validated('title'),
             description: $this->validated('description'),
             file: $this->uploadFile(),

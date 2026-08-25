@@ -79,7 +79,7 @@ final class MaterialControllerTest extends TestCase
         Storage::fake(config('filesystems.default'));
 
         $user = $this->userWithPermission(
-            PermissionType::CourseOfferingMaterialCreate
+            PermissionType::MaterialCreate
         );
         $offering = CourseOffering::factory()->create();
 
@@ -167,7 +167,7 @@ final class MaterialControllerTest extends TestCase
     private function teacherOffering(): array
     {
         $user = $this->userWithPermission(
-            PermissionType::CourseOfferingMaterialCreate
+            PermissionType::MaterialCreate
         );
 
         $teacher = Teacher::factory()->for($user)->create();

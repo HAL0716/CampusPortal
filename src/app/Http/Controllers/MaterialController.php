@@ -49,7 +49,7 @@ class MaterialController extends Controller
 
         return Inertia::render('Material/Create', [
             'offering' => [
-                'id' => (int) $request->route('id'),
+                'id' => (int) $request->route('courseOffering'),
             ],
         ]);
     }
@@ -62,7 +62,7 @@ class MaterialController extends Controller
             )
         );
 
-        return redirect()->route('course-offerings.show', ['id' => $request->route('id')])
+        return redirect()->route('course-offerings.show', ['courseOffering' => $request->route('courseOffering')])
             ->with(Flash::success('資料をアップロードしました'));
     }
 }

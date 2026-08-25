@@ -17,7 +17,9 @@ final class FinalGradeControllerTest extends TestCase
     public function test_can_view_final_grades(): void
     {
         $user = User::factory()->withRoles([
-            Role::factory()->withPermissions([PermissionType::CourseOfferingManagement])->create(),
+            Role::factory()->withPermissions([
+                PermissionType::FinalGradeCreate,
+            ])->create(),
         ])->create();
 
         $offering = CourseOffering::factory()->forTeacher(
@@ -25,7 +27,7 @@ final class FinalGradeControllerTest extends TestCase
         )->create();
 
         $this->actingAs($user)
-            ->get(route('course-offerings.final-grades.index', ['id' => $offering->id]))
+            ->get(route('course-offerings.final-grades.index', $offering->id))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('FinalGrade/Index')
