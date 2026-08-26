@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Domain\Academic\Enums\Term;
 use App\Models\Course;
-use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,10 +25,10 @@ class CourseFactory extends Factory
         ];
     }
 
-    public function forTeacher(Teacher $teacher): static
+    public function forTeachers(array $teachers): static
     {
-        return $this->afterCreating(function (Course $course) use ($teacher) {
-            $course->teachers()->attach($teacher);
+        return $this->afterCreating(function (Course $course) use ($teachers) {
+            $course->teachers()->attach($teachers);
         });
     }
 }

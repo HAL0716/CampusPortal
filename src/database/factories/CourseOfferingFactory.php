@@ -26,10 +26,13 @@ class CourseOfferingFactory extends Factory
         ];
     }
 
-    public function forTeacher(Teacher $teacher): static
+    /**
+     * @param  array<Teacher>  $teachers
+     */
+    public function forTeachers(array $teachers): static
     {
         return $this->state([
-            'course_id' => Course::factory()->forTeacher($teacher),
+            'course_id' => Course::factory()->forTeachers($teachers),
         ]);
     }
 }

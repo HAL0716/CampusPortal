@@ -96,7 +96,7 @@ final class EnrollmentControllerTest extends TestCase
 
         $enrollment = Enrollment::factory()->create([
             'student_id' => Student::factory()->for($user)->create()->id,
-            'course_offering_id' => CourseOffering::factory()->forTeacher($teacher)->create()->id,
+            'course_offering_id' => CourseOffering::factory()->forTeachers([$teacher])->create()->id,
         ]);
 
         $this->actingAs($user)
@@ -123,7 +123,7 @@ final class EnrollmentControllerTest extends TestCase
 
         $enrollment = Enrollment::factory()->create([
             'student_id' => Student::factory()->for($user)->create()->id,
-            'course_offering_id' => CourseOffering::factory()->forTeacher($teacher)->create()->id,
+            'course_offering_id' => CourseOffering::factory()->forTeachers([$teacher])->create()->id,
         ]);
 
         $this->actingAs($user)

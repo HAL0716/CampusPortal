@@ -22,7 +22,7 @@ final class FinalGradeControllerTest extends TestCase
         ])->create();
 
         $offering = CourseOffering::factory()
-            ->forTeacher(Teacher::factory()->for($user)->create())
+            ->forTeachers([Teacher::factory()->for($user)->create()])
             ->create();
 
         $enrollment = Enrollment::factory()
@@ -43,7 +43,7 @@ final class FinalGradeControllerTest extends TestCase
         $user = User::factory()->create();
 
         $offering = CourseOffering::factory()
-            ->forTeacher(Teacher::factory()->for($user)->create())
+            ->forTeachers([Teacher::factory()->for($user)->create()])
             ->create();
 
         $this->actingAs($user)

@@ -91,10 +91,7 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
             ->with([
                 'course.teachers.user',
                 'materials' => fn ($query) => $query
-                    ->where(fn ($query) => $query
-                        ->where('publish_date', '<=', $this->clock->now())
-                        ->orWhereNull('publish_date')
-                    )
+                    ->publishedAt($this->clock->now())
                     ->orderByRaw('publish_date IS NULL')
                     ->orderBy('publish_date'),
             ])

@@ -119,7 +119,7 @@ final class EloquentCourseOfferingQueryServiceTest extends TestCase
         $teacher = Teacher::factory()->create();
 
         $offering = CourseOffering::factory()
-            ->forTeacher($teacher)
+            ->forTeachers([$teacher])
             ->for($this->semester)
             ->create();
 
@@ -156,7 +156,7 @@ final class EloquentCourseOfferingQueryServiceTest extends TestCase
         $teacher = Teacher::factory()->create();
 
         $offering = CourseOffering::factory()
-            ->forTeacher($teacher)
+            ->forTeachers([$teacher])
             ->for($this->semester)
             ->create();
 
@@ -251,7 +251,7 @@ final class EloquentCourseOfferingQueryServiceTest extends TestCase
         $teacher = Teacher::factory()->create();
 
         $offering = CourseOffering::factory()
-            ->forTeacher($teacher)
+            ->forTeachers([$teacher])
             ->for($this->semester)
             ->create();
 
