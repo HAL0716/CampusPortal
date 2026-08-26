@@ -4,58 +4,53 @@ namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\Student\Entities\Student;
 use App\Domain\Student\Exceptions\StudentNotFoundException;
-use App\Domain\User\ValueObjects\UserId;
 use App\Infrastructure\Repositories\EloquentStudentRepository;
 use App\Models\Student as StudentModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Support\TestHelpers\StudentTestHelper;
 use Tests\TestCase;
 
 final class EloquentStudentRepositoryTest extends TestCase
 {
     use RefreshDatabase;
+    use StudentTestHelper;
 
-    private EloquentStudentRepository $repository;
-
-    protected function setUp(): void
+    private function repository(): EloquentStudentRepository
     {
-        parent::setUp();
-
-        $this->repository = $this->app->make(EloquentStudentRepository::class);
+        return app(EloquentStudentRepository::class);
     }
 
-    public function test_can_find_student_by_user_id(): void
+    public function test_find_by_user_id_returns_student(): void
     {
-        $student = StudentModel::factory()->create();
+        $model = StudentModel::factory()->create();
 
-        $found = $this->repository->findByUserId(new UserId($student->user_id));
+        $result = $this->repository()->findByUserId($this->userId($model->user_id));
 
-        self::assertInstanceOf(Student::class, $found);
-        self::assertSame($student->id, $found->id()->value());
-        self::assertSame($student->user_id, $found->userId()->value());
+        self::assertInstanceOf(Student::class, $result);
+        self::assertSame($model->id, $result->requireId()->value());
+        self::assertSame($model->user_id, $result->userId()->value());
     }
 
-    public function test_returns_null_when_student_not_found_by_user_id(): void
+    public function test_find_by_user_id_returns_null_when_student_not_found(): void
     {
-        $found = $this->repository->findByUserId(new UserId(999));
-
-        self::assertNull($found);
+        self::assertNull($this->repository()->findByUserId($this->userId(999999)));
     }
 
-    public function test_can_get_student_by_user_id(): void
+    public function test_get_by_user_id_returns_student(): void
     {
-        $student = StudentModel::factory()->create();
+        $model = StudentModel::factory()->create();
 
-        $found = $this->repository->getByUserId(new UserId($student->user_id));
+        $result = $this->repository()->getByUserId($this->userId($model->user_id));
 
-        self::assertInstanceOf(Student::class, $found);
-        self::assertSame($student->id, $found->id()->value());
-        self::assertSame($student->user_id, $found->userId()->value());
+        self::assertInstanceOf(Student::class, $result);
+        self::assertSame($model->id, $result->requireId()->value());
+        self::assertSame($model->user_id, $result->userId()->value());
     }
 
-    public function test_throws_exception_when_student_not_found_by_user_id(): void
+    public function test_get_by_user_id_throws_exception_when_student_not_found(): void
     {
         $this->expectException(StudentNotFoundException::class);
 
-        $this->repository->getByUserId(new UserId(999999));
+        $this->repository()->getByUserId($this->userId(999999));
     }
 }
