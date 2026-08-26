@@ -14,35 +14,62 @@ final class EloquentSemesterRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    private EloquentSemesterRepository $repository;
-
-    protected function setUp(): void
+    private function repository(): EloquentSemesterRepository
     {
-        parent::setUp();
-
-        $this->repository = $this->app->make(EloquentSemesterRepository::class);
+        return app(EloquentSemesterRepository::class);
     }
 
-    public function test_can_find_semester_by_date(): void
+    public function test_get_by_date_returns_semester_when_date_is_start_date(): void
     {
-        $semester = SemesterModel::factory()->create([
-            'start_date' => '2024-01-01',
-            'end_date' => '2024-06-30',
-        ]);
+        $model = SemesterModel::factory()->create();
 
-        $date = new CarbonImmutable('2024-03-15');
+        $result = $this->repository()->getByDate(CarbonImmutable::parse($model->start_date));
 
-        $found = $this->repository->getByDate($date);
-
-        self::assertInstanceOf(Semester::class, $found);
-        self::assertSame($semester->id, $found->id()->value());
+        self::assertInstanceOf(Semester::class, $result);
+        self::assertSame($model->id, $result->requireId()->value());
+        self::assertSame($model->academic_year, $result->academicYear());
+        self::assertSame($model->term->value, $result->term()->value);
     }
 
-    public function test_throws_exception_when_no_semester_found_by_date(): void
+    public function test_get_by_date_returns_semester_when_date_is_end_date(): void
     {
-        $date = new CarbonImmutable('2024-03-15');
+        $model = SemesterModel::factory()->create();
 
-        $this->expectException(SemesterNotFoundException::class);
-        $this->repository->getByDate($date);
+        $result = $this->repository()->getByDate(CarbonImmutable::parse($model->end_date));
+
+        self::assertSame($model->id, $result->requireId()->value());
+    }
+
+    public function test_get_by_date_returns_semester_when_date_is_between_start_and_end_date(): void
+    {
+        $model = SemesterModel::factory()->create();
+
+        $date = CarbonImmutable::parse($model->start_date)
+            ->addDays(
+                CarbonImmutable::parse($model->start_date)
+                    ->diffInDays(CarbonImmutable::parse($model->end_date)) / 2,
+            );
+
+        $result = $this->repository()->getByDate($date);
+
+        self::assertSame($model->id, $result->requireId()->value());
+    }
+
+    public function test_get_by_date_throws_exception_when_date_is_before_start_date(): void
+    {
+        $model = SemesterModel::factory()->create();
+
+        self::expectException(SemesterNotFoundException::class);
+
+        $this->repository()->getByDate(CarbonImmutable::parse($model->start_date)->subDay());
+    }
+
+    public function test_get_by_date_throws_exception_when_date_is_after_end_date(): void
+    {
+        $model = SemesterModel::factory()->create();
+
+        self::expectException(SemesterNotFoundException::class);
+
+        $this->repository()->getByDate(CarbonImmutable::parse($model->end_date)->addDay());
     }
 }
