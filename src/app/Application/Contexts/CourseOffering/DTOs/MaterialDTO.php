@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Contexts\CourseOffering\Show\DTOs;
+namespace App\Application\Contexts\CourseOffering\DTOs;
 
 final readonly class MaterialDTO
 {

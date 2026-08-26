@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\CourseOffering;
 
-use App\Application\Contexts\CourseOffering\Show\Queries\GetCourseOfferingQuery;
+use App\Application\Contexts\CourseOffering\Queries\GetCourseOfferingQuery;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\User\ValueObjects\UserId;
 use Illuminate\Contracts\Validation\ValidationRule;

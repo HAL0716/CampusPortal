@@ -2,8 +2,8 @@
 
 namespace App\Application\Contexts\CourseOffering\Services;
 
-use App\Application\Contexts\CourseOffering\Index\DTOs\CourseOfferingDTO;
-use App\Application\Contexts\CourseOffering\Show\DTOs\CourseOfferingDTO as DetailDTO;
+use App\Application\Contexts\CourseOffering\DTOs\CourseOfferingDetailDTO;
+use App\Application\Contexts\CourseOffering\DTOs\CourseOfferingDTO;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Student\ValueObjects\StudentId;
@@ -16,5 +16,5 @@ interface CourseOfferingQueryService
      */
     public function findBySemester(SemesterId $semesterId, StudentId|TeacherId|null $memberId = null): array;
 
-    public function getDetail(CourseOfferingId $id, StudentId|TeacherId|null $memberId = null): DetailDTO;
+    public function getDetail(CourseOfferingId $id, StudentId|TeacherId|null $memberId = null): CourseOfferingDetailDTO;
 }

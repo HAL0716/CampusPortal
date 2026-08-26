@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\Contexts\CourseOffering\Show\UseCases;
+namespace App\Application\Contexts\CourseOffering\UseCases;
 
+use App\Application\Contexts\CourseOffering\DTOs\CourseOfferingDetailDTO;
+use App\Application\Contexts\CourseOffering\Queries\GetCourseOfferingQuery;
 use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
-use App\Application\Contexts\CourseOffering\Show\DTOs\CourseOfferingDTO;
-use App\Application\Contexts\CourseOffering\Show\Queries\GetCourseOfferingQuery;
 use App\Domain\Student\Repositories\StudentRepository;
 use App\Domain\Teacher\Repositories\TeacherRepository;
 
@@ -16,7 +16,7 @@ final readonly class GetCourseOfferingUseCase
         private CourseOfferingQueryService $queryService,
     ) {}
 
-    public function execute(GetCourseOfferingQuery $query): CourseOfferingDTO
+    public function execute(GetCourseOfferingQuery $query): CourseOfferingDetailDTO
     {
         $student = $this->students->findByUserId($query->userId);
         if ($student !== null) {

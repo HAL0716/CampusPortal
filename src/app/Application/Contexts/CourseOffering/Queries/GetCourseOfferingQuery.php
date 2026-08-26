@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Contexts\CourseOffering\Show\Queries;
+namespace App\Application\Contexts\CourseOffering\Queries;
 
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\User\ValueObjects\UserId;

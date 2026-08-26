@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Application\Contexts\CourseOffering\Index\UseCases;
+namespace App\Application\Contexts\CourseOffering\UseCases;
 
-use App\Application\Contexts\CourseOffering\Index\DTOs\CourseOfferingDTO;
-use App\Application\Contexts\CourseOffering\Index\Queries\ListCourseOfferingsQuery;
+use App\Application\Contexts\CourseOffering\DTOs\CourseOfferingDTO;
+use App\Application\Contexts\CourseOffering\Queries\ListCourseOfferingsQuery;
 use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
 use App\Domain\Semester\Repositories\SemesterRepository;
 use App\Domain\Student\Repositories\StudentRepository;

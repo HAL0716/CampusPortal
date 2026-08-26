@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Contexts\CourseOffering\Index\Enums;
+namespace App\Application\Contexts\CourseOffering\Enums;
 
 enum CourseOfferingStatus: string
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\Contexts\CourseOffering\Index\DTOs;
+namespace App\Application\Contexts\CourseOffering\DTOs;
 
-use App\Application\Contexts\CourseOffering\Index\Enums\CourseOfferingStatus;
+use App\Application\Contexts\CourseOffering\Enums\CourseOfferingStatus;
 
 final readonly class CourseOfferingDTO
 {

@@ -26,4 +26,9 @@ class EnrollmentFactory extends Factory
             'status' => EnrollmentStatus::ENROLLED,
         ];
     }
+
+    public function status(EnrollmentStatus $status): self
+    {
+        return $this->state(fn () => ['status' => $status]);
+    }
 }

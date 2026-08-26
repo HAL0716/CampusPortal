@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\CourseOffering;
 
-use App\Application\Contexts\CourseOffering\Index\Queries\ListCourseOfferingsQuery;
+use App\Application\Contexts\CourseOffering\Queries\ListCourseOfferingsQuery;
 use App\Domain\User\ValueObjects\UserId;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Validation\ValidationRule;

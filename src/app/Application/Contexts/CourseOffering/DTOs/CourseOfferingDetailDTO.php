@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\Contexts\CourseOffering\Show\DTOs;
+namespace App\Application\Contexts\CourseOffering\DTOs;
 
-use App\Application\Contexts\CourseOffering\Index\Enums\CourseOfferingStatus;
+use App\Application\Contexts\CourseOffering\Enums\CourseOfferingStatus;
 
-final readonly class CourseOfferingDTO
+final readonly class CourseOfferingDetailDTO
 {
     /**
      * @param  array<MaterialDTO>  $materials

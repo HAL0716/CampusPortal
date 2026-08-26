@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Application\Contexts\Authentication\AuthenticationService;
-use App\Application\Contexts\CourseOffering\Index\UseCases\ListCourseOfferingsUseCase;
-use App\Application\Contexts\CourseOffering\Show\UseCases\GetCourseOfferingUseCase;
+use App\Application\Contexts\CourseOffering\UseCases\GetCourseOfferingUseCase;
+use App\Application\Contexts\CourseOffering\UseCases\ListCourseOfferingsUseCase;
 use App\Application\Services\Clock\Clock;
 use App\Http\Requests\CourseOffering\IndexRequest;
 use App\Http\Requests\CourseOffering\ShowRequest;

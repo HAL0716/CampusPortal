@@ -2,11 +2,11 @@
 
 namespace App\Infrastructure\QueryServices;
 
-use App\Application\Contexts\CourseOffering\Index\DTOs\CourseOfferingDTO;
-use App\Application\Contexts\CourseOffering\Index\Enums\CourseOfferingStatus;
+use App\Application\Contexts\CourseOffering\DTOs\CourseOfferingDetailDTO;
+use App\Application\Contexts\CourseOffering\DTOs\CourseOfferingDTO;
+use App\Application\Contexts\CourseOffering\DTOs\MaterialDTO;
+use App\Application\Contexts\CourseOffering\Enums\CourseOfferingStatus;
 use App\Application\Contexts\CourseOffering\Services\CourseOfferingQueryService;
-use App\Application\Contexts\CourseOffering\Show\DTOs\CourseOfferingDTO as DetailDTO;
-use App\Application\Contexts\CourseOffering\Show\DTOs\MaterialDTO;
 use App\Application\Services\Clock\Clock;
 use App\Domain\CourseOffering\Exceptions\CourseOfferingNotFoundException;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
@@ -85,7 +85,7 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
         return $statuses;
     }
 
-    public function getDetail(CourseOfferingId $id, StudentId|TeacherId|null $memberId = null): DetailDTO
+    public function getDetail(CourseOfferingId $id, StudentId|TeacherId|null $memberId = null): CourseOfferingDetailDTO
     {
         $offering = CourseOffering::query()
             ->with([
@@ -95,6 +95,7 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
                         ->where('publish_date', '<=', $this->clock->now())
                         ->orWhereNull('publish_date')
                     )
+                    ->orderByRaw('publish_date IS NULL')
                     ->orderBy('publish_date'),
             ])
             ->find($id->value());
@@ -109,7 +110,7 @@ final class EloquentCourseOfferingQueryService implements CourseOfferingQuerySer
             default => CourseOfferingStatus::NONE,
         };
 
-        return new DetailDTO(
+        return new CourseOfferingDetailDTO(
             id: $offering->id,
             name: $offering->course->name,
             description: $offering->course->description,
