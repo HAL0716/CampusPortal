@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Domain\Permission\Enums\PermissionType;
 use App\Models\CourseOffering;
 use App\Models\Enrollment;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Teacher;
 use App\Models\User;
@@ -18,7 +19,9 @@ final class FinalGradeControllerTest extends TestCase
     public function test_index_can_view_final_grades(): void
     {
         $user = User::factory()->withRoles([
-            Role::factory()->withPermissions([PermissionType::FinalGradeCreate])->create(),
+            Role::factory()->withPermissions([
+                Permission::factory()->withName(PermissionType::FinalGradeCreate)->create(),
+            ])->create(),
         ])->create();
 
         $offering = CourseOffering::factory()

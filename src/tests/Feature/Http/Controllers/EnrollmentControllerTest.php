@@ -7,6 +7,7 @@ use App\Domain\FinalGrade\Enums\FinalGradeType;
 use App\Domain\Permission\Enums\PermissionType;
 use App\Models\CourseOffering;
 use App\Models\Enrollment;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -21,7 +22,9 @@ final class EnrollmentControllerTest extends TestCase
     public function test_can_enroll_offering(): void
     {
         $user = User::factory()->withRoles([
-            Role::factory()->withPermissions([PermissionType::EnrollmentManage])->create(),
+            Role::factory()->withPermissions([
+                Permission::factory()->withName(PermissionType::EnrollmentManage)->create(),
+            ])->create(),
         ])->create();
 
         $student = Student::factory()->for($user)->create();
@@ -52,7 +55,9 @@ final class EnrollmentControllerTest extends TestCase
     public function test_can_drop_course(): void
     {
         $user = User::factory()->withRoles([
-            Role::factory()->withPermissions([PermissionType::EnrollmentManage])->create(),
+            Role::factory()->withPermissions([
+                Permission::factory()->withName(PermissionType::EnrollmentManage)->create(),
+            ])->create(),
         ])->create();
 
         $enrollment = Enrollment::factory()->create([
@@ -89,7 +94,9 @@ final class EnrollmentControllerTest extends TestCase
     public function test_can_complete_enrollment(): void
     {
         $user = User::factory()->withRoles([
-            Role::factory()->withPermissions([PermissionType::FinalGradeCreate])->create(),
+            Role::factory()->withPermissions([
+                Permission::factory()->withName(PermissionType::FinalGradeCreate)->create(),
+            ])->create(),
         ])->create();
 
         $teacher = Teacher::factory()->for($user)->create();

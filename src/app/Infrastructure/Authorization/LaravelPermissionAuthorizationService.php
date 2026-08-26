@@ -26,7 +26,7 @@ final class LaravelPermissionAuthorizationService implements PermissionAuthoriza
             return $this->cachedPermissions[$userId];
         }
 
-        $permissions = collect($this->permissions->findByUser($user))
+        $permissions = collect($this->permissions->findByUserId($user->requireId()))
             ->map(fn ($permission) => $permission->name()->value)
             ->unique()
             ->values()

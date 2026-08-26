@@ -38,9 +38,9 @@ final class LaravelPermissionAuthorizationServiceTest extends TestCase
         $user = $this->reconstructUser();
         $permission = $this->reconstructPermission(name: PermissionType::DashboardView);
 
-        $this->permissions->shouldReceive('findByUser')
+        $this->permissions->shouldReceive('findByUserId')
             ->once()
-            ->with($user)
+            ->with($user->requireId())
             ->andReturn([$permission]);
 
         $this->assertSame([PermissionType::DashboardView->value], $this->service->permissions($user));
@@ -52,9 +52,9 @@ final class LaravelPermissionAuthorizationServiceTest extends TestCase
         $permission1 = $this->reconstructPermission(name: PermissionType::DashboardView);
         $permission2 = $this->reconstructPermission(id: 2, name: PermissionType::DashboardView);
 
-        $this->permissions->shouldReceive('findByUser')
+        $this->permissions->shouldReceive('findByUserId')
             ->once()
-            ->with($user)
+            ->with($user->requireId())
             ->andReturn([$permission1, $permission2]);
 
         $this->assertSame([PermissionType::DashboardView->value], $this->service->permissions($user));
@@ -65,9 +65,9 @@ final class LaravelPermissionAuthorizationServiceTest extends TestCase
         $user = $this->reconstructUser();
         $permission = $this->reconstructPermission(name: PermissionType::DashboardView);
 
-        $this->permissions->shouldReceive('findByUser')
+        $this->permissions->shouldReceive('findByUserId')
             ->once()
-            ->with($user)
+            ->with($user->requireId())
             ->andReturn([$permission]);
 
         $this->assertTrue($this->service->can($user, PermissionType::DashboardView));
@@ -78,9 +78,9 @@ final class LaravelPermissionAuthorizationServiceTest extends TestCase
         $user = $this->reconstructUser();
         $permission = $this->reconstructPermission(name: PermissionType::DashboardView);
 
-        $this->permissions->shouldReceive('findByUser')
+        $this->permissions->shouldReceive('findByUserId')
             ->once()
-            ->with($user)
+            ->with($user->requireId())
             ->andReturn([$permission]);
 
         $this->assertFalse($this->service->can($user, PermissionType::CourseOfferingView));
@@ -91,9 +91,9 @@ final class LaravelPermissionAuthorizationServiceTest extends TestCase
         $user = $this->reconstructUser();
         $permission = $this->reconstructPermission(name: PermissionType::DashboardView);
 
-        $this->permissions->shouldReceive('findByUser')
+        $this->permissions->shouldReceive('findByUserId')
             ->once()
-            ->with($user)
+            ->with($user->requireId())
             ->andReturn([$permission]);
 
         $this->service->permissions($user);
@@ -106,9 +106,9 @@ final class LaravelPermissionAuthorizationServiceTest extends TestCase
         $user = $this->reconstructUser();
         $permission = $this->reconstructPermission(name: PermissionType::DashboardView);
 
-        $this->permissions->shouldReceive('findByUser')
+        $this->permissions->shouldReceive('findByUserId')
             ->once()
-            ->with($user)
+            ->with($user->requireId())
             ->andReturn([$permission]);
 
         $this->assertTrue($this->service->can($user, PermissionType::DashboardView));

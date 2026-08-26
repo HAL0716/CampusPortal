@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Domain\Permission\Enums\PermissionType;
 use App\Models\CourseOffering;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Semester;
 use App\Models\User;
@@ -19,7 +20,9 @@ final class CourseOfferingControllerTest extends TestCase
     public function test_can_view_course_offerings(): void
     {
         $user = User::factory()->withRoles([
-            Role::factory()->withPermissions([PermissionType::CourseOfferingView])->create(),
+            Role::factory()->withPermissions([
+                Permission::factory()->withName(PermissionType::CourseOfferingView)->create(),
+            ])->create(),
         ])->create();
 
         $semester = Semester::factory()->create();
@@ -50,7 +53,9 @@ final class CourseOfferingControllerTest extends TestCase
     public function test_can_view_course_offering_detail(): void
     {
         $user = User::factory()->withRoles([
-            Role::factory()->withPermissions([PermissionType::CourseOfferingView])->create(),
+            Role::factory()->withPermissions([
+                Permission::factory()->withName(PermissionType::CourseOfferingView)->create(),
+            ])->create(),
         ])->create();
 
         $offering = CourseOffering::factory()->create();

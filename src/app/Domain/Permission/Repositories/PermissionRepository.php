@@ -3,12 +3,12 @@
 namespace App\Domain\Permission\Repositories;
 
 use App\Domain\Permission\Entities\Permission;
-use App\Domain\User\Entities\User;
+use App\Domain\User\ValueObjects\UserId;
 
 interface PermissionRepository
 {
     /**
      * @return array<Permission>
      */
-    public function findByUser(User $user): array;
+    public function findByUserId(UserId $userId): array;
 }
