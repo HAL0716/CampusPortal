@@ -2,65 +2,92 @@
 
 namespace Tests\Feature\Infrastructure\Repositories;
 
-use App\Domain\Enrollment\ValueObjects\EnrollmentId;
-use App\Domain\FinalGrade\Entities\FinalGrade;
 use App\Domain\FinalGrade\Enums\FinalGradeType;
-use App\Domain\FinalGrade\ValueObjects\FinalGradeId;
+use App\Domain\FinalGrade\Exceptions\FinalGradeAlreadyExistsException;
+use App\Domain\FinalGrade\Exceptions\FinalGradeNotFoundException;
 use App\Infrastructure\Repositories\EloquentFinalGradeRepository;
 use App\Models\Enrollment;
 use App\Models\FinalGrade as FinalGradeModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Support\TestHelpers\FinalGradeTestHelper;
 use Tests\TestCase;
 
 final class EloquentFinalGradeRepositoryTest extends TestCase
 {
+    use FinalGradeTestHelper;
     use RefreshDatabase;
 
-    private EloquentFinalGradeRepository $repository;
-
-    protected function setUp(): void
+    private function repository(): EloquentFinalGradeRepository
     {
-        parent::setUp();
-
-        $this->repository = $this->app->make(EloquentFinalGradeRepository::class);
+        return app(EloquentFinalGradeRepository::class);
     }
 
-    public function test_can_save_new_final_grade(): void
+    public function test_save_creates_final_grade(): void
+    {
+        $finalGrade = $this->createFinalGrade(
+            enrollmentId: Enrollment::factory()->create()->id,
+        );
+
+        $result = $this->repository()->save($finalGrade);
+
+        self::assertNotNull($result->id());
+        self::assertSame($finalGrade->enrollmentId()->value(), $result->enrollmentId()->value());
+        self::assertSame($finalGrade->grade(), $result->grade());
+
+        $this->assertDatabaseHas('final_grades', [
+            'id' => $result->requireId()->value(),
+            'enrollment_id' => $finalGrade->enrollmentId()->value(),
+            'grade' => $finalGrade->grade(),
+        ]);
+    }
+
+    public function test_save_updates_existing_final_grade(): void
+    {
+        $model = FinalGradeModel::factory()->withGrade(FinalGradeType::A)->create();
+
+        $finalGrade = $this->reconstructFinalGrade(
+            id: $model->id,
+            enrollmentId: $model->enrollment_id,
+            grade: FinalGradeType::B,
+        );
+
+        $result = $this->repository()->save($finalGrade);
+
+        self::assertSame($finalGrade->requireId()->value(), $result->requireId()->value());
+        self::assertSame($finalGrade->enrollmentId()->value(), $result->enrollmentId()->value());
+        self::assertSame($finalGrade->grade(), $result->grade());
+
+        $this->assertDatabaseHas('final_grades', [
+            'id' => $finalGrade->requireId()->value(),
+            'enrollment_id' => $finalGrade->enrollmentId()->value(),
+            'grade' => $finalGrade->grade(),
+        ]);
+    }
+
+    public function test_save_throws_exception_when_updating_nonexistent_final_grade(): void
+    {
+        $finalGrade = $this->reconstructFinalGrade(
+            id: 999999,
+            enrollmentId: Enrollment::factory()->create()->id,
+        );
+
+        $this->expectException(FinalGradeNotFoundException::class);
+
+        $this->repository()->save($finalGrade);
+    }
+
+    public function test_save_throws_exception_when_final_grade_already_exists(): void
     {
         $enrollment = Enrollment::factory()->create();
 
-        $saved = $this->repository->save(
-            FinalGrade::create(
-                new EnrollmentId($enrollment->id),
-                FinalGradeType::A,
-            )
+        FinalGradeModel::factory()->for($enrollment)->create();
+
+        $finalGrade = $this->createFinalGrade(
+            enrollmentId: $enrollment->id
         );
 
-        self::assertInstanceOf(FinalGrade::class, $saved);
-        self::assertNotNull($saved->id());
-        self::assertDatabaseHas('final_grades', [
-            'enrollment_id' => $enrollment->id,
-            'grade' => FinalGradeType::A->value,
-        ]);
-    }
+        $this->expectException(FinalGradeAlreadyExistsException::class);
 
-    public function test_can_update_existing_final_grade(): void
-    {
-        $finalGrade = FinalGradeModel::factory()->create();
-
-        $saved = $this->repository->save(
-            FinalGrade::reconstruct(
-                new FinalGradeId($finalGrade->id),
-                new EnrollmentId($finalGrade->enrollment_id),
-                FinalGradeType::B,
-            )
-        );
-
-        self::assertInstanceOf(FinalGrade::class, $saved);
-        self::assertSame($finalGrade->id, $saved->id()->value());
-        self::assertDatabaseHas('final_grades', [
-            'enrollment_id' => $finalGrade->enrollment_id,
-            'grade' => FinalGradeType::B->value,
-        ]);
+        $this->repository()->save($finalGrade);
     }
 }
