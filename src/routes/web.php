@@ -34,6 +34,12 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', [StudentController::class, 'index'])
                 ->name('index');
+
+            Route::get('/create', [StudentController::class, 'create'])
+                ->name('create');
+
+            Route::post('/', [StudentController::class, 'store'])
+                ->name('store');
         });
 
     Route::prefix('course-offerings')
