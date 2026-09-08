@@ -4,11 +4,13 @@ namespace Tests\Unit\Application\Contexts\Student;
 
 use App\Application\Contexts\Student\Commands\CreateStudentCommand;
 use App\Application\Contexts\Student\UseCases\CreateStudentUseCase;
+use App\Domain\Role\Enums\RoleType;
 use App\Domain\Student\Entities\Student;
 use App\Domain\Student\Repositories\StudentRepository;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use App\Domain\User\Repositories\UserRepository;
+use App\Domain\User\Repositories\UserRoleRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
@@ -24,6 +26,8 @@ final class CreateStudentUseCaseTest extends TestCase
 
     private UserRepository&MockInterface $users;
 
+    private UserRoleRepository&MockInterface $userRoles;
+
     private StudentRepository&MockInterface $students;
 
     protected function setUp(): void
@@ -31,23 +35,30 @@ final class CreateStudentUseCaseTest extends TestCase
         parent::setUp();
 
         $this->users = Mockery::mock(UserRepository::class);
+        $this->userRoles = Mockery::mock(UserRoleRepository::class);
         $this->students = Mockery::mock(StudentRepository::class);
     }
 
     public function test_creates_student(): void
     {
+        $user = $this->reconstructUser();
+
         $this->users->shouldReceive('save')
             ->once()
             ->with(Mockery::type(User::class))
-            ->andReturn($this->reconstructUser());
+            ->andReturn($user);
 
         $this->students->shouldReceive('save')
             ->once()
-            ->with(Mockery::on(function (Student $student): bool {
-                return $student->userId()->value() === $this->userId()->value()
+            ->with(Mockery::on(function (Student $student) use ($user): bool {
+                return $student->userId()->value() === $user->requireId()->value()
                     && $student->departmentId()->value() === $this->departmentId()->value();
             }))
             ->andReturn($this->reconstructStudent());
+
+        $this->userRoles->shouldReceive('assign')
+            ->once()
+            ->with($user->requireId(), [RoleType::STUDENT]);
 
         $this->useCase()->execute($this->command());
     }
@@ -60,6 +71,7 @@ final class CreateStudentUseCaseTest extends TestCase
             ->andThrow(UserAlreadyExistsException::class);
 
         $this->students->shouldNotReceive('save');
+        $this->userRoles->shouldNotReceive('assign');
 
         $this->expectException(UserAlreadyExistsException::class);
 
@@ -70,6 +82,7 @@ final class CreateStudentUseCaseTest extends TestCase
     {
         return new CreateStudentUseCase(
             $this->users,
+            $this->userRoles,
             $this->students,
         );
     }

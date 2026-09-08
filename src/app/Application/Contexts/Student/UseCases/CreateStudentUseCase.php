@@ -3,15 +3,18 @@
 namespace App\Application\Contexts\Student\UseCases;
 
 use App\Application\Contexts\Student\Commands\CreateStudentCommand;
+use App\Domain\Role\Enums\RoleType;
 use App\Domain\Student\Entities\Student;
 use App\Domain\Student\Repositories\StudentRepository;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Repositories\UserRepository;
+use App\Domain\User\Repositories\UserRoleRepository;
 
 final readonly class CreateStudentUseCase
 {
     public function __construct(
         private UserRepository $users,
+        private UserRoleRepository $userRoles,
         private StudentRepository $students,
     ) {}
 
@@ -31,6 +34,11 @@ final readonly class CreateStudentUseCase
                 $command->departmentId,
                 $command->studentNumber
             )
+        );
+
+        $this->userRoles->assign(
+            $user->requireId(),
+            [RoleType::STUDENT],
         );
     }
 }
