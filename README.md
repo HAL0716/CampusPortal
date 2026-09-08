@@ -732,15 +732,11 @@ enrolled（履修中）
 | ------ | ------------ | ------------------------- | :-----: | :-----: | :---: |
 | GET    | `/dashboard` | DashboardController@index |    ○    |    ○    |   ○   |
 
-## 9.3 ユーザー管理
+## 9.3 学生管理
 
-| Method | Path                | Controller             | Student | Teacher | Admin |
-| ------ | ------------------- | ---------------------- | :-----: | :-----: | :---: |
-| GET    | `/admin/users`      | UserController@index   |    ×    |    ×    |   ○   |
-| POST   | `/admin/users`      | UserController@store   |    ×    |    ×    |   ○   |
-| GET    | `/admin/users/{id}` | UserController@show    |    ×    |    ×    |   ○   |
-| PUT    | `/admin/users/{id}` | UserController@update  |    ×    |    ×    |   ○   |
-| DELETE | `/admin/users/{id}` | UserController@destroy |    ×    |    ×    |   ○   |
+| Method | Path               | Controller               | Student | Teacher | Admin |
+| ------ | ------------------ | ------------------------ | :-----: | :-----: | :---: |
+| GET    | `/students`        | StudentController@index  |    ×    |    ×    |   ○   |
 
 ## 9.4 教員管理
 
@@ -804,12 +800,12 @@ enrolled（履修中）
 
 ## 9.10 資料管理
 
-| Method | Path                                      | Controller                 | Student | Teacher | Admin |
-| ------ | ----------------------------------------- | -------------------------- | :-----: | :-----: | :---: |
-| POST   | `/course-offerings/{id}/materials`        | MaterialController@store   |    ×    |    ○    |   ×   |
-| GET    | `/materials/{id}`                         | MaterialController@show    |    ○    |    ○    |   ○   |
-| PUT    | `/materials/{id}`                         | MaterialController@update  |    ×    |    ○    |   ×   |
-| DELETE | `/materials/{id}`                         | MaterialController@destroy |    ×    |    ○    |   ×   |
+| Method | Path                               | Controller                 | Student | Teacher | Admin |
+| ------ | ---------------------------------- | -------------------------- | :-----: | :-----: | :---: |
+| POST   | `/course-offerings/{id}/materials` | MaterialController@store   |    ×    |    ○    |   ×   |
+| GET    | `/materials/{id}`                  | MaterialController@show    |    ○    |    ○    |   ○   |
+| PUT    | `/materials/{id}`                  | MaterialController@update  |    ×    |    ○    |   ×   |
+| DELETE | `/materials/{id}`                  | MaterialController@destroy |    ×    |    ○    |   ×   |
 
 ## 9.11 課題管理
 
