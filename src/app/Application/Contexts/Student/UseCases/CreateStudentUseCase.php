@@ -3,6 +3,7 @@
 namespace App\Application\Contexts\Student\UseCases;
 
 use App\Application\Contexts\Student\Commands\CreateStudentCommand;
+use App\Application\Services\Database\Transaction;
 use App\Domain\Role\Enums\RoleType;
 use App\Domain\Student\Entities\Student;
 use App\Domain\Student\Repositories\StudentRepository;
@@ -16,29 +17,32 @@ final readonly class CreateStudentUseCase
         private UserRepository $users,
         private UserRoleRepository $userRoles,
         private StudentRepository $students,
+        private Transaction $transaction,
     ) {}
 
     public function execute(CreateStudentCommand $command): void
     {
-        $user = $this->users->save(
-            User::create(
-                $command->email,
-                $command->password,
-                $command->name
-            )
-        );
+        $this->transaction->run(function () use ($command): void {
+            $user = $this->users->save(
+                User::create(
+                    $command->email,
+                    $command->password,
+                    $command->name
+                )
+            );
 
-        $this->students->save(
-            Student::create(
+            $this->students->save(
+                Student::create(
+                    $user->requireId(),
+                    $command->departmentId,
+                    $command->studentNumber
+                )
+            );
+
+            $this->userRoles->assign(
                 $user->requireId(),
-                $command->departmentId,
-                $command->studentNumber
-            )
-        );
-
-        $this->userRoles->assign(
-            $user->requireId(),
-            [RoleType::STUDENT],
-        );
+                [RoleType::STUDENT],
+            );
+        });
     }
 }

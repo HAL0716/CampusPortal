@@ -4,6 +4,7 @@ namespace Tests\Unit\Application\Contexts\Student;
 
 use App\Application\Contexts\Student\Commands\CreateStudentCommand;
 use App\Application\Contexts\Student\UseCases\CreateStudentUseCase;
+use App\Application\Services\Database\Transaction;
 use App\Domain\Role\Enums\RoleType;
 use App\Domain\Student\Entities\Student;
 use App\Domain\Student\Repositories\StudentRepository;
@@ -30,6 +31,8 @@ final class CreateStudentUseCaseTest extends TestCase
 
     private StudentRepository&MockInterface $students;
 
+    private Transaction&MockInterface $transaction;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,6 +40,12 @@ final class CreateStudentUseCaseTest extends TestCase
         $this->users = Mockery::mock(UserRepository::class);
         $this->userRoles = Mockery::mock(UserRoleRepository::class);
         $this->students = Mockery::mock(StudentRepository::class);
+        $this->transaction = Mockery::mock(Transaction::class);
+
+        $this->transaction->shouldReceive('run')
+            ->andReturnUsing(
+                fn (callable $callback) => $callback()
+            );
     }
 
     public function test_creates_student(): void
@@ -84,6 +93,7 @@ final class CreateStudentUseCaseTest extends TestCase
             $this->users,
             $this->userRoles,
             $this->students,
+            $this->transaction,
         );
     }
 
