@@ -2,10 +2,13 @@
 
 namespace Tests\Feature\Infrastructure\QueryServices;
 
-use App\Application\Contexts\Material\Services\MaterialQueryService;
+use App\Application\Contexts\Material\DTOs\MaterialDetailDTO;
 use App\Domain\Material\Exceptions\MaterialNotFoundException;
 use App\Domain\Material\ValueObjects\MaterialId;
+use App\Infrastructure\QueryServices\EloquentMaterialQueryService;
+use App\Models\CourseOffering;
 use App\Models\Material;
+use App\Models\Semester;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Support\Clock\UseClock;
@@ -16,7 +19,9 @@ final class EloquentMaterialQueryServiceTest extends TestCase
     use RefreshDatabase;
     use UseClock;
 
-    private MaterialQueryService $queryService;
+    private Semester $semester;
+
+    private CourseOffering $offering;
 
     private CarbonImmutable $now;
 
@@ -24,46 +29,125 @@ final class EloquentMaterialQueryServiceTest extends TestCase
     {
         parent::setUp();
 
-        $this->now = CarbonImmutable::parse('2026-04-01 00:00:00');
+        $this->semester = Semester::factory()->create();
+
+        $this->offering = CourseOffering::factory()
+            ->for($this->semester)
+            ->create();
+
+        $startDate = CarbonImmutable::instance(
+            $this->semester->start_date,
+        );
+
+        $endDate = CarbonImmutable::instance(
+            $this->semester->end_date,
+        );
+
+        $this->now = $startDate->addDays(
+            intdiv($startDate->diffInDays($endDate), 2),
+        );
 
         $this->useClock($this->now);
-        $this->queryService = app(MaterialQueryService::class);
     }
 
-    public function test_can_find_detail_with_published_material(): void
+    private function queryService(): EloquentMaterialQueryService
     {
-        $material = Material::factory()->create([
-            'title' => '公開済み資料',
-            'publish_date' => $this->now->subHour(),
-        ]);
-
-        $dto = $this->queryService->getDetail(new MaterialId($material->id));
-
-        $this->assertSame($material->id, $dto->id);
-        $this->assertSame($material->title, $dto->title);
+        return app(EloquentMaterialQueryService::class);
     }
 
-    public function test_can_find_detail_with_material_published_at_now(): void
+    public function test_get_detail_returns_published_material(): void
     {
-        $material = Material::factory()->create([
-            'title' => '公開時刻の資料',
-            'publish_date' => $this->now,
-        ]);
+        $material = Material::factory()
+            ->for($this->offering)
+            ->create([
+                'publish_date' => $this->now->subHour(),
+            ]);
 
-        $dto = $this->queryService->getDetail(new MaterialId($material->id));
+        $result = $this->queryService()->getDetail(
+            new MaterialId($material->id),
+        );
 
-        $this->assertSame($material->id, $dto->id);
+        self::assertInstanceOf(MaterialDetailDTO::class, $result);
+
+        self::assertSame($material->id, $result->id);
+        self::assertSame($material->title, $result->title);
+        self::assertSame($material->description, $result->description);
+        self::assertSame($material->file_path, $result->filePath);
     }
 
-    public function test_cannot_find_detail_with_unpublished_material(): void
+    public function test_get_detail_returns_material_published_at_now(): void
     {
-        $material = Material::factory()->create([
-            'title' => '未公開資料',
-            'publish_date' => $this->now->addHour(),
-        ]);
+        $material = Material::factory()
+            ->for($this->offering)
+            ->create([
+                'publish_date' => $this->now,
+            ]);
+
+        $result = $this->queryService()->getDetail(
+            new MaterialId($material->id),
+        );
+
+        self::assertSame($material->id, $result->id);
+    }
+
+    public function test_get_detail_throws_exception_for_unpublished_material(): void
+    {
+        $material = Material::factory()
+            ->for($this->offering)
+            ->create([
+                'publish_date' => $this->now->addHour(),
+            ]);
 
         $this->expectException(MaterialNotFoundException::class);
 
-        $this->queryService->getDetail(new MaterialId($material->id));
+        $this->queryService()->getDetail(
+            new MaterialId($material->id),
+        );
+    }
+
+    public function test_get_detail_returns_material_without_publish_date(): void
+    {
+        $material = Material::factory()
+            ->for($this->offering)
+            ->create([
+                'publish_date' => null,
+            ]);
+
+        $result = $this->queryService()->getDetail(
+            new MaterialId($material->id),
+        );
+
+        self::assertSame($material->id, $result->id);
+    }
+
+    public function test_get_detail_throws_exception_for_non_existent_material(): void
+    {
+        $this->expectException(MaterialNotFoundException::class);
+
+        $this->queryService()->getDetail(
+            new MaterialId(999999),
+        );
+    }
+
+    public function test_get_detail_does_not_return_another_material(): void
+    {
+        $material = Material::factory()
+            ->for($this->offering)
+            ->create([
+                'publish_date' => $this->now->subHour(),
+            ]);
+
+        $anotherMaterial = Material::factory()
+            ->for($this->offering)
+            ->create([
+                'publish_date' => $this->now->subHour(),
+            ]);
+
+        $result = $this->queryService()->getDetail(
+            new MaterialId($material->id),
+        );
+
+        self::assertSame($material->id, $result->id);
+        self::assertNotSame($anotherMaterial->id, $result->id);
     }
 }

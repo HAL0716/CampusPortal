@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Application\Contexts\Authentication\AuthenticationService;
-use App\Application\Contexts\CourseOffering\Index\UseCases\ListCourseOfferingsUseCase;
-use App\Application\Contexts\CourseOffering\Show\UseCases\GetCourseOfferingUseCase;
+use App\Application\Contexts\CourseOffering\UseCases\GetCourseOfferingUseCase;
+use App\Application\Contexts\CourseOffering\UseCases\ListCourseOfferingsUseCase;
 use App\Application\Services\Clock\Clock;
 use App\Http\Requests\CourseOffering\IndexRequest;
 use App\Http\Requests\CourseOffering\ShowRequest;
@@ -32,14 +32,16 @@ class CourseOfferingController extends Controller
         ]);
     }
 
-    public function show(ShowRequest $request, GetCourseOfferingUseCase $useCase)
+    public function show(ShowRequest $request, GetCourseOfferingUseCase $useCase): Response
     {
+        $offering = $useCase->execute(
+            $request->toQuery(
+                userId: $this->auth->requireUser()->requireId()
+            )
+        );
+
         return Inertia::render('CourseOffering/Show', [
-            'offering' => $useCase->execute(
-                $request->toQuery(
-                    userId: $this->auth->requireUser()->requireId()
-                )
-            ),
+            'offering' => $offering,
         ]);
     }
 }

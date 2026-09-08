@@ -2,107 +2,98 @@
 
 namespace Tests\Feature\Infrastructure\Repositories;
 
-use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Material\Entities\Material;
 use App\Domain\Material\Exceptions\MaterialNotFoundException;
-use App\Domain\Material\ValueObjects\MaterialId;
 use App\Infrastructure\Repositories\EloquentMaterialRepository;
 use App\Models\CourseOffering;
 use App\Models\Material as MaterialModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Support\TestHelpers\MaterialTestHelper;
 use Tests\TestCase;
 
 final class EloquentMaterialRepositoryTest extends TestCase
 {
+    use MaterialTestHelper;
     use RefreshDatabase;
 
-    private EloquentMaterialRepository $repository;
-
-    protected function setUp(): void
+    private function repository(): EloquentMaterialRepository
     {
-        parent::setUp();
-
-        $this->repository = $this->app->make(EloquentMaterialRepository::class);
+        return app(EloquentMaterialRepository::class);
     }
 
-    public function test_can_save_new_material(): void
+    public function test_save_creates_material(): void
     {
-        $offering = CourseOffering::factory()->create();
-
-        $saved = $this->repository->save($this->material(new CourseOfferingId($offering->id)));
-
-        self::assertNotNull($saved->id());
-        self::assertDatabaseHas('materials', [
-            'id' => $saved->id()->value(),
-            'course_offering_id' => $offering->id,
-            'title' => '第1回講義資料',
-            'file_path' => 'materials/test.pdf',
-        ]);
-    }
-
-    public function test_can_update_existing_material(): void
-    {
-        $model = MaterialModel::factory()->create();
-
-        $saved = $this->repository->save(Material::reconstruct(
-            new MaterialId($model->id),
-            new CourseOfferingId($model->course_offering_id),
-            '更新後の資料',
-            '更新後の説明',
-            'materials/updated.pdf',
-            null,
-        ));
-
-        self::assertSame($model->id, $saved->id()->value());
-        self::assertSame('更新後の資料', $saved->title());
-        self::assertDatabaseHas('materials', [
-            'id' => $model->id,
-            'title' => '更新後の資料',
-            'file_path' => 'materials/updated.pdf',
-        ]);
-    }
-
-    public function test_throws_exception_when_material_not_found(): void
-    {
-        $offering = CourseOffering::factory()->create();
-
-        self::expectException(MaterialNotFoundException::class);
-
-        $this->repository->save(Material::reconstruct(
-            new MaterialId(999999),
-            new CourseOfferingId($offering->id),
-            '資料',
-            null,
-            'materials/test.pdf',
-            null,
-        ));
-    }
-
-    public function test_can_get_material_by_id(): void
-    {
-        $model = MaterialModel::factory()->create();
-
-        $material = $this->repository->getById(new MaterialId($model->id));
-
-        self::assertSame($model->id, $material->requireId()->value());
-        self::assertSame($model->title, $material->title());
-    }
-
-    public function test_throws_exception_when_getting_nonexistent_material(): void
-    {
-        self::expectException(MaterialNotFoundException::class);
-
-        $this->repository->getById(new MaterialId(999999));
-    }
-
-    private function material(CourseOfferingId $courseOfferingId): Material
-    {
-        return Material::create(
-            courseOfferingId: $courseOfferingId,
-            title: '第1回講義資料',
-            description: '講義資料です。',
-            filePath: 'materials/test.pdf',
-            publishDate: null,
+        $material = $this->createMaterial(
+            courseOfferingId: CourseOffering::factory()->create()->id,
         );
+
+        $result = $this->repository()->save($material);
+
+        self::assertInstanceOf(Material::class, $result);
+        self::assertNotNull($result->id());
+        self::assertSame($material->courseOfferingId()->value(), $result->courseOfferingId()->value());
+        self::assertSame($material->title(), $result->title());
+
+        $this->assertDatabaseHas('materials', [
+            'id' => $result->requireId()->value(),
+            'course_offering_id' => $material->courseOfferingId()->value(),
+            'title' => $material->title(),
+        ]);
+    }
+
+    public function test_save_updates_existing_material(): void
+    {
+        $model = MaterialModel::factory()->create();
+
+        $material = $this->reconstructMaterial(
+            id: $model->id,
+            courseOfferingId: $model->course_offering_id,
+            title: '更新後の資料',
+            description: '更新後の説明',
+            filePath: 'materials/updated.pdf',
+        );
+
+        $result = $this->repository()->save($material);
+
+        self::assertSame($material->requireId()->value(), $result->requireId()->value());
+        self::assertSame($material->title(), $result->title());
+        self::assertSame($material->description(), $result->description());
+        self::assertSame($material->filePath(), $result->filePath());
+
+        $this->assertDatabaseHas('materials', [
+            'id' => $material->requireId()->value(),
+            'title' => $material->title(),
+            'description' => $material->description(),
+            'file_path' => $material->filePath(),
+        ]);
+    }
+
+    public function test_save_throws_exception_when_updating_nonexistent_material(): void
+    {
+        $material = $this->reconstructMaterial(
+            id: 999999,
+            courseOfferingId: CourseOffering::factory()->create()->id,
+        );
+
+        $this->expectException(MaterialNotFoundException::class);
+
+        $this->repository()->save($material);
+    }
+
+    public function test_get_by_id_returns_material(): void
+    {
+        $model = MaterialModel::factory()->create();
+
+        $result = $this->repository()->getById($this->materialId($model->id));
+
+        self::assertInstanceOf(Material::class, $result);
+        self::assertSame($model->id, $result->requireId()->value());
+    }
+
+    public function test_get_by_id_throws_exception_when_material_not_found(): void
+    {
+        $this->expectException(MaterialNotFoundException::class);
+
+        $this->repository()->getById($this->materialId(999999));
     }
 }

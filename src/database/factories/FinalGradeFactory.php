@@ -24,4 +24,9 @@ class FinalGradeFactory extends Factory
             'grade' => fake()->randomElement(FinalGradeType::cases()),
         ];
     }
+
+    public function withGrade(FinalGradeType $grade): self
+    {
+        return $this->state(fn () => ['grade' => $grade]);
+    }
 }

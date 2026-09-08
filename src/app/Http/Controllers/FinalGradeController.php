@@ -16,12 +16,14 @@ final class FinalGradeController extends Controller
 
     public function index(IndexRequest $request, ListEnrollmentsUseCase $useCase): Response
     {
+        $enrollments = $useCase->execute(
+            $request->toQuery(
+                $this->auth->requireUser()->requireId()
+            )
+        );
+
         return Inertia::render('FinalGrade/Index', [
-            'enrollments' => $useCase->execute(
-                $request->toQuery(
-                    $this->auth->requireUser()->requireId()
-                )
-            ),
+            'enrollments' => $enrollments,
         ]);
     }
 }

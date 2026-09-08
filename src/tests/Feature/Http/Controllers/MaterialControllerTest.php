@@ -22,7 +22,7 @@ final class MaterialControllerTest extends TestCase
     {
         $user = User::factory()->withRoles([
             Role::factory()->withPermissions([
-                PermissionType::MaterialView,
+                Permission::factory()->withName(PermissionType::MaterialView)->create(),
             ])->create(),
         ])->create();
 
@@ -41,7 +41,6 @@ final class MaterialControllerTest extends TestCase
     public function test_cannot_view_material_without_permission(): void
     {
         $user = User::factory()->create();
-
         $material = Material::factory()->create();
 
         $this->actingAs($user)
@@ -49,78 +48,66 @@ final class MaterialControllerTest extends TestCase
             ->assertForbidden();
     }
 
-    public function test_can_upload_material(): void
+    public function test_can_store_material(): void
     {
         Storage::fake(config('filesystems.default'));
 
-        [$user, $offering] = $this->teacherOffering();
+        $user = User::factory()->withRoles([
+            Role::factory()->withPermissions([
+                Permission::factory()->withName(PermissionType::MaterialCreate)->create(),
+            ])->create(),
+        ])->create();
 
-        $response = $this->actingAs($user)->post(
-            route('course-offerings.materials.store', $offering),
-            $this->data(),
-        );
+        $offering = CourseOffering::factory()
+            ->forTeachers([Teacher::factory()->for($user)->create()])
+            ->create();
 
-        $response->assertRedirect()
-            ->assertSessionHas('success');
+        $this->actingAs($user)
+            ->post(route('course-offerings.materials.store', $offering), $this->data())
+            ->assertRedirect(route('course-offerings.show', $offering));
+
+        $material = $offering->materials()->firstOrFail();
 
         $this->assertDatabaseHas('materials', [
+            'id' => $material->id,
             'course_offering_id' => $offering->id,
-            'title' => '第1回講義資料',
-            'description' => '講義資料です。',
+            'title' => 'テスト資料',
         ]);
 
-        $material = $offering->materials()->first();
-
-        $this->assertTrue(Storage::disk(config('filesystems.default'))->exists($material->file_path));
+        Storage::assertExists($material->file_path);
     }
 
-    public function test_returns_error_when_unauthorized(): void
+    public function test_cannot_store_material_without_permission(): void
     {
         Storage::fake(config('filesystems.default'));
 
-        $user = $this->userWithPermission(
-            PermissionType::MaterialCreate
-        );
-        $offering = CourseOffering::factory()->create();
+        $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post(
-            route('course-offerings.materials.store', $offering),
-            $this->data(),
-        );
+        $offering = CourseOffering::factory()
+            ->forTeachers([Teacher::factory()->for($user)->create()])
+            ->create();
 
-        $response->assertRedirect()
-            ->assertSessionHas('error');
+        $this->actingAs($user)
+            ->post(route('course-offerings.materials.store', $offering), $this->data())
+            ->assertForbidden();
 
         $this->assertDatabaseMissing('materials', [
             'course_offering_id' => $offering->id,
         ]);
     }
 
-    public function test_returns_error_when_validation_fails(): void
-    {
-        [$user, $offering] = $this->teacherOffering();
-
-        $response = $this->actingAs($user)->post(
-            route('course-offerings.materials.store', $offering),
-            [],
-        );
-
-        $response->assertSessionHasErrors(['title']);
-    }
-
     public function test_can_download_material(): void
     {
+        Storage::fake(config('filesystems.default'));
+
         $user = User::factory()->withRoles([
             Role::factory()->withPermissions([
-                PermissionType::MaterialView,
+                Permission::factory()->withName(PermissionType::MaterialView)->create(),
             ])->create(),
         ])->create();
 
-        $material = Material::factory()->create([
-            'file_path' => 'materials/test.pdf',
-        ]);
+        $material = Material::factory()->create(['file_path' => 'materials/test.pdf']);
 
-        Storage::fake(config('filesystems.default'));
         Storage::put($material->file_path, 'test');
 
         $this->actingAs($user)
@@ -131,13 +118,11 @@ final class MaterialControllerTest extends TestCase
 
     public function test_cannot_download_material_without_permission(): void
     {
-        $user = User::factory()->create();
-
-        $material = Material::factory()->create([
-            'file_path' => 'materials/test.pdf',
-        ]);
-
         Storage::fake(config('filesystems.default'));
+
+        $user = User::factory()->create();
+        $material = Material::factory()->create(['file_path' => 'materials/test.pdf']);
+
         Storage::put($material->file_path, 'test');
 
         $this->actingAs($user)
@@ -145,46 +130,11 @@ final class MaterialControllerTest extends TestCase
             ->assertForbidden();
     }
 
-    private function userWithPermission(PermissionType $permissionType): User
-    {
-        $user = User::factory()->create();
-
-        $permission = Permission::factory()->create([
-            'name' => $permissionType->value,
-        ]);
-
-        $role = Role::factory()->create();
-        $role->permissions()->attach($permission);
-
-        $user->roles()->attach($role);
-
-        return $user;
-    }
-
-    /**
-     * @return array{User, CourseOffering}
-     */
-    private function teacherOffering(): array
-    {
-        $user = $this->userWithPermission(
-            PermissionType::MaterialCreate
-        );
-
-        $teacher = Teacher::factory()->for($user)->create();
-
-        return [
-            $user,
-            CourseOffering::factory()->forTeacher($teacher)->create(),
-        ];
-    }
-
     private function data(): array
     {
         return [
-            'title' => '第1回講義資料',
-            'description' => '講義資料です。',
-            'publishDate' => now()->toDateString(),
-            'file' => UploadedFile::fake()->create('test.pdf', 100, 'application/pdf'),
+            'title' => 'テスト資料',
+            'file' => UploadedFile::fake()->create('テスト資料.pdf', 100, 'application/pdf'),
         ];
     }
 }

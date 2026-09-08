@@ -2,169 +2,181 @@
 
 namespace Tests\Feature\Infrastructure\Repositories;
 
-use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentAlreadyExistsException;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
-use App\Domain\Enrollment\ValueObjects\EnrollmentId;
-use App\Domain\Student\ValueObjects\StudentId;
 use App\Infrastructure\Repositories\EloquentEnrollmentRepository;
 use App\Models\CourseOffering;
 use App\Models\Enrollment as EnrollmentModel;
 use App\Models\Student;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Support\TestHelpers\EnrollmentTestHelper;
 use Tests\TestCase;
 
 final class EloquentEnrollmentRepositoryTest extends TestCase
 {
+    use EnrollmentTestHelper;
     use RefreshDatabase;
 
-    private EloquentEnrollmentRepository $repository;
-
-    protected function setUp(): void
+    private function repository(): EloquentEnrollmentRepository
     {
-        parent::setUp();
-
-        $this->repository = $this->app->make(EloquentEnrollmentRepository::class);
+        return app(EloquentEnrollmentRepository::class);
     }
 
-    public function test_can_save_new_enrollment(): void
+    public function test_save_creates_enrollment(): void
     {
-        $student = Student::factory()->create();
-        $offering = CourseOffering::factory()->create();
-
-        $saved = $this->repository->save(
-            Enrollment::create(
-                new StudentId($student->id),
-                new CourseOfferingId($offering->id),
-            )
+        $enrollment = $this->createEnrollment(
+            studentId: Student::factory()->create()->id,
+            courseOfferingId: CourseOffering::factory()->create()->id,
         );
 
-        self::assertInstanceOf(Enrollment::class, $saved);
-        self::assertNotNull($saved->id());
-        self::assertDatabaseHas('enrollments', [
-            'student_id' => $student->id,
-            'course_offering_id' => $offering->id,
-            'status' => EnrollmentStatus::ENROLLED->value,
+        $result = $this->repository()->save($enrollment);
+
+        self::assertInstanceOf(Enrollment::class, $result);
+        self::assertNotNull($result->id());
+        self::assertSame($enrollment->studentId()->value(), $result->studentId()->value());
+        self::assertSame($enrollment->courseOfferingId()->value(), $result->courseOfferingId()->value());
+        self::assertSame($enrollment->status(), $result->status());
+
+        $this->assertDatabaseHas('enrollments', [
+            'id' => $result->requireId()->value(),
+            'student_id' => $enrollment->studentId()->value(),
+            'course_offering_id' => $enrollment->courseOfferingId()->value(),
+            'status' => $enrollment->status(),
         ]);
     }
 
-    public function test_can_update_existing_enrollment(): void
+    public function test_save_updates_existing_enrollment(): void
     {
-        $enrollment = EnrollmentModel::factory()->create();
+        $model = EnrollmentModel::factory()->status(EnrollmentStatus::ENROLLED)->create();
 
-        $saved = $this->repository->save(
-            Enrollment::reconstruct(
-                new EnrollmentId($enrollment->id),
-                new StudentId($enrollment->student_id),
-                new CourseOfferingId($enrollment->course_offering_id),
-                EnrollmentStatus::COMPLETED,
-            )
+        $enrollment = $this->reconstructEnrollment(
+            id: $model->id,
+            studentId: $model->student_id,
+            courseOfferingId: $model->course_offering_id,
+            status: EnrollmentStatus::DROPPED,
         );
 
-        self::assertSame($enrollment->id, $saved->id()->value());
-        self::assertSame(EnrollmentStatus::COMPLETED, $saved->status());
+        $result = $this->repository()->save($enrollment);
+
+        self::assertSame($enrollment->requireId()->value(), $result->requireId()->value());
+        self::assertSame($enrollment->status(), $result->status());
+
+        $this->assertDatabaseHas('enrollments', [
+            'id' => $enrollment->requireId()->value(),
+            'status' => $enrollment->status(),
+        ]);
     }
 
-    public function test_throws_exception_when_duplicate_enrollment(): void
+    public function test_save_throws_exception_when_updating_nonexistent_enrollment(): void
     {
-        $student = Student::factory()->create();
-        $offering = CourseOffering::factory()->create();
+        $enrollment = $this->reconstructEnrollment(
+            id: 999999,
+            studentId: Student::factory()->create()->id,
+            courseOfferingId: CourseOffering::factory()->create()->id,
+        );
 
-        EnrollmentModel::create([
-            'student_id' => $student->id,
-            'course_offering_id' => $offering->id,
-            'status' => EnrollmentStatus::ENROLLED->value,
-        ]);
+        self::expectException(EnrollmentNotFoundException::class);
+
+        $this->repository()->save($enrollment);
+    }
+
+    public function test_save_throws_exception_when_enrollment_already_exists(): void
+    {
+        $model = EnrollmentModel::factory()->status(EnrollmentStatus::ENROLLED)->create();
+
+        $enrollment = $this->createEnrollment(
+            studentId: $model->student_id,
+            courseOfferingId: $model->course_offering_id,
+        );
 
         self::expectException(EnrollmentAlreadyExistsException::class);
 
-        $this->repository->save(
-            Enrollment::create(
-                new StudentId($student->id),
-                new CourseOfferingId($offering->id),
-            )
-        );
+        $this->repository()->save($enrollment);
     }
 
-    public function test_can_find_enrollment_by_id(): void
+    public function test_find_by_id_returns_enrollment(): void
     {
         $model = EnrollmentModel::factory()->create();
 
-        $result = $this->repository->findById(new EnrollmentId($model->id));
+        $result = $this->repository()->findById($this->enrollmentId($model->id));
 
         self::assertInstanceOf(Enrollment::class, $result);
-        self::assertSame($model->id, $result->id()->value());
+        self::assertSame($model->id, $result->requireId()->value());
     }
 
-    public function test_returns_null_when_enrollment_not_found_by_id(): void
+    public function test_find_by_id_returns_null_when_enrollment_does_not_exist(): void
     {
-        $result = $this->repository->findById(new EnrollmentId(999999));
-
-        self::assertNull($result);
+        self::assertNull($this->repository()->findById($this->enrollmentId(999999)));
     }
 
-    public function test_can_get_enrollment_by_id(): void
+    public function test_get_by_id_returns_enrollment(): void
     {
         $model = EnrollmentModel::factory()->create();
 
-        $result = $this->repository->getById(new EnrollmentId($model->id));
+        $result = $this->repository()->getById($this->enrollmentId($model->id));
 
         self::assertInstanceOf(Enrollment::class, $result);
-        self::assertSame($model->id, $result->id()->value());
+        self::assertSame($model->id, $result->requireId()->value());
     }
 
-    public function test_throws_exception_when_enrollment_not_found_by_id(): void
+    public function test_get_by_id_throws_exception_when_enrollment_does_not_exist(): void
     {
         self::expectException(EnrollmentNotFoundException::class);
 
-        $this->repository->getById(new EnrollmentId(999999));
+        $this->repository()->getById($this->enrollmentId(999999));
     }
 
-    public function test_can_find_enrollment_by_student_and_course_offering(): void
+    public function test_find_by_student_and_course_offering_returns_enrollment(): void
     {
         $model = EnrollmentModel::factory()->create();
 
-        $result = $this->repository->findByStudentAndCourseOffering(
-            new StudentId($model->student_id),
-            new CourseOfferingId($model->course_offering_id),
+        $result = $this->repository()->findByStudentAndCourseOffering(
+            $this->studentId($model->student_id),
+            $this->courseOfferingId($model->course_offering_id),
         );
 
         self::assertInstanceOf(Enrollment::class, $result);
-        self::assertSame($model->id, $result->id()->value());
+        self::assertSame($model->id, $result->requireId()->value());
     }
 
-    public function test_returns_null_when_enrollment_not_found_by_student_and_course_offering(): void
+    public function test_find_by_student_and_course_offering_returns_null_when_enrollment_does_not_exist(): void
     {
-        $result = $this->repository->findByStudentAndCourseOffering(
-            new StudentId(999999),
-            new CourseOfferingId(999999),
-        );
+        $student = Student::factory()->create();
+        $offering = CourseOffering::factory()->create();
 
-        self::assertNull($result);
+        self::assertNull(
+            $this->repository()->findByStudentAndCourseOffering(
+                $this->studentId($student->id),
+                $this->courseOfferingId($offering->id),
+            ),
+        );
     }
 
-    public function test_can_get_enrollment_by_student_and_course_offering(): void
+    public function test_get_by_student_and_course_offering_returns_enrollment(): void
     {
         $model = EnrollmentModel::factory()->create();
 
-        $result = $this->repository->getByStudentAndCourseOffering(
-            new StudentId($model->student_id),
-            new CourseOfferingId($model->course_offering_id),
+        $result = $this->repository()->getByStudentAndCourseOffering(
+            $this->studentId($model->student_id),
+            $this->courseOfferingId($model->course_offering_id),
         );
 
         self::assertInstanceOf(Enrollment::class, $result);
-        self::assertSame($model->id, $result->id()->value());
+        self::assertSame($model->id, $result->requireId()->value());
     }
 
-    public function test_throws_exception_when_enrollment_not_found_by_student_and_course_offering(): void
+    public function test_get_by_student_and_course_offering_throws_exception_when_enrollment_does_not_exist(): void
     {
+        $student = Student::factory()->create();
+        $offering = CourseOffering::factory()->create();
+
         self::expectException(EnrollmentNotFoundException::class);
 
-        $this->repository->getByStudentAndCourseOffering(
-            new StudentId(999999),
-            new CourseOfferingId(999999),
+        $this->repository()->getByStudentAndCourseOffering(
+            $this->studentId($student->id),
+            $this->courseOfferingId($offering->id),
         );
     }
 }

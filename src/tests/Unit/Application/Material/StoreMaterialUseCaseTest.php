@@ -13,8 +13,8 @@ use App\Infrastructure\Storage\Exceptions\FileStorageException;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
-use Tests\Support\Id\IdTestHelper;
 use Tests\Support\Matchers\UseMatcher;
+use Tests\Support\TestHelpers\IdTestHelper;
 use Tests\TestCase;
 
 class StoreMaterialUseCaseTest extends TestCase

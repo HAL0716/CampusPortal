@@ -2,143 +2,118 @@
 
 namespace Tests\Feature\Infrastructure\Repositories;
 
+use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use App\Domain\User\Exceptions\UserNotFoundException;
-use App\Domain\User\Repositories\UserRepository;
+use App\Infrastructure\Repositories\EloquentUserRepository;
 use App\Models\User as UserModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Tests\Support\User\CreatesDomainUser;
+use Tests\Support\TestHelpers\UserTestHelper;
 use Tests\TestCase;
 
 final class EloquentUserRepositoryTest extends TestCase
 {
-    use CreatesDomainUser;
     use RefreshDatabase;
+    use UserTestHelper;
 
-    private UserRepository $users;
-
-    protected function setUp(): void
+    private function repository(): EloquentUserRepository
     {
-        parent::setUp();
-
-        $this->users = $this->app->make(UserRepository::class);
+        return app(EloquentUserRepository::class);
     }
 
-    public function test_saves_user(): void
+    public function test_save_creates_user_with_hashed_password(): void
     {
-        $user = $this->users->save($this->createUser());
+        $user = $this->createUser();
 
-        $this->assertNotNull($user->id());
+        $result = $this->repository()->save($user);
+
+        self::assertInstanceOf(User::class, $result);
+        self::assertNotNull($result->id());
+        self::assertSame($user->email()->value(), $result->email()->value());
+        self::assertSame($user->name(), $result->name());
+        self::assertTrue(Hash::check($user->password()->value(), $result->password()->value()));
 
         $this->assertDatabaseHas('users', [
-            'id' => $user->id()->value(),
-            'name' => $user->name(),
+            'id' => $result->requireId()->value(),
+            'email' => $result->email()->value(),
+            'password' => $result->password()->value(),
+            'name' => $result->name(),
         ]);
     }
 
-    public function test_hashes_plain_password_when_saving_user(): void
+    public function test_save_does_not_rehash_hashed_password(): void
     {
-        $user = $this->users->save($this->createUser());
+        $model = UserModel::factory()->create();
 
-        $model = UserModel::find($user->id()->value());
+        $user = $this->reconstructUser($model->id, $model->email, $model->password, $model->name);
 
-        $this->assertNotSame($this->userPassword(), $model->password);
-        $this->assertTrue(Hash::check($this->userPassword(), $model->password));
+        $result = $this->repository()->save($user);
+
+        self::assertSame($user->requireId()->value(), $result->requireId()->value());
+        self::assertSame($user->password()->value(), $result->password()->value());
     }
 
-    public function test_preserves_hashed_password_when_saving_user(): void
+    public function test_save_updates_existing_user(): void
     {
-        $user = $this->users->save(
-            $this->createUser(
-                hashed: true
-            )
-        );
+        $model = UserModel::factory()->create(['name' => '更新前']);
 
-        $model = UserModel::find($user->id()->value());
+        $user = $this->reconstructUser($model->id, $model->email, $model->password, '更新後');
 
-        $this->assertSame($this->hashedUserPassword(), $model->password);
+        $result = $this->repository()->save($user);
+
+        self::assertSame($user->requireId()->value(), $result->requireId()->value());
+        self::assertSame($user->name(), $result->name());
     }
 
-    public function test_updates_existing_user(): void
+    public function test_save_throws_exception_when_updating_nonexistent_user(): void
     {
-        $default = $this->users->save($this->createUser());
+        $user = $this->reconstructUser(id: 999999);
 
-        $updated = $this->users->save(
-            $this->reconstructUser(
-                id: $default->id()->value(),
-                name: 'Updated Name',
-            )
-        );
-
-        $this->assertSame('Updated Name', $updated->name());
-
-        $this->assertDatabaseHas('users', [
-            'id' => $default->id()->value(),
-            'name' => 'Updated Name',
-        ]);
-    }
-
-    public function test_throws_exception_when_updating_non_existing_user(): void
-    {
         $this->expectException(UserNotFoundException::class);
 
-        $this->users->save(
-            $this->reconstructUser(
-                id: PHP_INT_MAX
-            )
-        );
+        $this->repository()->save($user);
     }
 
-    public function test_throws_exception_when_saving_user_with_duplicate_email(): void
+    public function test_save_throws_exception_when_user_already_exists(): void
     {
-        $this->users->save($this->createUser());
+        $model = UserModel::factory()->create();
+
+        $user = $this->createUser(email: $model->email);
 
         $this->expectException(UserAlreadyExistsException::class);
 
-        $this->users->save($this->createUser());
+        $this->repository()->save($user);
     }
 
-    public function test_finds_user_by_id(): void
+    public function test_find_by_id_returns_user(): void
     {
-        $expected = $this->users->save($this->createUser());
+        $model = UserModel::factory()->create();
 
-        $actual = $this->users->findById($expected->id());
+        $result = $this->repository()->findById($this->userId($model->id));
 
-        $this->assertNotNull($actual);
-        $this->assertSame($expected->id()->value(), $actual->id()->value());
-        $this->assertSame($expected->email()->value(), $actual->email()->value());
-        $this->assertSame($expected->name(), $actual->name());
+        self::assertInstanceOf(User::class, $result);
+        self::assertSame($model->id, $result->requireId()->value());
     }
 
-    public function test_finds_user_by_email(): void
+    public function test_find_by_id_returns_null_when_user_not_found(): void
     {
-        $expected = $this->users->save($this->createUser());
-
-        $actual = $this->users->findByEmail(
-            $this->userEmailValueObject()
-        );
-
-        $this->assertNotNull($actual);
-        $this->assertSame($expected->email()->value(), $actual->email()->value());
-        $this->assertSame($expected->name(), $actual->name());
+        self::assertNull($this->repository()->findById($this->userId(999999)));
     }
 
-    public function test_returns_null_when_user_is_not_found_by_id(): void
+    public function test_find_by_email_returns_user(): void
     {
-        $this->assertNull(
-            $this->users->findById(
-                $this->userIdValueObject()
-            )
-        );
+        $model = UserModel::factory()->create();
+
+        $result = $this->repository()->findByEmail($this->userEmail($model->email));
+
+        self::assertInstanceOf(User::class, $result);
+        self::assertSame($model->id, $result->requireId()->value());
+        self::assertSame($model->email, $result->email()->value());
     }
 
-    public function test_returns_null_when_user_is_not_found_by_email(): void
+    public function test_find_by_email_returns_null_when_user_not_found(): void
     {
-        $this->assertNull(
-            $this->users->findByEmail(
-                $this->userEmailValueObject()
-            )
-        );
+        self::assertNull($this->repository()->findByEmail($this->userEmail('not-found@example.com')));
     }
 }

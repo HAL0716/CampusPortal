@@ -3,40 +3,35 @@
 namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\Teacher\Entities\Teacher;
-use App\Domain\User\ValueObjects\UserId;
 use App\Infrastructure\Repositories\EloquentTeacherRepository;
 use App\Models\Teacher as TeacherModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Support\TestHelpers\TeacherTestHelper;
 use Tests\TestCase;
 
 final class EloquentTeacherRepositoryTest extends TestCase
 {
     use RefreshDatabase;
+    use TeacherTestHelper;
 
-    private EloquentTeacherRepository $repository;
-
-    protected function setUp(): void
+    private function repository(): EloquentTeacherRepository
     {
-        parent::setUp();
-
-        $this->repository = $this->app->make(EloquentTeacherRepository::class);
+        return app(EloquentTeacherRepository::class);
     }
 
-    public function test_can_find_teacher_by_user_id(): void
+    public function test_find_by_user_id_returns_teacher(): void
     {
-        $teacher = TeacherModel::factory()->create();
+        $model = TeacherModel::factory()->create();
 
-        $found = $this->repository->findByUserId(new UserId($teacher->user_id));
+        $result = $this->repository()->findByUserId($this->userId($model->user_id));
 
-        self::assertInstanceOf(Teacher::class, $found);
-        self::assertSame($teacher->id, $found->id()->value());
-        self::assertSame($teacher->user_id, $found->userId()->value());
+        self::assertInstanceOf(Teacher::class, $result);
+        self::assertSame($model->id, $result->requireId()->value());
+        self::assertSame($model->user_id, $result->userId()->value());
     }
 
-    public function test_returns_null_when_teacher_not_found_by_user_id(): void
+    public function test_find_by_user_id_returns_null_when_teacher_not_found(): void
     {
-        $found = $this->repository->findByUserId(new UserId(999));
-
-        self::assertNull($found);
+        self::assertNull($this->repository()->findByUserId($this->userId(999999)));
     }
 }

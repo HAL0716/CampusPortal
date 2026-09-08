@@ -22,4 +22,9 @@ class PermissionFactory extends Factory
             'name' => fake()->randomElement(PermissionType::cases()),
         ];
     }
+
+    public function withName(PermissionType $name): self
+    {
+        return $this->state(fn () => ['name' => $name]);
+    }
 }

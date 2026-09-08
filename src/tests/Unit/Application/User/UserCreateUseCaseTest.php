@@ -11,12 +11,12 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\User\CreatesDomainUser;
+use Tests\Support\TestHelpers\UserTestHelper;
 
 final class UserCreateUseCaseTest extends TestCase
 {
-    use CreatesDomainUser;
     use MockeryPHPUnitIntegration;
+    use UserTestHelper;
 
     private UserRepository&MockInterface $users;
 
@@ -36,8 +36,8 @@ final class UserCreateUseCaseTest extends TestCase
 
         $user = $this->useCase()->execute($this->command());
 
-        $this->assertSame($this->userId(), $user->id()->value());
-        $this->assertSame($this->userEmail(), $user->email()->value());
+        $this->assertSame($this->userId()->value(), $user->id()->value());
+        $this->assertSame($this->userEmail()->value(), $user->email()->value());
         $this->assertSame($this->userName(), $user->name());
     }
 
@@ -61,8 +61,8 @@ final class UserCreateUseCaseTest extends TestCase
     private function command(): UserCreateCommand
     {
         return new UserCreateCommand(
-            email: $this->userEmail(),
-            password: $this->userPassword(),
+            email: $this->userEmail()->value(),
+            password: $this->userPassword()->value(),
             name: $this->userName(),
         );
     }

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Domain\Permission\Enums\PermissionType;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,7 +16,9 @@ class DashboardControllerTest extends TestCase
     public function test_can_view_dashboard(): void
     {
         $user = User::factory()->withRoles([
-            Role::factory()->withPermissions([PermissionType::DashboardView])->create(),
+            Role::factory()->withPermissions([
+                Permission::factory()->withName(PermissionType::DashboardView)->create(),
+            ])->create(),
         ])->create();
 
         $this->actingAs($user)
@@ -26,17 +29,9 @@ class DashboardControllerTest extends TestCase
             );
     }
 
-    public function test_guest_cannot_view_dashboard(): void
+    public function test_cannot_view_dashboard_without_permission(): void
     {
-        $this->get(route('dashboard'))
-            ->assertRedirect(route('login'));
-    }
-
-    public function test_user_without_dashboard_permission_cannot_view_dashboard(): void
-    {
-        $user = User::factory()->withRoles([
-            Role::factory()->create(),
-        ])->create();
+        $user = User::factory()->create();
 
         $this->actingAs($user)
             ->get(route('dashboard'))

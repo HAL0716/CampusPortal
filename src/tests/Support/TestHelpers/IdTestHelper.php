@@ -1,0 +1,67 @@
+<?php
+
+namespace Tests\Support\TestHelpers;
+
+use App\Domain\Course\ValueObjects\CourseId;
+use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
+use App\Domain\Enrollment\ValueObjects\EnrollmentId;
+use App\Domain\FinalGrade\ValueObjects\FinalGradeId;
+use App\Domain\Material\ValueObjects\MaterialId;
+use App\Domain\Permission\ValueObjects\PermissionId;
+use App\Domain\Semester\ValueObjects\SemesterId;
+use App\Domain\Student\ValueObjects\StudentId;
+use App\Domain\Teacher\ValueObjects\TeacherId;
+use App\Domain\User\ValueObjects\UserId;
+
+trait IdTestHelper
+{
+    private function userId(?int $id = null): UserId
+    {
+        return new UserId($id ?? 1);
+    }
+
+    private function permissionId(?int $id = null): PermissionId
+    {
+        return new PermissionId($id ?? 1);
+    }
+
+    private function studentId(?int $id = null): StudentId
+    {
+        return new StudentId($id ?? 1);
+    }
+
+    private function teacherId(?int $id = null): TeacherId
+    {
+        return new TeacherId($id ?? 1);
+    }
+
+    private function semesterId(?int $id = null): SemesterId
+    {
+        return new SemesterId($id ?? 1);
+    }
+
+    private function courseId(?int $id = null): CourseId
+    {
+        return new CourseId($id ?? 1);
+    }
+
+    private function courseOfferingId(?int $id = null): CourseOfferingId
+    {
+        return new CourseOfferingId($id ?? 1);
+    }
+
+    private function materialId(?int $id = null): MaterialId
+    {
+        return new MaterialId($id ?? 1);
+    }
+
+    private function enrollmentId(?int $id = null): EnrollmentId
+    {
+        return new EnrollmentId($id ?? 1);
+    }
+
+    private function finalGradeId(?int $id = null): FinalGradeId
+    {
+        return new FinalGradeId($id ?? 1);
+    }
+}

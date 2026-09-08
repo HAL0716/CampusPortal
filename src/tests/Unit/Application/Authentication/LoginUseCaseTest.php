@@ -14,12 +14,12 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\User\CreatesDomainUser;
+use Tests\Support\TestHelpers\UserTestHelper;
 
 final class LoginUseCaseTest extends TestCase
 {
-    use CreatesDomainUser;
     use MockeryPHPUnitIntegration;
+    use UserTestHelper;
 
     private UserRepository&MockInterface $users;
 
@@ -78,7 +78,7 @@ final class LoginUseCaseTest extends TestCase
         $this->users->shouldReceive('findByEmail')
             ->once()
             ->with(Mockery::on(
-                fn (UserEmail $email) => $email->value() === $this->userEmail()
+                fn (UserEmail $email) => $email->value() === $this->userEmail()->value()
             ))
             ->andReturn($user);
     }
@@ -87,7 +87,7 @@ final class LoginUseCaseTest extends TestCase
     {
         $this->hasher->shouldReceive('verify')
             ->once()
-            ->with($this->userPassword(), $user->password()->value())
+            ->with($this->userPassword()->value(), $user->password()->value())
             ->andReturn($isValid);
     }
 
@@ -103,8 +103,8 @@ final class LoginUseCaseTest extends TestCase
     private function command(): LoginCommand
     {
         return new LoginCommand(
-            email: $this->userEmail(),
-            password: $this->userPassword()
+            email: $this->userEmail()->value(),
+            password: $this->userPassword()->value()
         );
     }
 }

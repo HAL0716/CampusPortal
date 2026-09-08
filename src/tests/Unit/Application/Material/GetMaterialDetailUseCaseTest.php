@@ -9,7 +9,7 @@ use App\Application\Contexts\Material\UseCases\GetMaterialDetailUseCase;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
-use Tests\Support\Id\IdTestHelper;
+use Tests\Support\TestHelpers\IdTestHelper;
 use Tests\TestCase;
 
 final class GetMaterialDetailUseCaseTest extends TestCase

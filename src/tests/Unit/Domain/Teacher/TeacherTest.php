@@ -2,53 +2,41 @@
 
 namespace Tests\Unit\Domain\Teacher;
 
-use App\Domain\Teacher\Entities\Teacher;
 use App\Domain\Teacher\Exceptions\TeacherIdNotAssignedException;
-use App\Domain\Teacher\ValueObjects\TeacherId;
-use App\Domain\User\ValueObjects\UserId;
 use PHPUnit\Framework\TestCase;
+use Tests\Support\TestHelpers\TeacherTestHelper;
 
 final class TeacherTest extends TestCase
 {
-    public function test_create_returns_unassigned_teacher(): void
-    {
-        $teacher = Teacher::create(
-            new UserId(1),
-        );
+    use TeacherTestHelper;
 
-        self::assertNull($teacher->id());
-        self::assertSame(1, $teacher->userId()->value());
+    public function test_creates_teacher_without_id(): void
+    {
+        $teacher = $this->createTeacher();
+
+        $this->assertNull($teacher->id());
+        $this->assertSame($this->userId()->value(), $teacher->userId()->value());
     }
 
-    public function test_reconstruct_restores_teacher_state(): void
+    public function test_reconstructs_teacher_with_id(): void
     {
-        $teacher = $this->teacher();
+        $teacher = $this->reconstructTeacher();
 
-        self::assertSame(1, $teacher->id()->value());
-        self::assertSame(10, $teacher->userId()->value());
+        $this->assertSame($this->teacherId()->value(), $teacher->id()->value());
+        $this->assertSame($this->userId()->value(), $teacher->userId()->value());
     }
 
-    public function test_require_id_returns_id_when_teacher_has_id(): void
+    public function test_returns_assigned_id(): void
     {
-        $teacher = $this->teacher();
+        $teacher = $this->reconstructTeacher();
 
-        self::assertSame(1, $teacher->requireId()->value());
+        $this->assertSame($this->teacherId()->value(), $teacher->requireId()->value());
     }
 
-    public function test_require_id_throws_exception_when_id_is_null(): void
+    public function test_throws_exception_when_id_is_not_assigned(): void
     {
         $this->expectException(TeacherIdNotAssignedException::class);
 
-        Teacher::create(new UserId(1))->requireId();
-    }
-
-    private function teacher(
-        int $id = 1,
-        int $userId = 10,
-    ): Teacher {
-        return Teacher::reconstruct(
-            id: new TeacherId($id),
-            userId: new UserId($userId),
-        );
+        $this->createTeacher()->requireId();
     }
 }

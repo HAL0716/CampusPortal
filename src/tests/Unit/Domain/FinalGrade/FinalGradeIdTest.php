@@ -2,17 +2,29 @@
 
 namespace Tests\Unit\Domain\FinalGrade;
 
+use App\Domain\FinalGrade\ValueObjects\FinalGradeId;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\FinalGrade\CreatesDomainFinalGrade;
 
 final class FinalGradeIdTest extends TestCase
 {
-    use CreatesDomainFinalGrade;
-
-    public function test_creates_valid_final_grade_id(): void
+    public function test_can_get_value(): void
     {
-        $id = $this->finalGradeIdValueObject();
+        $id = new FinalGradeId(1);
 
-        $this->assertSame($this->finalGradeId(), $id->value());
+        self::assertSame(1, $id->value());
+    }
+
+    public function test_equals_returns_true_when_values_are_same(): void
+    {
+        $id = new FinalGradeId(1);
+
+        self::assertTrue($id->equals(new FinalGradeId(1)));
+    }
+
+    public function test_equals_returns_false_when_values_are_different(): void
+    {
+        $id = new FinalGradeId(1);
+
+        self::assertFalse($id->equals(new FinalGradeId(2)));
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 use App\Domain\Permission\Enums\PermissionType;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CourseOfferingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
@@ -12,15 +12,15 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', '/login');
 
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'index'])
+    Route::get('/login', [AuthenticationController::class, 'index'])
         ->name('login');
 
-    Route::post('/login', [AuthController::class, 'login'])
+    Route::post('/login', [AuthenticationController::class, 'login'])
         ->name('login.store');
 });
 
 Route::middleware('auth')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])
+    Route::post('/logout', [AuthenticationController::class, 'logout'])
         ->name('logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -43,10 +43,6 @@ Route::middleware('auth')->group(function () {
                     Route::prefix('materials')
                         ->name('materials.')
                         ->group(function () {
-                            Route::get('/create', [MaterialController::class, 'create'])
-                                ->name('create')
-                                ->can(PermissionType::MaterialCreate->value);
-
                             Route::post('/', [MaterialController::class, 'store'])
                                 ->name('store')
                                 ->can(PermissionType::MaterialCreate->value);

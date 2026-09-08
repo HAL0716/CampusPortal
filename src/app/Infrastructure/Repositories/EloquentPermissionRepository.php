@@ -5,37 +5,20 @@ namespace App\Infrastructure\Repositories;
 use App\Domain\Permission\Entities\Permission;
 use App\Domain\Permission\Repositories\PermissionRepository;
 use App\Domain\Permission\ValueObjects\PermissionId;
-use App\Domain\User\Entities\User;
-use App\Domain\User\Exceptions\UserNotFoundException;
+use App\Domain\User\ValueObjects\UserId;
 use App\Models\Permission as PermissionModel;
-use App\Models\User as UserModel;
 
 final class EloquentPermissionRepository implements PermissionRepository
 {
     /**
-     * @return Permission[]
+     * @return array<Permission>
      */
-    public function findByUser(User $user): array
+    public function findByUserId(UserId $userId): array
     {
-        $model = UserModel::find(
-            $user->requireId()->value()
-        );
-
-        if ($model === null) {
-            throw new UserNotFoundException;
-        }
-
-        return $model
-            ->roles()
-            ->with('permissions')
+        return PermissionModel::query()
+            ->whereHas('roles.users', fn ($query) => $query->whereKey($userId->value()))
             ->get()
-            ->pluck('permissions')
-            ->flatten()
-            ->unique('id')
-            ->map(
-                fn (PermissionModel $permission): Permission => $this->toEntity($permission)
-            )
-            ->values()
+            ->map(fn (PermissionModel $permission): Permission => $this->toEntity($permission))
             ->all();
     }
 

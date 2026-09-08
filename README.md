@@ -714,11 +714,11 @@ enrolled（履修中）
 
 ## 9.1 認証
 
-| Method | Path      | Controller            | Student | Teacher | Admin |
-| ------ | --------- | --------------------- | :-----: | :-----: | :---: |
-| GET    | `/login`  | AuthController@index  |    ○    |    ○    |   ○   |
-| POST   | `/login`  | AuthController@login  |    ○    |    ○    |   ○   |
-| POST   | `/logout` | AuthController@logout |    ○    |    ○    |   ○   |
+| Method | Path      | Controller                      | Student | Teacher | Admin |
+| ------ | --------- | ------------------------------- | :-----: | :-----: | :---: |
+| GET    | `/login`  | AuthenticationController@index  |    ○    |    ○    |   ○   |
+| POST   | `/login`  | AuthenticationController@login  |    ○    |    ○    |   ○   |
+| POST   | `/logout` | AuthenticationController@logout |    ○    |    ○    |   ○   |
 
 ## 9.2 ダッシュボード
 
@@ -806,8 +806,6 @@ enrolled（履修中）
 
 | Method | Path                                      | Controller                 | Student | Teacher | Admin |
 | ------ | ----------------------------------------- | -------------------------- | :-----: | :-----: | :---: |
-| GET    | `/course-offerings/{id}/materials`        | MaterialController@index   |    ○    |    ○    |   ○   |
-| GET    | `/course-offerings/{id}/materials/create` | MaterialController@create  |    ×    |    ○    |   ×   |
 | POST   | `/course-offerings/{id}/materials`        | MaterialController@store   |    ×    |    ○    |   ×   |
 | GET    | `/materials/{id}`                         | MaterialController@show    |    ○    |    ○    |   ○   |
 | PUT    | `/materials/{id}`                         | MaterialController@update  |    ×    |    ○    |   ×   |

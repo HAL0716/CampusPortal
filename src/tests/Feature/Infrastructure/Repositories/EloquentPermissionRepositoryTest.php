@@ -4,62 +4,85 @@ namespace Tests\Feature\Infrastructure\Repositories;
 
 use App\Domain\Permission\Entities\Permission;
 use App\Domain\Permission\Enums\PermissionType;
-use App\Domain\Permission\Repositories\PermissionRepository;
+use App\Domain\Role\Enums\RoleType;
+use App\Infrastructure\Repositories\EloquentPermissionRepository;
+use App\Models\Permission as PermissionModel;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Support\Permission\CreatesModelPermission;
-use Tests\Support\User\CreatesModelUser;
+use Tests\Support\TestHelpers\PermissionTestHelper;
 use Tests\TestCase;
 
 final class EloquentPermissionRepositoryTest extends TestCase
 {
-    use CreatesModelPermission;
-    use CreatesModelUser;
+    use PermissionTestHelper;
     use RefreshDatabase;
 
-    private PermissionRepository $permissions;
-
-    protected function setUp(): void
+    private function repository(): EloquentPermissionRepository
     {
-        parent::setUp();
-
-        $this->permissions = $this->app->make(PermissionRepository::class);
+        return app(EloquentPermissionRepository::class);
     }
 
-    public function test_finds_permissions_by_user(): void
+    public function test_find_by_user_id_returns_permissions(): void
     {
-        $model = $this->createUser();
+        $permissionTypes = [
+            PermissionType::DashboardView,
+            PermissionType::MaterialView,
+        ];
 
-        $this->createPermission(
-            $model,
-            PermissionType::DashboardView
+        $permissions = array_map(
+            fn (PermissionType $type): PermissionModel => PermissionModel::factory()->withName($type)->create(),
+            $permissionTypes,
         );
 
-        $permissions = $this->permissions->findByUser($this->toDomainUser($model));
+        $user = User::factory()
+            ->withRoles([Role::factory()->withPermissions($permissions)->create()])
+            ->create();
 
-        $this->assertCount(1, $permissions);
-        $this->assertSame(PermissionType::DashboardView, $permissions[0]->name());
+        $result = $this->repository()->findByUserId($this->userId($user->id));
+
+        self::assertSame(
+            $permissionTypes,
+            array_map(fn (Permission $permission): PermissionType => $permission->name(), $result),
+        );
     }
 
-    public function test_returns_empty_array_when_user_has_no_permissions(): void
+    public function test_find_by_user_id_returns_unique_permissions_from_multiple_roles(): void
     {
-        $model = $this->createUser();
+        $permissionTypes = [
+            PermissionType::DashboardView,
+            PermissionType::MaterialView,
+        ];
 
-        $permissions = $this->permissions->findByUser($this->toDomainUser($model));
-
-        $this->assertEmpty($permissions);
-    }
-
-    public function test_returns_domain_permission_entities(): void
-    {
-        $model = $this->createUser();
-
-        $this->createPermission(
-            $model,
-            PermissionType::DashboardView
+        $permissions = array_map(
+            fn (PermissionType $type): PermissionModel => PermissionModel::factory()->withName($type)->create(),
+            $permissionTypes,
         );
 
-        $permissions = $this->permissions->findByUser($this->toDomainUser($model));
+        $roles = [
+            Role::factory()->withName(RoleType::ADMIN)->withPermissions($permissions)->create(),
+            Role::factory()->withName(RoleType::TEACHER)->withPermissions([$permissions[0]])->create(),
+        ];
 
-        $this->assertInstanceOf(Permission::class, $permissions[0]);
+        $user = User::factory()->withRoles($roles)->create();
+
+        $result = $this->repository()->findByUserId($this->userId($user->id));
+
+        self::assertSame(
+            $permissionTypes,
+            array_map(fn (Permission $permission): PermissionType => $permission->name(), $result),
+        );
+    }
+
+    public function test_find_by_user_id_returns_empty_array_when_user_has_no_roles(): void
+    {
+        $user = User::factory()->create();
+
+        self::assertSame([], $this->repository()->findByUserId($this->userId($user->id)));
+    }
+
+    public function test_find_by_user_id_returns_empty_array_when_user_does_not_exist(): void
+    {
+        self::assertSame([], $this->repository()->findByUserId($this->userId(999999)));
     }
 }

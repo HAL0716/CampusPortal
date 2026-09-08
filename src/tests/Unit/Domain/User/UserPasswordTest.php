@@ -3,18 +3,16 @@
 namespace Tests\Unit\Domain\User;
 
 use App\Domain\User\Exceptions\InvalidUserPasswordException;
+use App\Domain\User\ValueObjects\UserPassword;
 use PHPUnit\Framework\TestCase;
-use Tests\Support\User\CreatesDomainUser;
 
 final class UserPasswordTest extends TestCase
 {
-    use CreatesDomainUser;
-
     public function test_creates_valid_password(): void
     {
-        $password = $this->userPasswordValueObject();
+        $password = UserPassword::create('pass1234');
 
-        $this->assertSame($this->userPassword(), $password->value());
+        $this->assertSame('pass1234', $password->value());
         $this->assertFalse($password->isHashed());
     }
 
@@ -22,14 +20,14 @@ final class UserPasswordTest extends TestCase
     {
         $this->expectException(InvalidUserPasswordException::class);
 
-        $this->userPasswordValueObject($this->invalidUserPassword());
+        UserPassword::create('short');
     }
 
     public function test_creates_hashed_password(): void
     {
-        $password = $this->hashedUserPasswordValueObject();
+        $password = UserPassword::fromHash('$2y$04$KPSmno5kdzCzeERbPvLGW.oehD.NdNf7Dlr2J65lYium3zHWvDZBO');
 
-        $this->assertSame($this->hashedUserPassword(), $password->value());
+        $this->assertSame('$2y$04$KPSmno5kdzCzeERbPvLGW.oehD.NdNf7Dlr2J65lYium3zHWvDZBO', $password->value());
         $this->assertTrue($password->isHashed());
     }
 
@@ -37,6 +35,6 @@ final class UserPasswordTest extends TestCase
     {
         $this->expectException(InvalidUserPasswordException::class);
 
-        $this->hashedUserPasswordValueObject($this->userPassword());
+        UserPassword::fromHash('invalid-hash');
     }
 }

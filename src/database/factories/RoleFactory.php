@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\Role\Enums\RoleType;
 use App\Models\Permission;
 use App\Models\Role;
@@ -25,16 +24,22 @@ class RoleFactory extends Factory
         ];
     }
 
+    public function withName(RoleType $name): static
+    {
+        return $this->state(fn (): array => ['name' => $name]);
+    }
+
     /**
-     * @param  array<PermissionType>  $permissions
+     * @param  array<int, Permission>  $permissions
      */
     public function withPermissions(array $permissions): static
     {
         return $this->afterCreating(function (Role $role) use ($permissions): void {
             $role->permissions()->sync(
-                collect($permissions)->map(
-                    fn (PermissionType $permission) => Permission::factory()->create(['name' => $permission])->id
-                )
+                array_map(
+                    fn (Permission $permission): int => $permission->id,
+                    $permissions,
+                ),
             );
         });
     }
