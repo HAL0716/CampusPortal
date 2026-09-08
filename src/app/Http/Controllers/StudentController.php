@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Application\Contexts\Student\UseCases\CreateStudentUseCase;
+use App\Application\Contexts\Student\UseCases\ListStudentUseCase;
 use App\Http\Flash\Flash;
 use App\Http\Requests\Student\StoreRequest;
 use Illuminate\Http\RedirectResponse;
@@ -11,22 +12,9 @@ use Inertia\Response;
 
 final class StudentController extends Controller
 {
-    public function index(): Response
+    public function index(ListStudentUseCase $useCase): Response
     {
-        $students = [
-            [
-                'id' => 1,
-                'studentNumber' => '123456',
-                'name' => 'John Doe',
-                'department' => 'Computer Science',
-            ],
-            [
-                'id' => 2,
-                'studentNumber' => '789012',
-                'name' => 'Jane Smith',
-                'department' => 'Mathematics',
-            ],
-        ];
+        $students = $useCase->execute();
 
         return Inertia::render('Student/Index', [
             'students' => $students,
