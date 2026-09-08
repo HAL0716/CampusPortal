@@ -1,4 +1,5 @@
 import { Head, usePage } from '@inertiajs/react';
+import { route } from 'ziggy-js';
 
 import Card from '@/Components/Card';
 import FlashMessage from '@/Components/FlashMessage';
@@ -36,6 +37,8 @@ export default function Index() {
             description={`学籍番号: ${student.studentNumber} | 学科: ${student.department}`}
           />
         ))}
+
+        <Card key="新規作成" href={route('students.create')} title="新規作成" variant="info" />
       </div>
     </>
   );
