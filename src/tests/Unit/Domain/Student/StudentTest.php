@@ -16,6 +16,7 @@ final class StudentTest extends TestCase
 
         $this->assertNull($student->id());
         $this->assertSame($this->userId()->value(), $student->userId()->value());
+        $this->assertSame($this->departmentId()->value(), $student->departmentId()->value());
     }
 
     public function test_reconstructs_student_with_id(): void
@@ -24,6 +25,7 @@ final class StudentTest extends TestCase
 
         $this->assertSame($this->studentId()->value(), $student->id()->value());
         $this->assertSame($this->userId()->value(), $student->userId()->value());
+        $this->assertSame($this->departmentId()->value(), $student->departmentId()->value());
     }
 
     public function test_returns_assigned_id(): void
