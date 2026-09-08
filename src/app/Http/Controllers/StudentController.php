@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Application\Contexts\Department\UseCases\ListDepartmentUseCase;
 use App\Application\Contexts\Student\UseCases\CreateStudentUseCase;
 use App\Application\Contexts\Student\UseCases\ListStudentUseCase;
 use App\Http\Flash\Flash;
@@ -21,13 +22,9 @@ final class StudentController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(ListDepartmentUseCase $useCase): Response
     {
-        $departments = [
-            ['id' => 1, 'name' => 'Computer Science'],
-            ['id' => 2, 'name' => 'Mathematics'],
-            ['id' => 3, 'name' => 'Physics'],
-        ];
+        $departments = $useCase->execute();
 
         return Inertia::render('Student/Create', [
             'departments' => $departments,
