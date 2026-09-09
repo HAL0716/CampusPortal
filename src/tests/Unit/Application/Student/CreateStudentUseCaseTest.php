@@ -43,6 +43,7 @@ final class CreateStudentUseCaseTest extends TestCase
         $this->transaction = Mockery::mock(Transaction::class);
 
         $this->transaction->shouldReceive('run')
+            ->once()
             ->andReturnUsing(
                 fn (callable $callback) => $callback()
             );
