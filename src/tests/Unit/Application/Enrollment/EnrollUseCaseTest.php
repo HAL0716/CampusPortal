@@ -42,11 +42,15 @@ final class EnrollUseCaseTest extends TestCase
     {
         $userId = $this->userId();
         $studentId = $this->studentId();
+        $studentNumber = $this->studentNumber();
         $courseOfferingId = $this->courseOfferingId();
+        $departmentId = $this->departmentId();
 
         $student = Student::reconstruct(
             id: $studentId,
             userId: $userId,
+            departmentId: $departmentId,
+            studentNumber: $studentNumber,
         );
 
         $this->students
@@ -83,11 +87,15 @@ final class EnrollUseCaseTest extends TestCase
     {
         $userId = $this->userId();
         $studentId = $this->studentId();
+        $studentNumber = $this->studentNumber();
         $courseOfferingId = $this->courseOfferingId();
+        $departmentId = $this->departmentId();
 
         $student = Student::reconstruct(
             id: $studentId,
             userId: $userId,
+            departmentId: $departmentId,
+            studentNumber: $studentNumber,
         );
 
         $enrollment = Enrollment::create(

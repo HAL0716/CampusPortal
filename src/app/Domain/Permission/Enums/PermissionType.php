@@ -6,6 +6,8 @@ enum PermissionType: string
 {
     case DashboardView = 'dashboard.view';
 
+    case StudentManage = 'student.manage';
+
     case CourseOfferingView = 'course_offering.view';
     case CourseOfferingManage = 'course_offering.manage';
 

@@ -23,7 +23,7 @@ class StudentFactory extends Factory
         return [
             'user_id' => User::factory(),
             'department_id' => Department::factory(),
-            'student_number' => fake()->unique()->numerify('S########'),
+            'student_number' => fake()->unique()->numerify('######'),
             'status' => StudentStatus::ACTIVE,
         ];
     }

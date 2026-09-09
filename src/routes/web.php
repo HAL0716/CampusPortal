@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\FinalGradeController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
@@ -26,6 +27,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard')
         ->can(PermissionType::DashboardView->value);
+
+    Route::prefix('students')
+        ->name('students.')
+        ->can(PermissionType::StudentManage->value)
+        ->group(function () {
+            Route::get('/', [StudentController::class, 'index'])
+                ->name('index');
+
+            Route::get('/create', [StudentController::class, 'create'])
+                ->name('create');
+
+            Route::post('/', [StudentController::class, 'store'])
+                ->name('store');
+        });
 
     Route::prefix('course-offerings')
         ->name('course-offerings.')

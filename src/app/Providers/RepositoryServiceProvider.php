@@ -11,6 +11,7 @@ use App\Domain\Semester\Repositories\SemesterRepository;
 use App\Domain\Student\Repositories\StudentRepository;
 use App\Domain\Teacher\Repositories\TeacherRepository;
 use App\Domain\User\Repositories\UserRepository;
+use App\Domain\User\Repositories\UserRoleRepository;
 use App\Infrastructure\Repositories\EloquentCourseOfferingRepository;
 use App\Infrastructure\Repositories\EloquentEnrollmentRepository;
 use App\Infrastructure\Repositories\EloquentFinalGradeRepository;
@@ -20,12 +21,14 @@ use App\Infrastructure\Repositories\EloquentSemesterRepository;
 use App\Infrastructure\Repositories\EloquentStudentRepository;
 use App\Infrastructure\Repositories\EloquentTeacherRepository;
 use App\Infrastructure\Repositories\EloquentUserRepository;
+use App\Infrastructure\Repositories\EloquentUserRoleRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
     private const REPOSITORIES = [
         UserRepository::class => EloquentUserRepository::class,
+        UserRoleRepository::class => EloquentUserRoleRepository::class,
         PermissionRepository::class => EloquentPermissionRepository::class,
         StudentRepository::class => EloquentStudentRepository::class,
         TeacherRepository::class => EloquentTeacherRepository::class,

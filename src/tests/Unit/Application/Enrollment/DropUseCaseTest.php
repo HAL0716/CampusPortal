@@ -42,11 +42,15 @@ final class DropUseCaseTest extends TestCase
     {
         $userId = $this->userId();
         $studentId = $this->studentId();
+        $studentNumber = $this->studentNumber();
+        $departmentId = $this->departmentId();
         $courseOfferingId = $this->courseOfferingId();
 
         $student = Student::reconstruct(
             id: $studentId,
             userId: $userId,
+            departmentId: $departmentId,
+            studentNumber: $studentNumber,
         );
 
         $enrollment = Enrollment::create(

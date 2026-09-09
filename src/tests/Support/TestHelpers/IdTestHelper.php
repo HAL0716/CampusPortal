@@ -4,12 +4,14 @@ namespace Tests\Support\TestHelpers;
 
 use App\Domain\Course\ValueObjects\CourseId;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
+use App\Domain\Department\ValueObjects\DepartmentId;
 use App\Domain\Enrollment\ValueObjects\EnrollmentId;
 use App\Domain\FinalGrade\ValueObjects\FinalGradeId;
 use App\Domain\Material\ValueObjects\MaterialId;
 use App\Domain\Permission\ValueObjects\PermissionId;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Domain\Student\ValueObjects\StudentId;
+use App\Domain\Student\ValueObjects\StudentNumber;
 use App\Domain\Teacher\ValueObjects\TeacherId;
 use App\Domain\User\ValueObjects\UserId;
 
@@ -25,9 +27,19 @@ trait IdTestHelper
         return new PermissionId($id ?? 1);
     }
 
+    private function departmentId(?int $id = null): DepartmentId
+    {
+        return new DepartmentId($id ?? 1);
+    }
+
     private function studentId(?int $id = null): StudentId
     {
         return new StudentId($id ?? 1);
+    }
+
+    private function studentNumber(?string $number = null): StudentNumber
+    {
+        return new StudentNumber($number ?? '000001');
     }
 
     private function teacherId(?int $id = null): TeacherId

@@ -5,8 +5,12 @@ import Button from '@/Components/Button';
 import Card from '@/Components/Card';
 import { SharedProps } from '@/Types/SharedProps';
 
+type PageProps = {
+  canManageStudents: boolean;
+};
+
 export default function Index() {
-  const { auth } = usePage<SharedProps>().props;
+  const { auth, canManageStudents } = usePage<SharedProps & PageProps>().props;
 
   return (
     <>
@@ -22,6 +26,14 @@ export default function Index() {
           title="開講科目"
           description="開講科目の一覧を表示します。"
         />
+
+        {canManageStudents && (
+          <Card
+            href={route('students.index')}
+            title="学生管理"
+            description="学生情報の管理を行います。"
+          />
+        )}
 
         <Button href={route('logout')} label="ログアウト" variant="danger" />
       </nav>
