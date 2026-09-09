@@ -2,6 +2,8 @@
 
 namespace App\Domain\Student\ValueObjects;
 
+use App\Domain\Student\Exceptions\InvalidStudentNumberException;
+
 final readonly class StudentNumber
 {
     private const LENGTH = 6;
@@ -14,7 +16,7 @@ final readonly class StudentNumber
         $value = trim($value);
 
         if (! preg_match('/^\d{'.self::LENGTH.'}$/', $value)) {
-            throw new \InvalidArgumentException('Invalid student number format.');
+            throw new InvalidStudentNumberException;
         }
 
         $this->value = $value;
