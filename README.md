@@ -738,6 +738,7 @@ enrolled（履修中）
 | ------ | ------------------ | ------------------------ | :-----: | :-----: | :---: |
 | GET    | `/students`        | StudentController@index  |    ×    |    ×    |   ○   |
 | GET    | `/students/create` | StudentController@create |    ×    |    ×    |   ○   |
+| POST   | `/students`        | StudentController@store  |    ×    |    ×    |   ○   |
 ## 9.4 教員管理
 
 | Method | Path                   | Controller                | Student | Teacher | Admin |
