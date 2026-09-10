@@ -2,76 +2,123 @@
 
 namespace Tests\Feature\Infrastructure\QueryServices;
 
+use App\Application\Contexts\Student\DTOs\StudentDetailDTO;
 use App\Application\Contexts\Student\DTOs\StudentDTO;
+use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Student\Enums\StudentStatus;
+use App\Domain\Student\Exceptions\StudentNotFoundException;
+use App\Domain\Student\ValueObjects\StudentId;
 use App\Infrastructure\QueryServices\EloquentStudentQueryService;
-use App\Models\Department;
+use App\Models\CourseOffering;
+use App\Models\Enrollment;
+use App\Models\Semester;
 use App\Models\Student;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Support\TestHelpers\IdTestHelper;
 use Tests\TestCase;
 
 final class EloquentStudentQueryServiceTest extends TestCase
 {
+    use IdTestHelper;
     use RefreshDatabase;
 
-    private function queryService(): EloquentStudentQueryService
+    private EloquentStudentQueryService $queryService;
+
+    protected function setUp(): void
     {
-        return app(EloquentStudentQueryService::class);
+        parent::setUp();
+
+        $this->queryService = new EloquentStudentQueryService;
+    }
+
+    public function test_returns_student_detail(): void
+    {
+        $student = Student::factory()->create();
+        $semester = Semester::factory()->create();
+        $statuses = [EnrollmentStatus::COMPLETED, EnrollmentStatus::COMPLETED, EnrollmentStatus::ENROLLED];
+
+        $courseOfferings = CourseOffering::factory()
+            ->count(count($statuses))
+            ->for($semester)
+            ->create();
+
+        foreach ($statuses as $index => $status) {
+            Enrollment::factory()
+                ->for($student)
+                ->for($courseOfferings[$index])
+                ->create(['status' => $status]);
+        }
+
+        $expected = new StudentDetailDTO(
+            id: $student->id,
+            name: $student->user->name,
+            studentNumber: $student->student_number,
+            department: $student->department->name,
+            credits: count(
+                array_filter($statuses,
+                    fn (EnrollmentStatus $status) => $status === EnrollmentStatus::COMPLETED
+                )
+            ),
+        );
+
+        $result = $this->queryService->getDetail(new StudentId($student->id));
+
+        self::assertEquals($expected, $result);
+    }
+
+    public function test_throws_exception_when_student_does_not_exist(): void
+    {
+        $this->expectException(StudentNotFoundException::class);
+
+        $this->queryService->getDetail($this->studentId());
     }
 
     public function test_find_all_returns_active_students_in_student_number_order(): void
     {
-        $activeStudents = [
-            ['student_number' => '000001', 'status' => StudentStatus::ACTIVE],
+        $students = [
             ['student_number' => '000002', 'status' => StudentStatus::ACTIVE],
+            ['student_number' => '000001', 'status' => StudentStatus::ACTIVE],
+            ['student_number' => '000003', 'status' => StudentStatus::GRADUATED],
         ];
 
-        Student::factory()->createMany($activeStudents);
-        Student::factory()->create([
-            'student_number' => '000003',
-            'status' => StudentStatus::GRADUATED,
-        ]);
+        Student::factory()->createMany($students);
 
-        $result = $this->queryService()->findAll();
+        $expected = collect($students)
+            ->filter(fn (array $student) => $student['status'] === StudentStatus::ACTIVE)
+            ->sortBy('student_number')
+            ->pluck('student_number')
+            ->all();
 
-        self::assertCount(count($activeStudents), $result);
-        self::assertSame(
-            array_column($activeStudents, 'student_number'),
-            array_map(
-                fn (StudentDTO $student) => $student->studentNumber,
-                $result,
-            ),
-        );
+        $result = $this->queryService->findAll();
+
+        self::assertSame($expected, array_map(fn (StudentDTO $student) => $student->studentNumber, $result));
     }
 
     public function test_find_all_returns_student_information(): void
     {
-        $department = Department::factory()->create(['name' => '情報システム学科']);
-        $user = User::factory()->create(['name' => '山田太郎']);
+        $student = Student::factory()->create();
 
-        $student = Student::factory()->create([
-            'user_id' => $user->id,
-            'department_id' => $department->id,
-            'student_number' => '000001',
-            'status' => StudentStatus::ACTIVE,
-        ]);
+        $expected = new StudentDTO(
+            id: $student->id,
+            name: $student->user->name,
+            studentNumber: $student->student_number,
+            department: $student->department->name,
+        );
 
-        $result = $this->queryService()->findAll();
+        $result = $this->queryService->findAll();
 
         self::assertCount(1, $result);
-        self::assertSame($student->student_number, $result[0]->studentNumber);
-        self::assertSame($user->name, $result[0]->name);
-        self::assertSame($department->name, $result[0]->department);
+        self::assertEquals($expected, $result[0]);
     }
 
     public function test_find_all_returns_empty_when_no_active_students_exist(): void
     {
-        Student::factory()->create([
-            'student_number' => '000001',
-            'status' => StudentStatus::GRADUATED,
-        ]);
+        Student::factory()->create(['status' => StudentStatus::GRADUATED]);
 
-        self::assertSame([], $this->queryService()->findAll());
+        $expected = [];
+
+        $result = $this->queryService->findAll();
+
+        self::assertSame($expected, $result);
     }
 }
