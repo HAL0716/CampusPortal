@@ -36,6 +36,7 @@ final class EloquentStudentRepository implements StudentRepository
         $model->user_id = $student->userId()->value();
         $model->department_id = $student->departmentId()->value();
         $model->student_number = $student->studentNumber()->value();
+        $model->status = $student->status();
 
         try {
             $model->save();
@@ -75,6 +76,7 @@ final class EloquentStudentRepository implements StudentRepository
             new UserId((int) $model->user_id),
             new DepartmentId((int) $model->department_id),
             new StudentNumber($model->student_number),
+            $model->status,
         );
     }
 }

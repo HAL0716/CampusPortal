@@ -7,6 +7,7 @@ use App\Application\Contexts\Enrollment\UseCases\EnrollUseCase;
 use App\Domain\Enrollment\Entities\Enrollment;
 use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\Student\Entities\Student;
+use App\Domain\Student\Enums\StudentStatus;
 use App\Domain\Student\Repositories\StudentRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -51,6 +52,7 @@ final class EnrollUseCaseTest extends TestCase
             userId: $userId,
             departmentId: $departmentId,
             studentNumber: $studentNumber,
+            status: StudentStatus::ACTIVE,
         );
 
         $this->students
@@ -96,6 +98,7 @@ final class EnrollUseCaseTest extends TestCase
             userId: $userId,
             departmentId: $departmentId,
             studentNumber: $studentNumber,
+            status: StudentStatus::ACTIVE,
         );
 
         $enrollment = Enrollment::create(
