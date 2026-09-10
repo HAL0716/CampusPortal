@@ -24,6 +24,7 @@ final readonly class EloquentStudentQueryService implements StudentQueryService
                 'users.name',
                 'students.student_number',
                 'departments.name as department',
+                'students.status',
             ])
             ->withCount([
                 'enrollments as credits' => function ($query) {
@@ -42,6 +43,19 @@ final readonly class EloquentStudentQueryService implements StudentQueryService
             studentNumber: $student->student_number,
             department: $student->department,
             credits: $student->credits,
+            status: $student->status->label(),
+            transitions: $this->transitionOptions($student->status),
+        );
+    }
+
+    private function transitionOptions(StudentStatus $status): array
+    {
+        return array_map(
+            fn (StudentStatus $status) => [
+                'value' => $status->value,
+                'label' => $status->label(),
+            ],
+            $status->allowedTransitions(),
         );
     }
 

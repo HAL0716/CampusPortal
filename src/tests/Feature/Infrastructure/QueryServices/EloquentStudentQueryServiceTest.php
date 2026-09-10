@@ -33,7 +33,7 @@ final class EloquentStudentQueryServiceTest extends TestCase
 
     public function test_returns_student_detail(): void
     {
-        $student = Student::factory()->create();
+        $student = Student::factory()->create(['status' => StudentStatus::ACTIVE]);
         $semester = Semester::factory()->create();
         $statuses = [EnrollmentStatus::COMPLETED, EnrollmentStatus::COMPLETED, EnrollmentStatus::ENROLLED];
 
@@ -59,6 +59,21 @@ final class EloquentStudentQueryServiceTest extends TestCase
                     fn (EnrollmentStatus $status) => $status === EnrollmentStatus::COMPLETED
                 )
             ),
+            status: $student->status->label(),
+            transitions: [
+                [
+                    'value' => StudentStatus::SUSPENDED->value,
+                    'label' => StudentStatus::SUSPENDED->label(),
+                ],
+                [
+                    'value' => StudentStatus::EXPELLED->value,
+                    'label' => StudentStatus::EXPELLED->label(),
+                ],
+                [
+                    'value' => StudentStatus::GRADUATED->value,
+                    'label' => StudentStatus::GRADUATED->label(),
+                ],
+            ],
         );
 
         $result = $this->queryService->getDetail(new StudentId($student->id));

@@ -9,6 +9,16 @@ enum StudentStatus: string
     case EXPELLED = 'expelled';
     case GRADUATED = 'graduated';
 
+    public function label(): string
+    {
+        return match ($this) {
+            self::ACTIVE => '在籍',
+            self::SUSPENDED => '休学',
+            self::EXPELLED => '退学',
+            self::GRADUATED => '卒業',
+        };
+    }
+
     /** @return array<StudentStatus> */
     public function allowedTransitions(): array
     {

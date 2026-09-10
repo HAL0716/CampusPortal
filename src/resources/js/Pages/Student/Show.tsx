@@ -12,6 +12,8 @@ type Student = {
   studentNumber: string;
   department: string;
   credits: number;
+  status: string;
+  transitions: { value: string; label: string }[];
 };
 
 type PageProps = {
@@ -34,14 +36,18 @@ export default function Show() {
         <Card title="学籍番号" description={student.studentNumber} />
         <Card title="学科" description={student.department} />
         <Card title="修得単位数" description={student.credits.toString()} />
+        <Card title="ステータス" description={student.status} />
 
-        <Button
-          href={route('students.update.status', student.id)}
-          method="patch"
-          label="卒業処理"
-          data={{ status: 'graduated' }}
-          variant="danger"
-        />
+        {student.transitions.map((status) => (
+          <Button
+            key={status.value}
+            href={route('students.update.status', student.id)}
+            method="patch"
+            label={status.label}
+            variant="danger"
+            data={{ status: status.value }}
+          />
+        ))}
       </div>
     </>
   );
