@@ -51,6 +51,24 @@ final class EloquentStudentRepository implements StudentRepository
         return $this->toEntity($model);
     }
 
+    public function find(StudentId $id): ?Student
+    {
+        $model = StudentModel::find($id->value());
+
+        return $model ? $this->toEntity($model) : null;
+    }
+
+    public function get(StudentId $id): Student
+    {
+        $student = $this->find($id);
+
+        if ($student === null) {
+            throw new StudentNotFoundException;
+        }
+
+        return $student;
+    }
+
     public function findByUserId(UserId $userId): ?Student
     {
         $model = StudentModel::where('user_id', $userId->value())->first();
