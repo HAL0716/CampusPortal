@@ -1,6 +1,10 @@
 import { Head, usePage } from '@inertiajs/react';
+import { route } from 'ziggy-js';
 
+import Button from '@/Components/Button';
 import Card from '@/Components/Card';
+import FlashMessage from '@/Components/FlashMessage';
+import { SharedProps } from '@/Types/SharedProps';
 
 type Student = {
   id: number;
@@ -15,7 +19,7 @@ type PageProps = {
 };
 
 export default function Show() {
-  const { student } = usePage<PageProps>().props;
+  const { flash, student } = usePage<SharedProps & PageProps>().props;
 
   return (
     <>
@@ -24,9 +28,20 @@ export default function Show() {
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">{student.name}</h1>
 
+        <FlashMessage key={flash.success?.id} text={flash.success?.message} type="success" />
+        <FlashMessage key={flash.error?.id} text={flash.error?.message} type="danger" />
+
         <Card title="学籍番号" description={student.studentNumber} />
         <Card title="学科" description={student.department} />
         <Card title="修得単位数" description={student.credits.toString()} />
+
+        <Button
+          href={route('students.update.status', student.id)}
+          method="patch"
+          label="卒業処理"
+          data={{ status: 'graduated' }}
+          variant="danger"
+        />
       </div>
     </>
   );

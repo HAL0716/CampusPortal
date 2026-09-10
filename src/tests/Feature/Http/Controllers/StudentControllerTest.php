@@ -135,6 +135,36 @@ final class StudentControllerTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_can_update_student_status(): void
+    {
+        $admin = $this->createAdmin();
+        $student = Student::factory()->create();
+
+        $this->actingAs($admin)
+            ->patch(route('students.update.status', $student->id), [
+                'status' => StudentStatus::GRADUATED->value,
+            ])
+            ->assertRedirect(route('students.show', $student->id))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('students', [
+            'id' => $student->id,
+            'status' => StudentStatus::GRADUATED,
+        ]);
+    }
+
+    public function test_cannot_update_student_status_without_permission(): void
+    {
+        $user = User::factory()->create();
+        $student = Student::factory()->create();
+
+        $this->actingAs($user)
+            ->patch(route('students.update.status', $student->id), [
+                'status' => StudentStatus::GRADUATED->value,
+            ])
+            ->assertForbidden();
+    }
+
     private function createAdmin(): User
     {
         $role = Role::query()

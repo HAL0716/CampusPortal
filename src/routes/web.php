@@ -45,6 +45,9 @@ Route::middleware('auth')->group(function () {
                 ->group(function () {
                     Route::get('/', [StudentController::class, 'show'])
                         ->name('show');
+
+                    Route::patch('/status', [StudentController::class, 'updateStatus'])
+                        ->name('update.status');
                 });
         });
 

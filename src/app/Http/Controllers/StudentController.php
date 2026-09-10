@@ -6,9 +6,11 @@ use App\Application\Contexts\Department\UseCases\ListDepartmentUseCase;
 use App\Application\Contexts\Student\UseCases\CreateStudentUseCase;
 use App\Application\Contexts\Student\UseCases\GetStudentUseCase;
 use App\Application\Contexts\Student\UseCases\ListStudentUseCase;
+use App\Application\Contexts\Student\UseCases\UpdateStudentStatusUseCase;
 use App\Http\Flash\Flash;
 use App\Http\Requests\Student\ShowRequest;
 use App\Http\Requests\Student\StoreRequest;
+use App\Http\Requests\Student\UpdateStatusRequest;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -48,5 +50,13 @@ final class StudentController extends Controller
         return Inertia::render('Student/Show', [
             'student' => $student,
         ]);
+    }
+
+    public function updateStatus(UpdateStatusRequest $request, UpdateStudentStatusUseCase $useCase): RedirectResponse
+    {
+        $useCase->execute($request->toCommand());
+
+        return to_route('students.show', ['student' => $request->route('student')])
+            ->with(Flash::success('学生ステータスを更新しました。'));
     }
 }

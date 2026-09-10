@@ -1,10 +1,12 @@
 import { Link } from '@inertiajs/react';
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ComponentProps, ReactNode } from 'react';
 
 import { type Variant, variants } from '@/Components/Styles/Variants';
 
 type Props = {
   href?: string;
+  method?: ComponentProps<typeof Link>['method'];
+  data?: ComponentProps<typeof Link>['data'];
   label?: string;
   variant?: Variant;
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
@@ -13,6 +15,8 @@ type Props = {
 
 export default function Button({
   href,
+  method = 'post',
+  data,
   label,
   variant = 'default',
   type = 'button',
@@ -34,7 +38,7 @@ export default function Button({
 
   if (href) {
     return (
-      <Link href={href} method="post" as="button" className={className}>
+      <Link href={href} method={method} data={data} as="button" className={className}>
         {content}
       </Link>
     );
