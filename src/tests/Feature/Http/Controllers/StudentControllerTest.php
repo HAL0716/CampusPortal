@@ -110,6 +110,31 @@ final class StudentControllerTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_can_view_student_detail(): void
+    {
+        $admin = $this->createAdmin();
+        $student = Student::factory()->create();
+
+        $this->actingAs($admin)
+            ->get(route('students.show', $student->id))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('Student/Show')
+                ->has('student')
+                ->where('student.studentNumber', $student->student_number)
+            );
+    }
+
+    public function test_cannot_view_student_detail_without_permission(): void
+    {
+        $user = User::factory()->create();
+        $student = Student::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('students.show', $student->id))
+            ->assertForbidden();
+    }
+
     private function createAdmin(): User
     {
         $role = Role::query()

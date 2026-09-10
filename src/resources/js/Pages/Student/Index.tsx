@@ -33,6 +33,7 @@ export default function Index() {
         {students.map((student) => (
           <Card
             key={student.id}
+            href={route('students.show', student.id)}
             title={student.name}
             description={`学籍番号: ${student.studentNumber} | 学科: ${student.department}`}
           />
