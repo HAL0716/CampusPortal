@@ -28,6 +28,7 @@ class UpdateStatusRequest extends FormRequest
     {
         return [
             'status' => ['required', new Enum(StudentStatus::class)],
+            'credits' => ['required', 'integer', 'min:0'],
         ];
     }
 
@@ -35,6 +36,7 @@ class UpdateStatusRequest extends FormRequest
     {
         return [
             'status' => 'ステータス',
+            'credits' => '修得単位数',
         ];
     }
 
@@ -43,6 +45,8 @@ class UpdateStatusRequest extends FormRequest
         return [
             'required' => ':attribute は必須です。',
             'enum' => ':attribute が不正な値です。',
+            'integer' => ':attribute は整数である必要があります。',
+            'min' => ':attribute は :min 以上である必要があります。',
         ];
     }
 
@@ -51,6 +55,7 @@ class UpdateStatusRequest extends FormRequest
         return new UpdateStudentStatusCommand(
             studentId: new StudentId((int) $this->route('student')),
             status: StudentStatus::from($this->validated('status')),
+            credits: (int) $this->validated('credits'),
         );
     }
 }

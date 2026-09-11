@@ -10,5 +10,6 @@ final readonly class UpdateStudentStatusCommand
     public function __construct(
         public StudentId $studentId,
         public StudentStatus $status,
+        public int $credits,
     ) {}
 }

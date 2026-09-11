@@ -143,6 +143,7 @@ final class StudentControllerTest extends TestCase
         $this->actingAs($admin)
             ->patch(route('students.update.status', $student->id), [
                 'status' => StudentStatus::GRADUATED->value,
+                'credits' => config('student.graduation.required_credits'),
             ])
             ->assertRedirect(route('students.show', $student->id))
             ->assertSessionHas('success');
@@ -150,6 +151,28 @@ final class StudentControllerTest extends TestCase
         $this->assertDatabaseHas('students', [
             'id' => $student->id,
             'status' => StudentStatus::GRADUATED,
+        ]);
+    }
+
+    public function test_cannot_update_student_status_with_insufficient_credits(): void
+    {
+        $admin = $this->createAdmin();
+        $student = Student::factory()->create();
+
+        $requiredCredits = config('student.graduation.required_credits');
+
+        $this->actingAs($admin)
+            ->from(route('students.show', $student->id))
+            ->patch(route('students.update.status', $student->id), [
+                'status' => StudentStatus::GRADUATED->value,
+                'credits' => $requiredCredits - 1,
+            ])
+            ->assertRedirect(route('students.show', $student->id))
+            ->assertSessionHas('error');
+
+        $this->assertDatabaseHas('students', [
+            'id' => $student->id,
+            'status' => StudentStatus::ACTIVE,
         ]);
     }
 
@@ -161,6 +184,7 @@ final class StudentControllerTest extends TestCase
         $this->actingAs($user)
             ->patch(route('students.update.status', $student->id), [
                 'status' => StudentStatus::GRADUATED->value,
+                'credits' => config('student.graduation.required_credits'),
             ])
             ->assertForbidden();
     }
