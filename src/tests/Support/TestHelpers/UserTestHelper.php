@@ -3,6 +3,7 @@
 namespace Tests\Support\TestHelpers;
 
 use App\Domain\User\Entities\User;
+use App\Domain\User\Enums\UserStatus;
 use App\Domain\User\ValueObjects\UserEmail;
 use App\Domain\User\ValueObjects\UserPassword;
 
@@ -52,12 +53,14 @@ trait UserTestHelper
         ?string $email = null,
         ?string $password = null,
         ?string $name = null,
+        ?UserStatus $status = null,
     ): User {
         return User::reconstruct(
             id: $this->userId($id),
             email: $this->userEmail($email),
             password: $this->hashedUserPassword($password),
             name: $name ?? 'Test User',
+            status: $status ?? UserStatus::ACTIVE,
         );
     }
 }

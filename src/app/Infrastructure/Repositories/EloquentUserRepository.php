@@ -6,6 +6,7 @@ use App\Application\Contexts\User\Duplicate\UserDuplicateDetector;
 use App\Application\Contexts\User\Duplicate\UserDuplicateTarget;
 use App\Application\Services\Security\PasswordHasher;
 use App\Domain\User\Entities\User;
+use App\Domain\User\Enums\UserStatus;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use App\Domain\User\Exceptions\UserNotFoundException;
 use App\Domain\User\Repositories\UserRepository;
@@ -39,6 +40,7 @@ final class EloquentUserRepository implements UserRepository
             ? $user->password()->value()
             : $this->hasher->hash($user->password()->value());
         $model->name = $user->name();
+        $model->status = $user->status()->value;
 
         try {
             $model->save();
@@ -60,6 +62,17 @@ final class EloquentUserRepository implements UserRepository
         return $model ? $this->toEntity($model) : null;
     }
 
+    public function get(UserId $id): User
+    {
+        $user = $this->findById($id);
+
+        if ($user === null) {
+            throw new UserNotFoundException;
+        }
+
+        return $user;
+    }
+
     public function findByEmail(UserEmail $email): ?User
     {
         $model = UserModel::where('email', $email->value())->first();
@@ -73,7 +86,8 @@ final class EloquentUserRepository implements UserRepository
             new UserId((int) $model->id),
             new UserEmail($model->email),
             UserPassword::fromHash($model->password),
-            $model->name
+            $model->name,
+            UserStatus::from($model->status),
         );
     }
 }

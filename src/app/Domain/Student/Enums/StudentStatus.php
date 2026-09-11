@@ -34,4 +34,13 @@ enum StudentStatus: string
     {
         return in_array($newStatus, $this->allowedTransitions(), true);
     }
+
+    public function requiresUserDeactivation(): bool
+    {
+        return match ($this) {
+            self::EXPELLED,
+            self::GRADUATED => true,
+            default => false,
+        };
+    }
 }

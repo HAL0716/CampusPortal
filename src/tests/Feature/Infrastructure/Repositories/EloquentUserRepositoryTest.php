@@ -39,6 +39,7 @@ final class EloquentUserRepositoryTest extends TestCase
             'email' => $result->email()->value(),
             'password' => $result->password()->value(),
             'name' => $result->name(),
+            'status' => $result->status()->value,
         ]);
     }
 

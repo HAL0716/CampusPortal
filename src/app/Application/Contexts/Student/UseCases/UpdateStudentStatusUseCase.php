@@ -3,24 +3,36 @@
 namespace App\Application\Contexts\Student\UseCases;
 
 use App\Application\Contexts\Student\Commands\UpdateStudentStatusCommand;
+use App\Application\Services\Database\Transaction;
 use App\Domain\Student\Policies\TransitionPolicy;
 use App\Domain\Student\Repositories\StudentRepository;
+use App\Domain\User\Repositories\UserRepository;
 
 final readonly class UpdateStudentStatusUseCase
 {
     public function __construct(
+        private UserRepository $users,
         private StudentRepository $students,
         private TransitionPolicy $transition,
+        private Transaction $transaction,
     ) {}
 
     public function execute(UpdateStudentStatusCommand $command): void
     {
-        $student = $this->students->get($command->studentId);
+        $this->transaction->run(function () use ($command): void {
+            $student = $this->students->get($command->studentId);
 
-        $updated = $student->transitionTo($command->status);
+            $updated = $student->transitionTo($command->status);
 
-        $this->transition->assertAllowed($command->status, $command->credits);
+            $this->transition->assertAllowed($command->status, $command->credits);
 
-        $this->students->save($updated);
+            $this->students->save($updated);
+
+            if ($command->status->requiresUserDeactivation()) {
+                $user = $this->users->get($student->userId());
+
+                $this->users->save($user->deactivate());
+            }
+        });
     }
 }
