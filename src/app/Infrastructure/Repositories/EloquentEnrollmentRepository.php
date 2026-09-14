@@ -6,6 +6,7 @@ use App\Application\Contexts\Enrollment\Duplicate\EnrollmentDuplicateDetector;
 use App\Application\Contexts\Enrollment\Duplicate\EnrollmentDuplicateTarget;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Enrollment\Entities\Enrollment;
+use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Enrollment\Exceptions\EnrollmentAlreadyExistsException;
 use App\Domain\Enrollment\Exceptions\EnrollmentNotFoundException;
 use App\Domain\Enrollment\Repositories\EnrollmentRepository;
@@ -86,6 +87,14 @@ final class EloquentEnrollmentRepository implements EnrollmentRepository
         }
 
         return $enrollment;
+    }
+
+    public function countCompleted(StudentId $studentId): int
+    {
+        return EnrollmentModel::query()
+            ->where('student_id', $studentId->value())
+            ->where('status', EnrollmentStatus::COMPLETED)
+            ->count();
     }
 
     private function toEntity(EnrollmentModel $model): Enrollment

@@ -4,6 +4,7 @@ namespace App\Infrastructure\Repositories;
 
 use App\Application\Contexts\Student\Duplicate\StudentDuplicateDetector;
 use App\Application\Contexts\Student\Duplicate\StudentDuplicateTarget;
+use App\Application\Services\Database\RowLockMode;
 use App\Domain\Department\ValueObjects\DepartmentId;
 use App\Domain\Student\Entities\Student;
 use App\Domain\Student\Exceptions\StudentAlreadyExistsException;
@@ -36,6 +37,7 @@ final class EloquentStudentRepository implements StudentRepository
         $model->user_id = $student->userId()->value();
         $model->department_id = $student->departmentId()->value();
         $model->student_number = $student->studentNumber()->value();
+        $model->status = $student->status();
 
         try {
             $model->save();
@@ -45,6 +47,31 @@ final class EloquentStudentRepository implements StudentRepository
             }
 
             throw $e;
+        }
+
+        return $this->toEntity($model);
+    }
+
+    public function find(StudentId $id): ?Student
+    {
+        $model = StudentModel::find($id->value());
+
+        return $model ? $this->toEntity($model) : null;
+    }
+
+    public function get(StudentId $id, RowLockMode $lockMode = RowLockMode::NONE): Student
+    {
+        $query = StudentModel::query()
+            ->whereKey($id->value());
+
+        if ($lockMode === RowLockMode::FOR_UPDATE) {
+            $query->lockForUpdate();
+        }
+
+        $model = $query->first();
+
+        if ($model === null) {
+            throw new StudentNotFoundException;
         }
 
         return $this->toEntity($model);
@@ -75,6 +102,7 @@ final class EloquentStudentRepository implements StudentRepository
             new UserId((int) $model->user_id),
             new DepartmentId((int) $model->department_id),
             new StudentNumber($model->student_number),
+            $model->status,
         );
     }
 }

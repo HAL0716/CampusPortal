@@ -40,6 +40,15 @@ Route::middleware('auth')->group(function () {
 
             Route::post('/', [StudentController::class, 'store'])
                 ->name('store');
+
+            Route::prefix('/{student}')
+                ->group(function () {
+                    Route::get('/', [StudentController::class, 'show'])
+                        ->name('show');
+
+                    Route::patch('/status', [StudentController::class, 'updateStatus'])
+                        ->name('update.status');
+                });
         });
 
     Route::prefix('course-offerings')

@@ -734,11 +734,14 @@ enrolled（履修中）
 
 ## 9.3 学生管理
 
-| Method | Path               | Controller               | Student | Teacher | Admin |
-| ------ | ------------------ | ------------------------ | :-----: | :-----: | :---: |
-| GET    | `/students`        | StudentController@index  |    ×    |    ×    |   ○   |
-| GET    | `/students/create` | StudentController@create |    ×    |    ×    |   ○   |
-| POST   | `/students`        | StudentController@store  |    ×    |    ×    |   ○   |
+| Method | Path                         | Controller                     | Student | Teacher | Admin |
+| ------ | ---------------------------- | ------------------------------ | :-----: | :-----: | :---: |
+| GET    | `/students`                  | StudentController@index        |    ×    |    ×    |   ○   |
+| GET    | `/students/create`           | StudentController@create       |    ×    |    ×    |   ○   |
+| POST   | `/students`                  | StudentController@store        |    ×    |    ×    |   ○   |
+| GET    | `/students/{student}`        | StudentController@show         |    ×    |    ×    |   ○   |
+| PATCH  | `/students/{student}/status` | StudentController@updateStatus |    ×    |    ×    |   ○   |
+
 ## 9.4 教員管理
 
 | Method | Path                   | Controller                | Student | Teacher | Admin |

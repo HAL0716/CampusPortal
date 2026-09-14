@@ -20,6 +20,38 @@ final class EloquentStudentRepositoryTest extends TestCase
         return app(EloquentStudentRepository::class);
     }
 
+    public function test_find_returns_student(): void
+    {
+        $model = StudentModel::factory()->create();
+
+        $result = $this->repository()->find($this->studentId($model->id));
+
+        self::assertInstanceOf(Student::class, $result);
+        self::assertSame($model->id, $result->requireId()->value());
+    }
+
+    public function test_find_returns_null_when_student_not_found(): void
+    {
+        self::assertNull($this->repository()->find($this->studentId(999999)));
+    }
+
+    public function test_get_returns_student(): void
+    {
+        $model = StudentModel::factory()->create();
+
+        $result = $this->repository()->get($this->studentId($model->id));
+
+        self::assertInstanceOf(Student::class, $result);
+        self::assertSame($model->id, $result->requireId()->value());
+    }
+
+    public function test_get_throws_exception_when_student_not_found(): void
+    {
+        $this->expectException(StudentNotFoundException::class);
+
+        $this->repository()->get($this->studentId(999999));
+    }
+
     public function test_find_by_user_id_returns_student(): void
     {
         $model = StudentModel::factory()->create();
