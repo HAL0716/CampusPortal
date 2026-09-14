@@ -2,16 +2,21 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Domain\Enrollment\Enums\EnrollmentStatus;
 use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\Role\Enums\RoleType;
 use App\Domain\Student\Enums\StudentStatus;
+use App\Models\CourseOffering;
 use App\Models\Department;
+use App\Models\Enrollment;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\Semester;
 use App\Models\Student;
 use App\Models\User;
 use Database\Seeders\PermissionSeeder;
 use Database\Seeders\RoleSeeder;
+use Database\Seeders\SemesterSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -26,6 +31,7 @@ final class StudentControllerTest extends TestCase
         $this->seed([
             PermissionSeeder::class,
             RoleSeeder::class,
+            SemesterSeeder::class,
         ]);
     }
 
@@ -140,10 +146,24 @@ final class StudentControllerTest extends TestCase
         $admin = $this->createAdmin();
         $student = Student::factory()->create();
 
+        $semester = Semester::query()->firstOrFail();
+
+        $courseOfferings = CourseOffering::factory()
+            ->for($semester)
+            ->count(config('student.graduation.required_credits'))
+            ->create();
+
+        foreach ($courseOfferings as $courseOffering) {
+            Enrollment::factory()
+                ->for($student)
+                ->for($courseOffering)
+                ->status(EnrollmentStatus::COMPLETED)
+                ->create();
+        }
+
         $this->actingAs($admin)
             ->patch(route('students.update.status', $student->id), [
                 'status' => StudentStatus::GRADUATED->value,
-                'credits' => config('student.graduation.required_credits'),
             ])
             ->assertRedirect(route('students.show', $student->id))
             ->assertSessionHas('success');
@@ -159,13 +179,10 @@ final class StudentControllerTest extends TestCase
         $admin = $this->createAdmin();
         $student = Student::factory()->create();
 
-        $requiredCredits = config('student.graduation.required_credits');
-
         $this->actingAs($admin)
             ->from(route('students.show', $student->id))
             ->patch(route('students.update.status', $student->id), [
                 'status' => StudentStatus::GRADUATED->value,
-                'credits' => $requiredCredits - 1,
             ])
             ->assertRedirect(route('students.show', $student->id))
             ->assertSessionHas('error');
@@ -184,7 +201,6 @@ final class StudentControllerTest extends TestCase
         $this->actingAs($user)
             ->patch(route('students.update.status', $student->id), [
                 'status' => StudentStatus::GRADUATED->value,
-                'credits' => config('student.graduation.required_credits'),
             ])
             ->assertForbidden();
     }

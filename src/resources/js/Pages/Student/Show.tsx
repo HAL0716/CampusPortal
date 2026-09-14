@@ -45,7 +45,7 @@ export default function Show() {
             method="patch"
             label={status.label}
             variant="danger"
-            data={{ status: status.value, credits: student.credits }}
+            data={{ status: status.value }}
           />
         ))}
       </div>

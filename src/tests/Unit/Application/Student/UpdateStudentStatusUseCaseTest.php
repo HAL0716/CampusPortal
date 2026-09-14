@@ -6,6 +6,7 @@ use App\Application\Contexts\Student\Commands\UpdateStudentStatusCommand;
 use App\Application\Contexts\Student\UseCases\UpdateStudentStatusUseCase;
 use App\Application\Services\Database\RowLockMode;
 use App\Application\Services\Database\Transaction;
+use App\Domain\Enrollment\Repositories\EnrollmentRepository;
 use App\Domain\Student\Entities\Student;
 use App\Domain\Student\Enums\StudentStatus;
 use App\Domain\Student\Exceptions\InsufficientCredits;
@@ -37,6 +38,8 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
 
     private StudentRepository&MockInterface $students;
 
+    private EnrollmentRepository&MockInterface $enrollments;
+
     private Transaction&MockInterface $transaction;
 
     private UpdateStudentStatusUseCase $useCase;
@@ -47,6 +50,7 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
 
         $this->users = Mockery::mock(UserRepository::class);
         $this->students = Mockery::mock(StudentRepository::class);
+        $this->enrollments = Mockery::mock(EnrollmentRepository::class);
         $this->transaction = Mockery::mock(Transaction::class);
 
         $transition = new TransitionPolicy(
@@ -63,6 +67,7 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
         $this->useCase = new UpdateStudentStatusUseCase(
             $this->users,
             $this->students,
+            $this->enrollments,
             $transition,
             $this->transaction,
         );
@@ -81,6 +86,11 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
             ->once()
             ->with($student->requireId(), RowLockMode::FOR_UPDATE)
             ->andReturn($student);
+
+        $this->enrollments->shouldReceive('countCompleted')
+            ->once()
+            ->with($student->requireId())
+            ->andReturn(self::REQUIRED_CREDITS);
 
         $this->students->shouldReceive('save')
             ->once()
@@ -108,7 +118,6 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
             $this->command(
                 studentId: $student->requireId(),
                 status: StudentStatus::GRADUATED,
-                credits: self::REQUIRED_CREDITS,
             ),
         );
     }
@@ -123,6 +132,11 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
             ->once()
             ->with($student->requireId(), RowLockMode::FOR_UPDATE)
             ->andReturn($student);
+
+        $this->enrollments->shouldReceive('countCompleted')
+            ->once()
+            ->with($student->requireId())
+            ->andReturn(0);
 
         $this->students->shouldReceive('save')
             ->once()
@@ -141,7 +155,6 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
             $this->command(
                 studentId: $student->requireId(),
                 status: StudentStatus::SUSPENDED,
-                credits: 0,
             ),
         );
     }
@@ -159,6 +172,11 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
             ->once()
             ->with($student->requireId(), RowLockMode::FOR_UPDATE)
             ->andReturn($student);
+
+        $this->enrollments->shouldReceive('countCompleted')
+            ->once()
+            ->with($student->requireId())
+            ->andReturn(0);
 
         $this->students->shouldReceive('save')
             ->once()
@@ -186,7 +204,6 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
             $this->command(
                 studentId: $student->requireId(),
                 status: StudentStatus::EXPELLED,
-                credits: 0,
             ),
         );
     }
@@ -201,6 +218,7 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
             ->andThrow(new StudentNotFoundException);
 
         $this->students->shouldNotReceive('save');
+        $this->enrollments->shouldNotReceive('countCompleted');
         $this->users->shouldNotReceive('get');
         $this->users->shouldNotReceive('save');
 
@@ -210,7 +228,6 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
             $this->command(
                 studentId: $studentId,
                 status: StudentStatus::GRADUATED,
-                credits: self::REQUIRED_CREDITS,
             ),
         );
     }
@@ -226,6 +243,11 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
             ->with($student->requireId(), RowLockMode::FOR_UPDATE)
             ->andReturn($student);
 
+        $this->enrollments->shouldReceive('countCompleted')
+            ->once()
+            ->with($student->requireId())
+            ->andReturn(0);
+
         $this->students->shouldNotReceive('save');
         $this->users->shouldNotReceive('get');
         $this->users->shouldNotReceive('save');
@@ -236,7 +258,6 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
             $this->command(
                 studentId: $student->requireId(),
                 status: StudentStatus::ACTIVE,
-                credits: self::REQUIRED_CREDITS,
             ),
         );
     }
@@ -252,6 +273,11 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
             ->with($student->requireId(), RowLockMode::FOR_UPDATE)
             ->andReturn($student);
 
+        $this->enrollments->shouldReceive('countCompleted')
+            ->once()
+            ->with($student->requireId())
+            ->andReturn(self::REQUIRED_CREDITS - 1);
+
         $this->students->shouldNotReceive('save');
         $this->users->shouldNotReceive('get');
         $this->users->shouldNotReceive('save');
@@ -262,7 +288,6 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
             $this->command(
                 studentId: $student->requireId(),
                 status: StudentStatus::GRADUATED,
-                credits: self::REQUIRED_CREDITS - 1,
             ),
         );
     }
@@ -270,12 +295,10 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
     private function command(
         StudentId $studentId,
         StudentStatus $status,
-        int $credits,
     ): UpdateStudentStatusCommand {
         return new UpdateStudentStatusCommand(
             studentId: $studentId,
             status: $status,
-            credits: $credits,
         );
     }
 }

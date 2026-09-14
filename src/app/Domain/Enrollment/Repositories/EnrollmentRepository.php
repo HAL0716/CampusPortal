@@ -18,4 +18,6 @@ interface EnrollmentRepository
     public function findByStudentAndCourseOffering(StudentId $studentId, CourseOfferingId $courseOfferingId): ?Enrollment;
 
     public function getByStudentAndCourseOffering(StudentId $studentId, CourseOfferingId $courseOfferingId): Enrollment;
+
+    public function countCompleted(StudentId $studentId): int;
 }
