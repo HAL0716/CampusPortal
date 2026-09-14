@@ -3,6 +3,7 @@
 namespace App\Domain\Semester\Entities;
 
 use App\Domain\Academic\Enums\Term;
+use App\Domain\Semester\Exceptions\InvalidEndDate;
 use App\Domain\Semester\Exceptions\SemesterIdNotAssignedException;
 use App\Domain\Semester\ValueObjects\AcademicYear;
 use App\Domain\Semester\ValueObjects\SemesterId;
@@ -20,6 +21,10 @@ final readonly class Semester
 
     public static function create(AcademicYear $academicYear, Term $term, DateTimeImmutable $startDate, DateTimeImmutable $endDate): self
     {
+        if ($startDate > $endDate) {
+            throw new InvalidEndDate($startDate, $endDate);
+        }
+
         return new self(null, $academicYear, $term, $startDate, $endDate);
     }
 

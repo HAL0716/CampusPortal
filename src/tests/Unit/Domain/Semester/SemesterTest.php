@@ -3,6 +3,7 @@
 namespace Tests\Unit\Domain\Semester;
 
 use App\Domain\Academic\Enums\Term;
+use App\Domain\Semester\Exceptions\InvalidEndDate;
 use App\Domain\Semester\Exceptions\SemesterIdNotAssignedException;
 use App\Domain\Semester\ValueObjects\AcademicYear;
 use DateTimeImmutable;
@@ -22,6 +23,16 @@ final class SemesterTest extends TestCase
         $this->assertSame(Term::FIRST, $semester->term());
         $this->assertSame('2026-01-01', $semester->startDate()->format('Y-m-d'));
         $this->assertSame('2026-03-31', $semester->endDate()->format('Y-m-d'));
+    }
+
+    public function test_create_throws_exception_when_end_date_is_before_start_date(): void
+    {
+        $this->expectException(InvalidEndDate::class);
+
+        $this->createSemester(
+            startDate: new DateTimeImmutable('2026-04-01'),
+            endDate: new DateTimeImmutable('2026-03-31'),
+        );
     }
 
     public function test_reconstruct_restores_semester_with_id(): void
