@@ -2,12 +2,10 @@
 
 namespace App\Application\Contexts\Student\DTOs;
 
-use App\Domain\Student\Enums\StudentStatus;
-
 final readonly class StudentDetailDTO
 {
     /**
-     * @param  array<StudentStatus>  $transitions
+     * @param  array<array{value: string, label: string}>  $transitions
      */
     public function __construct(
         public int $id,
