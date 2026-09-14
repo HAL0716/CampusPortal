@@ -65,16 +65,6 @@ final class GetStudentUseCaseTest extends TestCase
             $this->query($studentId),
         );
 
-        $this->studentQueryService
-            ->shouldReceive('getDetail')
-            ->once()
-            ->with($studentId)
-            ->andReturn($expected);
-
-        $result = $this->useCase()->execute(
-            $this->query($studentId),
-        );
-
         self::assertSame($expected, $result);
     }
 
