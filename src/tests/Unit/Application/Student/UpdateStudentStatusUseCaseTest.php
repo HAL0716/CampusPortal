@@ -4,6 +4,7 @@ namespace Tests\Unit\Application\Student;
 
 use App\Application\Contexts\Student\Commands\UpdateStudentStatusCommand;
 use App\Application\Contexts\Student\UseCases\UpdateStudentStatusUseCase;
+use App\Application\Services\Database\RowLockMode;
 use App\Application\Services\Database\Transaction;
 use App\Domain\Student\Entities\Student;
 use App\Domain\Student\Enums\StudentStatus;
@@ -78,7 +79,7 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
 
         $this->students->shouldReceive('get')
             ->once()
-            ->with($student->requireId())
+            ->with($student->requireId(), RowLockMode::FOR_UPDATE)
             ->andReturn($student);
 
         $this->students->shouldReceive('save')
@@ -120,7 +121,7 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
 
         $this->students->shouldReceive('get')
             ->once()
-            ->with($student->requireId())
+            ->with($student->requireId(), RowLockMode::FOR_UPDATE)
             ->andReturn($student);
 
         $this->students->shouldReceive('save')
@@ -156,7 +157,7 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
 
         $this->students->shouldReceive('get')
             ->once()
-            ->with($student->requireId())
+            ->with($student->requireId(), RowLockMode::FOR_UPDATE)
             ->andReturn($student);
 
         $this->students->shouldReceive('save')
@@ -196,7 +197,7 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
 
         $this->students->shouldReceive('get')
             ->once()
-            ->with($studentId)
+            ->with($studentId, RowLockMode::FOR_UPDATE)
             ->andThrow(new StudentNotFoundException);
 
         $this->students->shouldNotReceive('save');
@@ -222,7 +223,7 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
 
         $this->students->shouldReceive('get')
             ->once()
-            ->with($student->requireId())
+            ->with($student->requireId(), RowLockMode::FOR_UPDATE)
             ->andReturn($student);
 
         $this->students->shouldNotReceive('save');
@@ -248,7 +249,7 @@ final class UpdateStudentStatusUseCaseTest extends TestCase
 
         $this->students->shouldReceive('get')
             ->once()
-            ->with($student->requireId())
+            ->with($student->requireId(), RowLockMode::FOR_UPDATE)
             ->andReturn($student);
 
         $this->students->shouldNotReceive('save');

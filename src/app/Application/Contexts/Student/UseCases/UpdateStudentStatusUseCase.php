@@ -3,6 +3,7 @@
 namespace App\Application\Contexts\Student\UseCases;
 
 use App\Application\Contexts\Student\Commands\UpdateStudentStatusCommand;
+use App\Application\Services\Database\RowLockMode;
 use App\Application\Services\Database\Transaction;
 use App\Domain\Student\Policies\TransitionPolicy;
 use App\Domain\Student\Repositories\StudentRepository;
@@ -20,11 +21,11 @@ final readonly class UpdateStudentStatusUseCase
     public function execute(UpdateStudentStatusCommand $command): void
     {
         $this->transaction->run(function () use ($command): void {
-            $student = $this->students->get($command->studentId);
-
-            $updated = $student->transitionTo($command->status);
+            $student = $this->students->get($command->studentId, RowLockMode::FOR_UPDATE);
 
             $this->transition->assertAllowed($command->status, $command->credits);
+
+            $updated = $student->transitionTo($command->status);
 
             $this->students->save($updated);
 
