@@ -5,9 +5,11 @@ namespace App\Infrastructure\Repositories;
 use App\Domain\Semester\Entities\Semester;
 use App\Domain\Semester\Exceptions\SemesterNotFoundException;
 use App\Domain\Semester\Repositories\SemesterRepository;
+use App\Domain\Semester\ValueObjects\AcademicYear;
 use App\Domain\Semester\ValueObjects\SemesterId;
 use App\Models\Semester as SemesterModel;
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 
 final class EloquentSemesterRepository implements SemesterRepository
 {
@@ -29,8 +31,10 @@ final class EloquentSemesterRepository implements SemesterRepository
     {
         return Semester::reconstruct(
             id: new SemesterId($semester->id),
-            academicYear: $semester->academic_year,
+            academicYear: new AcademicYear($semester->academic_year),
             term: $semester->term,
+            startDate: new DateTimeImmutable($semester->start_date->format('Y-m-d')),
+            endDate: new DateTimeImmutable($semester->end_date->format('Y-m-d')),
         );
     }
 }

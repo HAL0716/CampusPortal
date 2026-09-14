@@ -27,8 +27,10 @@ final class EloquentSemesterRepositoryTest extends TestCase
 
         self::assertInstanceOf(Semester::class, $result);
         self::assertSame($model->id, $result->requireId()->value());
-        self::assertSame($model->academic_year, $result->academicYear());
+        self::assertSame($model->academic_year, $result->academicYear()->value());
         self::assertSame($model->term->value, $result->term()->value);
+        self::assertSame($model->start_date->format('Y-m-d'), $result->startDate()->format('Y-m-d'));
+        self::assertSame($model->end_date->format('Y-m-d'), $result->endDate()->format('Y-m-d'));
     }
 
     public function test_get_by_date_returns_semester_when_date_is_end_date(): void
