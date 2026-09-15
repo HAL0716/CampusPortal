@@ -60,4 +60,42 @@ final class EloquentSemesterQueryServiceTest extends TestCase
 
         self::assertEquals($expected, $result);
     }
+
+    public function test_get_latest_returns_latest_semester(): void
+    {
+        $semesters = [
+            [
+                'id' => 1,
+                'academic_year' => '2026',
+                'term' => Term::SECOND,
+                'start_date' => '2026-04-01',
+                'end_date' => '2026-06-30',
+            ],
+            [
+                'id' => 2,
+                'academic_year' => '2026',
+                'term' => Term::FIRST,
+                'start_date' => '2026-01-01',
+                'end_date' => '2026-03-31',
+            ],
+        ];
+
+        Semester::factory()->createMany($semesters);
+
+        $semester = collect($semesters)
+            ->sortByDesc('end_date')
+            ->first();
+
+        $expected = new SemesterDTO(
+            id: (string) $semester['id'],
+            academicYear: $semester['academic_year'],
+            term: $semester['term']->value,
+            startDate: $semester['start_date'],
+            endDate: $semester['end_date'],
+        );
+
+        $result = $this->queryService->getLatest();
+
+        self::assertEquals($expected, $result);
+    }
 }
