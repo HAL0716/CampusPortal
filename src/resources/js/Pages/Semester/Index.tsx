@@ -1,4 +1,5 @@
 import { Head, usePage } from '@inertiajs/react';
+import { route } from 'ziggy-js';
 
 import Card from '@/Components/Card';
 import FlashMessage from '@/Components/FlashMessage';
@@ -30,6 +31,8 @@ export default function Index() {
       <FlashMessage key={flash.error?.id} text={flash.error?.message} type="danger" />
 
       <div className="space-y-3">
+        <Card key="追加" href={route('semesters.create')} title="追加" variant="info" />
+
         {semesters.map((semester) => (
           <Card
             key={semester.id}

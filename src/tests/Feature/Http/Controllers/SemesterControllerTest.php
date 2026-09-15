@@ -70,6 +70,75 @@ final class SemesterControllerTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_can_view_semester_create_form(): void
+    {
+        $admin = $this->createAdmin();
+
+        $semester = Semester::factory()->create([
+            'academic_year' => '2026',
+            'term' => Term::FIRST,
+            'start_date' => '2026-04-01',
+            'end_date' => '2026-08-31',
+        ]);
+
+        $this->actingAs($admin)
+            ->get(route('semesters.create'))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('Semester/Create')
+                ->has('latestSemester')
+                ->where('latestSemester.id', (string) $semester->id)
+            );
+    }
+
+    public function test_cannot_view_semester_create_form_without_permission(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('semesters.create'))
+            ->assertForbidden();
+    }
+
+    public function test_can_create_semester(): void
+    {
+        $admin = $this->createAdmin();
+
+        $semester = Semester::factory()->create([
+            'academic_year' => '2026',
+            'term' => Term::FIRST,
+            'start_date' => '2026-04-01',
+            'end_date' => '2026-08-31',
+        ]);
+
+        $endDate = $semester->end_date->modify('+4 months');
+
+        $this->actingAs($admin)
+            ->post(route('semesters.store'), [
+                'endDate' => $endDate->format('Y-m-d'),
+            ])
+            ->assertRedirect(route('semesters.index'))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('semesters', [
+            'academic_year' => '2026',
+            'term' => Term::SECOND,
+            'start_date' => $semester->end_date->modify('+1 day'),
+            'end_date' => $endDate,
+        ]);
+    }
+
+    public function test_cannot_create_semester_without_permission(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('semesters.store'), [
+                'endDate' => '2026-12-31',
+            ])
+            ->assertForbidden();
+    }
+
     private function createAdmin(): User
     {
         $role = Role::query()
