@@ -64,6 +64,12 @@ Route::middleware('auth')->group(function () {
 
             Route::post('/', [SemesterController::class, 'store'])
                 ->name('store');
+
+            Route::prefix('/{semester}')
+                ->group(function () {
+                    Route::get('/', [SemesterController::class, 'show'])
+                        ->name('show');
+                });
         });
 
     Route::prefix('course-offerings')

@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Domain\Academic\Enums\Term;
 use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\Role\Enums\RoleType;
+use App\Models\CourseOffering;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Semester;
@@ -136,6 +137,49 @@ final class SemesterControllerTest extends TestCase
             ->post(route('semesters.store'), [
                 'endDate' => '2026-12-31',
             ])
+            ->assertForbidden();
+    }
+
+    public function test_can_view_semester_details(): void
+    {
+        $admin = $this->createAdmin();
+
+        $semester = Semester::factory()->create([
+            'academic_year' => '2026',
+            'term' => Term::FIRST,
+            'start_date' => '2026-04-01',
+            'end_date' => '2026-08-31',
+        ]);
+
+        $courseOffering = CourseOffering::factory()
+            ->for($semester)
+            ->create();
+
+        $this->actingAs($admin)
+            ->get(route('semesters.show', $semester->id))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('Semester/Show')
+                ->has('semester')
+                ->where('semester.id', $semester->id)
+                ->has('semester.courseOfferings', 1)
+                ->where('semester.courseOfferings.0.id', $courseOffering->id)
+            );
+    }
+
+    public function test_cannot_view_semester_details_without_permission(): void
+    {
+        $user = User::factory()->create();
+
+        $semester = Semester::factory()->create([
+            'academic_year' => '2026',
+            'term' => Term::FIRST,
+            'start_date' => '2026-04-01',
+            'end_date' => '2026-08-31',
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('semesters.show', $semester->id))
             ->assertForbidden();
     }
 

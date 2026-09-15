@@ -36,6 +36,7 @@ export default function Index() {
         {semesters.map((semester) => (
           <Card
             key={semester.id}
+            href={route('semesters.show', semester.id)}
             title={`${semester.academicYear} 年度 ${semester.term} 学期`}
             description={`${semester.startDate} ~ ${semester.endDate}`}
           />

@@ -774,11 +774,12 @@ enrolled（履修中）
 
 ## 9.7 学期管理
 
-| Method | Path                | Controller                | Student | Teacher | Admin |
-| ------ | ------------------- | ------------------------- | :-----: | :-----: | :---: |
-| GET    | `semesters`         | SemesterController@index  |    ×    |    ×    |   ○   |
-| GET    | `/semesters/create` | SemesterController@create |    ×    |    ×    |   ○   |
-| POST   | `semesters`         | SemesterController@store  |    ×    |    ×    |   ○   |
+| Method | Path                    | Controller                | Student | Teacher | Admin |
+| ------ | ----------------------- | ------------------------- | :-----: | :-----: | :---: |
+| GET    | `semesters`             | SemesterController@index  |    ×    |    ×    |   ○   |
+| GET    | `/semesters/create`     | SemesterController@create |    ×    |    ×    |   ○   |
+| POST   | `semesters`             | SemesterController@store  |    ×    |    ×    |   ○   |
+| GET    | `/semesters/{semester}` | SemesterController@show   |    ×    |    ×    |   ○   |
 
 ## 9.8 講義管理
 
