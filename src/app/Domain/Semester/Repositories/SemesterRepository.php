@@ -7,5 +7,9 @@ use Carbon\CarbonImmutable;
 
 interface SemesterRepository
 {
+    public function save(Semester $semester): Semester;
+
     public function getByDate(CarbonImmutable $date): Semester;
+
+    public function getLatest(): Semester;
 }

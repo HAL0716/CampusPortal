@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\FinalGradeController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,26 @@ Route::middleware('auth')->group(function () {
 
                     Route::patch('/status', [StudentController::class, 'updateStatus'])
                         ->name('update.status');
+                });
+        });
+
+    Route::prefix('semesters')
+        ->name('semesters.')
+        ->can(PermissionType::SemesterManage->value)
+        ->group(function () {
+            Route::get('/', [SemesterController::class, 'index'])
+                ->name('index');
+
+            Route::get('/create', [SemesterController::class, 'create'])
+                ->name('create');
+
+            Route::post('/', [SemesterController::class, 'store'])
+                ->name('store');
+
+            Route::prefix('/{semester}')
+                ->group(function () {
+                    Route::get('/', [SemesterController::class, 'show'])
+                        ->name('show');
                 });
         });
 
