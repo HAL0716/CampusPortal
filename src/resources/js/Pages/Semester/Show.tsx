@@ -6,7 +6,7 @@ import Card from '@/Components/Card';
 type courseOffering = {
   id: number;
   name: string;
-  description: string;
+  description: string | null;
 };
 
 type Semester = {
@@ -36,7 +36,7 @@ export default function Show() {
               key={offering.id}
               href={route('course-offerings.show', offering.id)}
               title={offering.name}
-              description={offering.description}
+              description={offering.description ?? ''}
             />
           ))}
         </div>
