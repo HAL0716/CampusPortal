@@ -88,7 +88,7 @@ final class SemesterControllerTest extends TestCase
             ->assertInertia(fn ($page) => $page
                 ->component('Semester/Create')
                 ->has('latestSemester')
-                ->where('latestSemester.id', (string) $semester->id)
+                ->where('latestSemester.id', $semester->id)
             );
     }
 
