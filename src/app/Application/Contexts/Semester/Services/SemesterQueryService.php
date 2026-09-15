@@ -8,4 +8,6 @@ interface SemesterQueryService
 {
     /** @return array<SemesterDTO> */
     public function findAll(): array;
+
+    public function getLatest(): SemesterDTO;
 }
