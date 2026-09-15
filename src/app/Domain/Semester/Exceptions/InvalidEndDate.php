@@ -7,7 +7,7 @@ use DateTimeImmutable;
 
 final class InvalidEndDate extends DomainException
 {
-    protected const DEFAULT_USER_MESSAGE = '終了日が不正な形式です。';
+    protected const DEFAULT_USER_MESSAGE = '終了日は開始日以降である必要があります。';
 
     public function __construct(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
     {
