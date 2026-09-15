@@ -21,6 +21,7 @@ class DashboardController extends Controller
 
         return Inertia::render('Dashboard/Index', [
             'canManageStudents' => $this->permission->can($user, PermissionType::StudentManage),
+            'canManageSemesters' => $this->permission->can($user, PermissionType::SemesterManage),
         ]);
     }
 }

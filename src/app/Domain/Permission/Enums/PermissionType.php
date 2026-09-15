@@ -8,6 +8,8 @@ enum PermissionType: string
 
     case StudentManage = 'student.manage';
 
+    case SemesterManage = 'semester.manage';
+
     case CourseOfferingView = 'course_offering.view';
     case CourseOfferingManage = 'course_offering.manage';
 

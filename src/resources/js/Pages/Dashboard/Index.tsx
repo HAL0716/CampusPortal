@@ -7,10 +7,11 @@ import { SharedProps } from '@/Types/SharedProps';
 
 type PageProps = {
   canManageStudents: boolean;
+  canManageSemesters: boolean;
 };
 
 export default function Index() {
-  const { auth, canManageStudents } = usePage<SharedProps & PageProps>().props;
+  const { auth, canManageStudents, canManageSemesters } = usePage<SharedProps & PageProps>().props;
 
   return (
     <>
@@ -32,6 +33,14 @@ export default function Index() {
             href={route('students.index')}
             title="学生管理"
             description="学生情報の管理を行います。"
+          />
+        )}
+
+        {canManageSemesters && (
+          <Card
+            href={route('semesters.index')}
+            title="学期管理"
+            description="学期情報の管理を行います。"
           />
         )}
 

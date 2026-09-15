@@ -30,6 +30,7 @@ final class RolePermissions
             RoleType::ADMIN => [
                 PermissionType::DashboardView,
                 PermissionType::StudentManage,
+                PermissionType::SemesterManage,
                 PermissionType::CourseOfferingView,
                 PermissionType::CourseOfferingManage,
                 PermissionType::MaterialView,
