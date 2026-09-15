@@ -1,11 +1,12 @@
 import { useForm, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 import { route } from 'ziggy-js';
 
 import Button from '@/Components/Button';
 import { SharedProps } from '@/Types/SharedProps';
 
 import FlashMessage from '../FlashMessage';
-import DateInput from '../Form/DateInput';
+import Input from '../Form/Input';
 
 type FormData = {
   endDate: string;
@@ -17,22 +18,47 @@ type CreateFormProps = {
 
 const getEndOfMonthAfter = (date: string, months: number) => {
   const [year, month] = date.split('-').map(Number);
+  const endOfMonth = new Date(year, month + months, 0);
 
-  const endOfMonth = new Date(year, month - 1 + months + 1, 0);
+  return endOfMonth.toISOString().slice(0, 10);
+};
 
-  return [
-    endOfMonth.getFullYear(),
-    String(endOfMonth.getMonth() + 1).padStart(2, '0'),
-    String(endOfMonth.getDate()).padStart(2, '0'),
-  ].join('-');
+const getDateParts = (date: string) => {
+  const [year = '', month = '', day = ''] = date.split('-');
+
+  return { year, month, day };
 };
 
 export default function CreateForm({ endDate }: CreateFormProps) {
   const { flash } = usePage<SharedProps>().props;
 
-  const { data, setData, post, errors, reset } = useForm<FormData>({
-    endDate: getEndOfMonthAfter(endDate, 4),
+  const { setData, post, errors, reset } = useForm<FormData>({
+    endDate: '',
   });
+
+  const placeholder = getDateParts(getEndOfMonthAfter(endDate, 4));
+
+  const [date, setDate] = useState({
+    year: '',
+    month: '',
+    day: '',
+  });
+
+  const updateDate = (key: keyof typeof date, value: string) => {
+    const nextDate = {
+      ...date,
+      [key]: value.replace(/\D/g, ''),
+    };
+
+    setDate(nextDate);
+
+    const { year, month, day } = nextDate;
+
+    setData(
+      'endDate',
+      year && month && day ? `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}` : '',
+    );
+  };
 
   const submit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,13 +77,22 @@ export default function CreateForm({ endDate }: CreateFormProps) {
 
       <FlashMessage key={flash.error?.id} text={flash.error?.message} type="danger" />
 
-      <DateInput
-        id="endDate"
-        label="次学期終了日"
-        value={data.endDate}
-        error={errors.endDate}
-        onChange={(value) => setData('endDate', value)}
-      />
+      <div className="flex gap-2">
+        {(['year', 'month', 'day'] as const).map((key) => (
+          <Input
+            key={key}
+            id={`endDate-${key}`}
+            label={{ year: '年', month: '月', day: '日' }[key]}
+            type="text"
+            inputMode="numeric"
+            value={date[key]}
+            placeholder={placeholder[key]}
+            onChange={(value) => updateDate(key, value)}
+          />
+        ))}
+      </div>
+
+      {errors.endDate && <p className="text-sm text-red-600">{errors.endDate}</p>}
 
       <Button type="submit">追加</Button>
     </form>
