@@ -6,7 +6,7 @@ import { type Variant, variants } from '@/Components/Styles/Variants';
 type Props = {
   href?: string;
   title?: string;
-  description?: string | null;
+  description: string;
   variant?: Variant;
   children?: ReactNode;
 };

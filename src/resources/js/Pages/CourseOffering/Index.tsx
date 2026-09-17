@@ -9,7 +9,7 @@ type PageProps = {
   offerings: {
     id: number;
     name: string;
-    description?: string | null;
+    description: string;
     status: Status;
   }[];
 };
@@ -53,7 +53,7 @@ export default function Index() {
               key={offering.id}
               href={route('course-offerings.show', offering.id)}
               title={offering.name}
-              description={truncate(offering.description ?? '', MAX_DESCRIPTION_LENGTH)}
+              description={truncate(offering.description, MAX_DESCRIPTION_LENGTH)}
               variant={getCardVariant(offering.status)}
             />
           ))}
