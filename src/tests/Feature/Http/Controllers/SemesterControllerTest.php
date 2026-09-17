@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Domain\Academic\Enums\Term;
 use App\Domain\Permission\Enums\PermissionType;
 use App\Domain\Role\Enums\RoleType;
+use App\Models\Course;
 use App\Models\CourseOffering;
 use App\Models\Permission;
 use App\Models\Role;
@@ -112,6 +113,11 @@ final class SemesterControllerTest extends TestCase
             'end_date' => '2026-08-31',
         ]);
 
+        Course::factory()->createMany([
+            ['id' => 1, 'term' => Term::FIRST],
+            ['id' => 2, 'term' => Term::SECOND],
+        ]);
+
         $endDate = $semester->end_date->modify('+4 months');
 
         $this->actingAs($admin)
@@ -121,11 +127,20 @@ final class SemesterControllerTest extends TestCase
             ->assertRedirect(route('semesters.index'))
             ->assertSessionHas('success');
 
+        $nextSemester = Semester::query()->latest('id')->firstOrFail();
+
         $this->assertDatabaseHas('semesters', [
-            'academic_year' => '2026',
+            'id' => $nextSemester->id,
             'term' => Term::SECOND,
             'start_date' => $semester->end_date->modify('+1 day'),
             'end_date' => $endDate,
+        ]);
+
+        $this->assertDatabaseCount('course_offerings', 1);
+
+        $this->assertDatabaseHas('course_offerings', [
+            'course_id' => 2,
+            'semester_id' => $nextSemester->id,
         ]);
     }
 
