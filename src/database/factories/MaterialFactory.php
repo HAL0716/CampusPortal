@@ -21,7 +21,7 @@ class MaterialFactory extends Factory
         return [
             'course_offering_id' => CourseOffering::factory(),
             'title' => fake()->sentence(3),
-            'description' => fake()->optional()->paragraph(),
+            'description' => fake()->paragraph(),
             'file_path' => fake()->optional()->filePath(),
             'publish_date' => fake()->optional()->dateTime(),
         ];

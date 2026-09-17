@@ -574,7 +574,7 @@ permissions ||--o{ role_permission : "included_in"
 | 項目         | 制約     |
 | ------------ | -------- |
 | title        | NOT NULL |
-| description  | NULLABLE |
+| description  | NOT NULL |
 | file_path    | NULLABLE |
 | publish_date | NULLABLE |
 
