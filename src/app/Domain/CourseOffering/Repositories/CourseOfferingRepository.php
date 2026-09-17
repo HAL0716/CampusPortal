@@ -7,5 +7,7 @@ use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 
 interface CourseOfferingRepository
 {
+    public function save(CourseOffering $courseOffering): CourseOffering;
+
     public function findById(CourseOfferingId $courseOfferingId): ?CourseOffering;
 }
