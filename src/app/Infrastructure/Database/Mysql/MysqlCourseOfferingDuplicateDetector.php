@@ -11,7 +11,7 @@ final class MysqlCourseOfferingDuplicateDetector extends AbstractMysqlDuplicateD
     protected function constraint(UnitEnum $target): ?string
     {
         return match ($target) {
-            CourseOfferingDuplicateTarget::COURSE_SEMESTER => 'course_offering_course_semester_unique',
+            CourseOfferingDuplicateTarget::COURSE_SEMESTER => 'course_offerings_course_id_semester_id_unique',
             default => null,
         };
     }
