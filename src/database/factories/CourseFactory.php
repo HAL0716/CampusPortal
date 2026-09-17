@@ -20,7 +20,7 @@ class CourseFactory extends Factory
     {
         return [
             'name' => fake()->unique()->sentence(2),
-            'description' => fake()->optional()->sentence(),
+            'description' => fake()->sentence(),
             'term' => fake()->randomElement(Term::cases()),
         ];
     }

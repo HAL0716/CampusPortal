@@ -531,7 +531,7 @@ permissions ||--o{ role_permission : "included_in"
 | 項目        | 制約                 |
 | ----------- | -------------------- |
 | name        | UNIQUE               |
-| description | NULLABLE             |
+| description | NOT NULL             |
 | term        | ENUM (`1`, `2`, `3`) |
 
 ### course_department
@@ -776,9 +776,9 @@ enrolled（履修中）
 
 | Method | Path                    | Controller                | Student | Teacher | Admin |
 | ------ | ----------------------- | ------------------------- | :-----: | :-----: | :---: |
-| GET    | `/semesters`             | SemesterController@index  |    ×    |    ×    |   ○   |
+| GET    | `/semesters`            | SemesterController@index  |    ×    |    ×    |   ○   |
 | GET    | `/semesters/create`     | SemesterController@create |    ×    |    ×    |   ○   |
-| POST   | `/semesters`             | SemesterController@store  |    ×    |    ×    |   ○   |
+| POST   | `/semesters`            | SemesterController@store  |    ×    |    ×    |   ○   |
 | GET    | `/semesters/{semester}` | SemesterController@show   |    ×    |    ×    |   ○   |
 
 ## 9.8 講義管理
