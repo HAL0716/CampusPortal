@@ -9,6 +9,16 @@ trait CourseOfferingTestHelper
 {
     use IdTestHelper;
 
+    protected function createCourseOffering(
+        ?int $semesterId = null,
+        ?int $courseId = null,
+    ): CourseOffering {
+        return CourseOffering::create(
+            courseId: $this->courseId($courseId),
+            semesterId: $this->semesterId($semesterId),
+        );
+    }
+
     /**
      * @param  array<TeacherId>  $teacherIds
      */
