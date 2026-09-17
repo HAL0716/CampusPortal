@@ -13,7 +13,7 @@ final readonly class StoreMaterialCommand
         public CourseOfferingId $courseOfferingId,
         public UserId $userId,
         public string $title,
-        public ?string $description,
+        public string $description,
         public ?UploadFile $file,
         public ?DateTimeImmutable $publishDate,
     ) {}

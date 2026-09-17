@@ -39,7 +39,7 @@ trait MaterialTestHelper
         return Material::create(
             courseOfferingId: $this->courseOfferingId($courseOfferingId),
             title: $title ?? $this->materialTitle(),
-            description: $description,
+            description: $description ?? $this->materialDescription(),
             filePath: $filePath,
             publishDate: $publishDate,
         );
@@ -57,7 +57,7 @@ trait MaterialTestHelper
             id: $this->materialId($id),
             courseOfferingId: $this->courseOfferingId($courseOfferingId),
             title: $title ?? $this->materialTitle(),
-            description: $description,
+            description: $description ?? $this->materialDescription(),
             filePath: $filePath,
             publishDate: $publishDate,
         );

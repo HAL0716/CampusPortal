@@ -134,6 +134,7 @@ final class MaterialControllerTest extends TestCase
     {
         return [
             'title' => 'テスト資料',
+            'description' => 'テスト資料の説明',
             'file' => UploadedFile::fake()->create('テスト資料.pdf', 100, 'application/pdf'),
         ];
     }

@@ -61,7 +61,7 @@ final class DownloadMaterialUseCaseTest extends TestCase
                 id: $materialId,
                 courseOfferingId: $this->courseOfferingId(),
                 title: 'PHP入門',
-                description: null,
+                description: 'PHPの基礎を学ぶための資料です。',
                 filePath: $filePath,
                 publishDate: null,
             ));

@@ -9,7 +9,7 @@ import { SharedProps } from '@/Types/SharedProps';
 type Material = {
   id: number;
   title: string;
-  description?: string;
+  description: string;
   filePath?: string;
 };
 

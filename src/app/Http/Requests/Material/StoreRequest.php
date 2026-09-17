@@ -29,7 +29,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
+            'description' => ['required', 'string'],
             'file' => ['nullable', 'file', 'mimes:txt,pdf,doc,docx', 'max:10240'], // 10MB
             'publishDate' => ['nullable', 'date'],
         ];

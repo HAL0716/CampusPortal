@@ -14,7 +14,7 @@ final readonly class Material
         private ?MaterialId $id,
         private CourseOfferingId $courseOfferingId,
         private string $title,
-        private ?string $description,
+        private string $description,
         private ?string $filePath,
         private ?DateTimeImmutable $publishDate,
     ) {}
@@ -22,7 +22,7 @@ final readonly class Material
     public static function create(
         CourseOfferingId $courseOfferingId,
         string $title,
-        ?string $description,
+        string $description,
         ?string $filePath,
         ?DateTimeImmutable $publishDate
     ): self {
@@ -33,7 +33,7 @@ final readonly class Material
         MaterialId $id,
         CourseOfferingId $courseOfferingId,
         string $title,
-        ?string $description,
+        string $description,
         ?string $filePath,
         ?DateTimeImmutable $publishDate
     ): self {
@@ -64,7 +64,7 @@ final readonly class Material
         return $this->title;
     }
 
-    public function description(): ?string
+    public function description(): string
     {
         return $this->description;
     }
