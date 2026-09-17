@@ -50,7 +50,7 @@ final readonly class CourseOffering
     public function requireId(): CourseOfferingId
     {
         if ($this->id === null) {
-            throw new CourseOfferingIdNotAssignedException('CourseOffering ID is not assigned.');
+            throw new CourseOfferingIdNotAssignedException;
         }
 
         return $this->id;
