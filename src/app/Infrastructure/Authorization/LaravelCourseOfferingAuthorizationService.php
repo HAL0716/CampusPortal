@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Authorization;
 
 use App\Application\Services\Authorization\CourseOfferingAuthorizationService;
+use App\Domain\Course\Repositories\CourseTeacherRepository;
 use App\Domain\CourseOffering\Repositories\CourseOfferingRepository;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Teacher\Repositories\TeacherRepository;
@@ -13,6 +14,7 @@ final class LaravelCourseOfferingAuthorizationService implements CourseOfferingA
     public function __construct(
         private readonly TeacherRepository $teachers,
         private readonly CourseOfferingRepository $courseOfferings,
+        private readonly CourseTeacherRepository $courseTeachers,
     ) {}
 
     public function canManage(UserId $userId, CourseOfferingId $courseOfferingId): bool
@@ -27,6 +29,6 @@ final class LaravelCourseOfferingAuthorizationService implements CourseOfferingA
             return false;
         }
 
-        return $courseOffering->hasTeacher($teacher->requireId());
+        return $this->courseTeachers->exists($courseOffering->courseId(), $teacher->requireId());
     }
 }
