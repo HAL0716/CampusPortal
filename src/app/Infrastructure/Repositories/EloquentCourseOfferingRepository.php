@@ -11,7 +11,6 @@ use App\Domain\CourseOffering\Exceptions\CourseOfferingNotFoundException;
 use App\Domain\CourseOffering\Repositories\CourseOfferingRepository;
 use App\Domain\CourseOffering\ValueObjects\CourseOfferingId;
 use App\Domain\Semester\ValueObjects\SemesterId;
-use App\Domain\Teacher\ValueObjects\TeacherId;
 use App\Models\CourseOffering as CourseOfferingModel;
 use Illuminate\Database\QueryException;
 
@@ -64,9 +63,6 @@ final class EloquentCourseOfferingRepository implements CourseOfferingRepository
             new CourseOfferingId($model->id),
             new SemesterId($model->semester_id),
             new CourseId($model->course_id),
-            $model->course->teachers
-                ->map(fn ($teacher) => new TeacherId($teacher->id))
-                ->all(),
         );
     }
 }
